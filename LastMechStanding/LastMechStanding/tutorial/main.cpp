@@ -4,6 +4,13 @@
 
 using namespace std;
 
+
+void init(GLFWwindow* window);
+void update();
+void draw();
+void cleanup();
+
+
 int main() {
 
 	// initialize glfw library:
@@ -17,8 +24,8 @@ int main() {
 	const int width = 800;
 	const int height = 600;
 
-	// initialize new window:
-	auto window = glfwCreateWindow(width, height, "Window title", nullptr, nullptr);
+	// create new window:
+	auto window = glfwCreateWindow(width, height, "", nullptr, nullptr);
 	if (!window) {
 		cerr << "ERROR: Could not open window" << endl;
 		glfwTerminate();
@@ -28,6 +35,9 @@ int main() {
 
 	// define the window as active:
 	glfwMakeContextCurrent(window);
+
+	// initialize the window:
+	init(window);
 
 	// for calculating the fps
 	auto time = glfwGetTime();
@@ -41,6 +51,10 @@ int main() {
 		time = time_new;
 		cout << "frame time: " << time_delta*1000 << "ms \t= " << 1.0/time_delta << "fps" << endl;
 
+		// Game loop: update game logic and render the current frame:
+		update();
+		draw();
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -51,8 +65,28 @@ int main() {
 		}
 	}
 
+	cleanup();
+
 	// close glfw library:
 	glfwTerminate();
 
 	return EXIT_SUCCESS;
+}
+
+
+
+void init(GLFWwindow* window) {
+	glfwSetWindowTitle(window, "Window title");
+}
+
+void update() {
+
+}
+
+void draw() {
+
+}
+
+void cleanup() {
+
 }
