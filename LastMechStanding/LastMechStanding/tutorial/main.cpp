@@ -139,6 +139,20 @@ void init(GLFWwindow* window) {
 
 	shader = make_unique<Shader>("./tutorial/Shader/vbo_vao.vert", "./tutorial/Shader/vbo_vao.frag");
 	cube = make_unique<Cube>(glm::mat4(1.0f), shader.get());
+
+	shader->useShader();
+
+	int width;
+	int height;
+	glfwGetWindowSize(window, &width, &height);
+
+	auto projection = glm::perspective(60.0f, width / (float)height, 0.1f, 20.0f);
+	auto view = glm::translate(glm::mat4(1), glm::vec3(0, 0, -2));
+	auto view_projection = projection * view;
+
+	auto view_projection_location = glGetUniformLocation(shader->programHandle, "VP");
+
+	glUniformMatrix4fv(view_projection_location, 1, GL_FALSE, glm::value_ptr(view_projection));
 }
 
 void update(float time_delta) {
