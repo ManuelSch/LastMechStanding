@@ -162,7 +162,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="tutorial\Scene\Cube.cpp" />
+    <ClCompile Include="tutorial\Scene\SceneObject.cpp" />
+    <ClCompile Include="tutorial\Resources\Shader.cpp" />
     <ClCompile Include="tutorial\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="tutorial\Scene\Cube.h" />
+    <ClInclude Include="tutorial\Scene\SceneObject.h" />
+    <ClInclude Include="tutorial\Resources\Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tutorial\Shader\basic.frag" />
+    <None Include="tutorial\Shader\basic.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

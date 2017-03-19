@@ -1,6 +1,15 @@
 #include <iostream>
 #include <memory>
+#include <sstream>
+#include <glew.h>
 #include <glfw3.h>
+
+#include "./Resources/Shader.h"
+using namespace cgue;
+
+#include "./Scene/Cube.h"
+using namespace cgue::scene;
+
 
 using namespace std;
 
@@ -10,8 +19,11 @@ void update();
 void draw();
 void cleanup();
 
+unique_ptr<Shader> shader;
+unique_ptr<Cube> cube;
 
-int main() {
+
+int main(int argc, char** argv) {
 
 	// initialize glfw library:
 	if (!glfwInit()) {
@@ -21,8 +33,32 @@ int main() {
 	}
 
 	// display dimensions:
-	const int width = 800;
-	const int height = 600;
+	int width = 800;
+	int height = 600;
+
+	if (argc >= 3) {
+		cout << "You are executing '" << argv[0] << "'" << endl;
+
+		if ((stringstream(argv[1]) >> width).fail()) {
+			cerr << "ERROR: Could not parse first command-line-argument as integer." << endl;
+			system("PAUSE");
+			exit(EXIT_FAILURE);
+		}
+
+		if ((stringstream(argv[2]) >> height).fail()) {
+			cerr << "ERROR: Could not parse second command-line-argument as integer." << endl;
+			system("PAUSE");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+
+	// define which opengl version to use (e.g. 4.1):
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+
+	// deactivate deprecated fixed function pipeline:
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// create new window:
 	auto window = glfwCreateWindow(width, height, "", nullptr, nullptr);
@@ -36,8 +72,21 @@ int main() {
 	// define the window as active:
 	glfwMakeContextCurrent(window);
 
+	// initialize glew:
+	glewExperimental = true;
+	if (glewInit() != GLEW_OK) {
+		cerr << "ERROR: Could not initialize glew" << endl;
+		glfwTerminate();
+		system("PAUSE");
+		exit(EXIT_FAILURE);
+	}
+
 	// initialize the window:
 	init(window);
+
+	// define clear color and viewport dimensions:
+	glClearColor(0.35f, 0.36f, 0.43f, 0.3f);
+	glViewport(0, 0, width, height);
 
 	// for calculating the fps
 	auto time = glfwGetTime();
@@ -50,6 +99,9 @@ int main() {
 		auto time_delta = (float)(time_new - time);
 		time = time_new;
 		cout << "frame time: " << time_delta*1000 << "ms \t= " << 1.0/time_delta << "fps" << endl;
+
+		// show clear color:
+		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Game loop: update game logic and render the current frame:
 		update();
@@ -77,16 +129,22 @@ int main() {
 
 void init(GLFWwindow* window) {
 	glfwSetWindowTitle(window, "Window title");
+
+
+	shader = make_unique<Shader>("./tutorial/Shader/basic.vert", "./tutorial/Shader/basic.frag");
+	cube = make_unique<Cube>(glm::mat4(1.0f), shader.get());
 }
 
 void update() {
-
+	cube->update();
 }
 
 void draw() {
-
+	shader->useShader();
+	cube->draw();
 }
 
 void cleanup() {
-
+	shader.reset(nullptr);
+	cube.reset(nullptr);
 }
