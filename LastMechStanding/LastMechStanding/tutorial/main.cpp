@@ -7,6 +7,10 @@
 #include "./Resources/Shader.h"
 using namespace cgue;
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm\gtc\type_ptr.hpp>
+
+
 #include "./Scene/Cube.h"
 using namespace cgue::scene;
 
@@ -15,7 +19,7 @@ using namespace std;
 
 
 void init(GLFWwindow* window);
-void update();
+void update(float time_delta);
 void draw();
 void cleanup();
 
@@ -104,7 +108,7 @@ int main(int argc, char** argv) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Game loop: update game logic and render the current frame:
-		update();
+		update(time_delta);
 		draw();
 
 
@@ -131,15 +135,19 @@ void init(GLFWwindow* window) {
 	glfwSetWindowTitle(window, "Window title");
 
 
-	shader = make_unique<Shader>("./tutorial/Shader/basic.vert", "./tutorial/Shader/basic.frag");
+	shader = make_unique<Shader>("./tutorial/Shader/vbo_vao.vert", "./tutorial/Shader/vbo_vao.frag");
 	cube = make_unique<Cube>(glm::mat4(1.0f), shader.get());
 }
 
-void update() {
-	cube->update();
+void update(float time_delta) {
+	cube->update(time_delta);
 }
 
 void draw() {
+	auto& model = cube->modelMatrix;
+	auto model_location = glGetUniformLocation(shader->programHandle, "model");
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model));
+
 	shader->useShader();
 	cube->draw();
 }

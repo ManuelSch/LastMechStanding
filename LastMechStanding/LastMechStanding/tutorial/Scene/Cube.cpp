@@ -50,8 +50,8 @@ Cube::~Cube() {
 	glDeleteVertexArrays(1, &vao);
 }
 
-void Cube::update() {
-
+void Cube::update(float time_delta) {
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f) * time_delta, glm::vec3(0, 1, 0));
 }
 
 void Cube::draw() {

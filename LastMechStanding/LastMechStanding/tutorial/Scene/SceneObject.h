@@ -1,10 +1,9 @@
 #pragma once
 
-#include <glm\glm.hpp>
-
+#include <glm/glm.hpp>
 
 namespace cgue {
-	namespace scene{
+	namespace scene {
 		class SceneObject
 		{
 		public:
@@ -12,7 +11,7 @@ namespace cgue {
 			virtual ~SceneObject();
 
 			virtual void draw() = 0;
-			virtual void update() = 0;
+			virtual void update(float time_delta) = 0;
 			
 			glm::mat4 modelMatrix;
 		};
