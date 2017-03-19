@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
 	// display dimensions:
 	int width = 800;
 	int height = 600;
+	bool fullscreen = false;
 
 	if (argc >= 3) {
 		cout << "You are executing '" << argv[0] << "'" << endl;
@@ -54,6 +55,14 @@ int main(int argc, char** argv) {
 			system("PAUSE");
 			exit(EXIT_FAILURE);
 		}
+
+		if (argc >= 4) {
+			if ((std::stringstream(argv[3]) >> fullscreen).fail()) {
+				cerr << "ERROR: Could not parse third command-line-argument as boolean." << endl;
+				system("PAUSE");
+				exit(EXIT_FAILURE);
+			}
+		}
 	}
 
 
@@ -64,8 +73,18 @@ int main(int argc, char** argv) {
 	// deactivate deprecated fixed function pipeline:
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+
+	// Set refresh rate (important for beamer):
+	GLFWmonitor* monitor = nullptr;
+	if (fullscreen) {
+		monitor = glfwGetPrimaryMonitor();
+
+		auto refresh_rate = 60;
+		glfwWindowHint(GLFW_REFRESH_RATE, refresh_rate);
+	}
+
 	// create new window:
-	auto window = glfwCreateWindow(width, height, "", nullptr, nullptr);
+	auto window = glfwCreateWindow(width, height, "", monitor, nullptr);
 	if (!window) {
 		cerr << "ERROR: Could not open window" << endl;
 		glfwTerminate();
