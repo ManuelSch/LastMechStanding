@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LastMechStanding", "LastMechStanding\LastMechStanding.vcxproj", "{317F86C1-780C-4EB9-B0BD-64E4559D3F09}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{617F00EB-BA63-4316-A3DA-C929FBC68143}"
+	ProjectSection(SolutionItems) = preProject
+		TEST_GIT.txt = TEST_GIT.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
