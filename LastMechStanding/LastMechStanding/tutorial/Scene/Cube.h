@@ -6,7 +6,7 @@
 #ifdef SCENE_OBJECT
 
 
-#define CUBE_VERTEX_COUNT 8
+#define CUBE_VERTEX_COUNT 24
 #define CUBE_INDEX_COUNT 36
 
 namespace cgue {
@@ -23,12 +23,12 @@ namespace cgue {
 
 		private:
 			GLuint vao;
-			GLuint positionBuffer, indexBuffer;
+			GLuint positionBuffer, normalsBuffer, indexBuffer;
 			Shader* shader;
 
 			static const float positions[CUBE_VERTEX_COUNT * 3];
 			static const unsigned int indices[CUBE_INDEX_COUNT];
-
+			static const float normals[CUBE_VERTEX_COUNT * 3];
 		};
 	}
 }

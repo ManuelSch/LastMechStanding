@@ -21,10 +21,14 @@ Cube::Cube(glm::mat4& matrix, Shader* _shader)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &indexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, CUBE_INDEX_COUNT * sizeof(unsigned int), indices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, CUBE_VERTEX_COUNT * sizeof(glm::vec3), indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	glGenBuffers(1, &normalsBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, normalsBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, CUBE_INDEX_COUNT * sizeof(unsigned int), normals, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	// Generate bindings:
 	glGenVertexArrays(1, &vao);
@@ -35,11 +39,17 @@ Cube::Cube(glm::mat4& matrix, Shader* _shader)
 	glEnableVertexAttribArray(positionIndex);
 	glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
+	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
+	auto normalIndex = glGetAttribLocation(shader->programHandle, "normal");
+	glEnableVertexAttribArray(normalIndex);
+	glVertexAttribPointer(normalIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 
 }
 
@@ -52,6 +62,7 @@ Cube::~Cube() {
 
 void Cube::update(float time_delta) {
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f) * time_delta, glm::vec3(0, 1, 0));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f) * time_delta, glm::vec3(1, 0, 0));
 }
 
 void Cube::draw() {
@@ -60,7 +71,7 @@ void Cube::draw() {
 	glBindVertexArray(0);
 }
 
-const float Cube::positions[CUBE_VERTEX_COUNT * 3] = {
+const float old_positions[CUBE_VERTEX_COUNT * 3] = {
 	0.5f,0.5f,0.5f,
 	0.5f,0.5f,-0.5f,
 	0.5f,-0.5f,-0.5f,
@@ -72,7 +83,46 @@ const float Cube::positions[CUBE_VERTEX_COUNT * 3] = {
 	-0.5f,-0.5f,0.5f
 };
 
-const unsigned int Cube::indices[CUBE_INDEX_COUNT] = {
+const float Cube::positions[24 * 3] = {
+	// Back
+	-0.5f,-0.5f,-0.5f,
+	-0.5f,0.5f,-0.5f,
+	0.5f,0.5f,-0.5f,
+	0.5f,-0.5f,-0.5f,
+
+	// Front
+	-0.5f,-0.5f,0.5f,
+	0.5f,-0.5f,0.5f,
+	0.5f,0.5f,0.5f,
+	-0.5f,0.5f,0.5f,
+
+	// Top
+	0.5f,0.5f,0.5f,
+	0.5f,0.5f,-0.5f,
+	-0.5f,0.5f,-0.5f,
+	-0.5f,0.5f,0.5f,
+
+	// Bottom
+	0.5f,-0.5f,0.5f,
+	-0.5f,-0.5f,0.5f,
+	-0.5f,-0.5f,-0.5f,
+	0.5f,-0.5f,-0.5f,
+
+	// Right
+	0.5f,0.5f,0.5f,
+	0.5f,-0.5f,0.5f,
+	0.5f,-0.5f,-0.5f,
+	0.5f,0.5f,-0.5f,
+
+	// Left
+	-0.5f,0.5f,0.5f,
+	-0.5f,0.5f,-0.5f,
+	-0.5f,-0.5f,-0.5f,
+	-0.5f,-0.5f,0.5f
+
+};
+
+const unsigned int old_indices[CUBE_INDEX_COUNT] = {
 	0,1,2,
 	0,2,3,
 
@@ -90,6 +140,58 @@ const unsigned int Cube::indices[CUBE_INDEX_COUNT] = {
 
 	0,4,7,
 	0,7,3
+};
+
+const unsigned int Cube::indices[CUBE_INDEX_COUNT] = {
+	0,1,2,
+	0,2,3,
+
+	4,5,6,
+	4,6,7,
+
+	8,9,10,
+	8,10,11,
+
+	12,13,14,
+	12,14,15,
+
+	16,17,18,
+	16,18,19,
+
+	20,21,22,
+	20,22,23
+};
+
+const float Cube::normals[24 * 3] = {
+	0.0f, 0.0f, -1.0f,
+	0.0f, 0.0f, -1.0f,
+	0.0f, 0.0f, -1.0f,
+	0.0f, 0.0f, -1.0f,
+
+	0.0f, 0.0f, 1.0f,
+	0.0f, 0.0f, 1.0f,
+	0.0f, 0.0f, 1.0f,
+	0.0f, 0.0f, 1.0f,
+
+	0.0f, 1.0f, 0.0f,
+	0.0f, 1.0f, 0.0f,
+	0.0f, 1.0f, 0.0f,
+	0.0f, 1.0f, 0.0f,
+
+	0.0f, -1.0f, 0.0f,
+	0.0f, -1.0f, 0.0f,
+	0.0f, -1.0f, 0.0f,
+	0.0f, -1.0f, 0.0f,
+
+	1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f,
+
+	-1.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, 0.0f,
 };
 
 #endif

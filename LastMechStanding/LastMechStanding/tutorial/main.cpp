@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
 		cout << "frame time: " << time_delta*1000 << "ms \t= " << 1.0/time_delta << "fps" << endl;
 
 		// show clear color:
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Game loop: update game logic and render the current frame:
 		update(time_delta);
@@ -132,8 +132,10 @@ int main(int argc, char** argv) {
 
 
 void init(GLFWwindow* window) {
-	glfwSetWindowTitle(window, "Window title");
 
+	glEnable(GL_DEPTH_TEST);
+
+	glfwSetWindowTitle(window, "Window title");
 
 	shader = make_unique<Shader>("./tutorial/Shader/vbo_vao.vert", "./tutorial/Shader/vbo_vao.frag");
 	cube = make_unique<Cube>(glm::mat4(1.0f), shader.get());
