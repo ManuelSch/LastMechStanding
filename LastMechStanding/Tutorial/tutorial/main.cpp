@@ -22,6 +22,7 @@ void init(GLFWwindow* window);
 void update(float time_delta);
 void draw();
 void cleanup();
+void APIENTRY debug_callback_proc(GLenum source, GLenum type, GLuintid, GLenumseverity,	GLsizeilength, constGLchar* message, GLvoid* user_param);
 
 unique_ptr<Shader> shader;
 unique_ptr<Cube> cube;
@@ -73,6 +74,9 @@ int main(int argc, char** argv) {
 	// deactivate deprecated fixed function pipeline:
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+	// set debug context (so the debug callback is used):
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+
 
 	// Set refresh rate (important for beamer):
 	GLFWmonitor* monitor = nullptr;
@@ -103,6 +107,10 @@ int main(int argc, char** argv) {
 		system("PAUSE");
 		exit(EXIT_FAILURE);
 	}
+
+	// define which debug callback function will be called in case of an error:
+	glDebugMessageCallback(debug_callback_proc, nullptr);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
 	// initialize the window:
 	init(window);
@@ -190,4 +198,44 @@ void draw() {
 void cleanup() {
 	shader.reset(nullptr);
 	cube.reset(nullptr);
+}
+
+void APIENTRY debug_callback_proc(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* user_param) {
+	
+	stringstream ss;
+
+	ss << "Source: ";
+	if (source == GL_DEBUG_SOURCE_API)						ss << "OpenGL";
+	else if (source == GL_DEBUG_SOURCE_WINDOW_SYSTEM)		ss << "Windows";
+	else if (source == GL_DEBUG_SOURCE_SHADER_COMPILER)		ss << "Shader Compiler";
+	else if (source == GL_DEBUG_SOURCE_THIRD_PARTY)			ss << "Third Party";
+	else if (source == GL_DEBUG_SOURCE_APPICATION)			ss << "Application";
+	else if (source == GL_DEBUG_SOURCE_OTHERS)				ss << "Other";
+	else													ss << "Unknown";
+
+	ss << ", Type: ";
+	if (type == GL_DEBUG_TYPE_ERROR)						ss << "Error";
+	else if (type == GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR)		ss << "Deprecated behavior";
+	else if (type == GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR)		ss << "Undefined behavior";
+	else if (type == GL_DEBUG_TYPE_PORTABILITY)				ss << "Portability";
+	else if (type == GL_DEBUG_TYPE_PERFORMANCE)				ss << "Performance";
+	else if (type == GL_DEBUG_TYPE_OTHER)					ss << "Other";
+	else if (type == GL_DEBUG_TYPE_MARKER)					ss << "Marker";
+	else if (type == GL_DEBUG_TYPE_PUSH_GROUP)				ss << "Push group";
+	else if (type == GL_DEBUG_TYPE_POP_GROUP)				ss << "Pop group";
+	else													ss << "Unknown";
+
+	ss << ", Severity: ";
+	if (severity == GL_DEBUG_SEVERITY_HIGH)					ss << "High";
+	else if (severity == GL_DEBUG_SEVERITY_MEDIUM)			ss << "Medium";
+	else if (severity == GL_DEBUG_SEVERITY_LOW)				ss << "Low";
+	else if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)	ss << "Notification";
+	else													ss << "Unknown";
+
+	ss << ", ID: " << id;
+
+	ss << ", Message: " << message;
+
+	cerr << ss << endl;
+
 }
