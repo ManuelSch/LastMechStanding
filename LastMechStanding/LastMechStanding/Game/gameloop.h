@@ -2,6 +2,9 @@
 
 // C++ Libraries:
 #include <iostream>
+#include <memory>
+#include <string>
+#include <sstream>
 
 // OpenGL Libraries:
 #include <glew.h>
@@ -9,19 +12,24 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
-class gameloop
-{
-public:
-	gameloop(GLFWwindow* _window);
-	~gameloop();
+// game specific includes:
+#include "..\Resources\Shader.h"
 
-	void run();
 
-private:
-	GLFWwindow* window;
+namespace game {
+	class Gameloop
+	{
+	public:
+		Gameloop(GLFWwindow* _window);
+		~Gameloop();
 
-	void update(float time_delta);
-	void draw();
-	void cleanup();
-};
+		void run();
 
+	private:
+		GLFWwindow* window;
+
+		void update(float time_delta);
+		void draw();
+		void cleanup();
+	};
+}

@@ -9,7 +9,7 @@
 #include <glfw3.h>
 
 // game specific includes:
-#include "Game\gameloop.h"
+#include ".\Game\gameloop.h"
 
 
 using namespace std;
@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
 
 
 	// Create, initialize and run gameloop:
-	gameloop loop = gameloop(window);
+	game::Gameloop loop = game::Gameloop(window);
 	loop.run();
 
 

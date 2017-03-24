@@ -1,12 +1,17 @@
-#include "gameloop.h"
+#include "Gameloop.h"
+using namespace game;
 
 
 using namespace std;
+using namespace resources;
 
 
-gameloop::gameloop(GLFWwindow* _window) {
+unique_ptr<resources::Shader> shader;
+
+
+Gameloop::Gameloop(GLFWwindow* _window) {
 	window = _window;
-	
+
 	// define clear color and viewport dimensions:
 	glClearColor(0.35f, 0.36f, 0.43f, 0.3f);
 	//glViewport(0, 0, width, height);
@@ -16,13 +21,14 @@ gameloop::gameloop(GLFWwindow* _window) {
 
 	glfwSetWindowTitle(window, "Last Mech Standing");
 
-	/* TODO
-	shader = make_unique<Shader>("./tutorial/Shader/vbo_vao.vert", "./tutorial/Shader/vbo_vao.frag");
-	cube = make_unique<Cube>(glm::mat4(1.0f), shader.get());
+
+	shader = make_unique<Shader>("./Shaders/vbo_vao.vert", "./Shaders/vbo_vao.frag");
+	//cube = make_unique<Cube>(glm::mat4(1.0f), shader.get());
 
 	shader->useShader();
-	*/
 
+
+	// perspective projection:
 	int width;
 	int height;
 	glfwGetWindowSize(window, &width, &height);
@@ -31,19 +37,17 @@ gameloop::gameloop(GLFWwindow* _window) {
 	auto view = glm::translate(glm::mat4(1), glm::vec3(0, 0, -2));
 	auto view_projection = projection * view;
 
-	/* TODO
 	auto view_projection_location = glGetUniformLocation(shader->programHandle, "VP");
 
 	glUniformMatrix4fv(view_projection_location, 1, GL_FALSE, glm::value_ptr(view_projection));
-	*/
 }
 
 
-gameloop::~gameloop() {
+Gameloop::~Gameloop() {
 }
 
 
-void gameloop::run() {
+void Gameloop::run() {
 
 	bool running = true;
 
@@ -77,23 +81,23 @@ void gameloop::run() {
 		GLenum error = glGetError();
 		if (error != GL_NO_ERROR) {
 			switch (error) {
-				case GL_INVALID_ENUM:
-					cerr << "GL: enum argument out of range." << endl;
-					break;
-				case GL_INVALID_VALUE:
-					cerr << "GL: Numeric argument out of range." << endl;
-					break;
-				case GL_INVALID_OPERATION:
-					cerr << "GL: Operation illegal in current state." << endl;
-					break;
-				case GL_INVALID_FRAMEBUFFER_OPERATION:
-					cerr << "GL: Framebuffer object is not complete." << endl;
-					break;
-				case GL_OUT_OF_MEMORY:
-					cerr << "GL: Not enough memory left to execute command." << endl;
-					break;
-				default:
-					cerr << "GL: Unknown error." << endl;
+			case GL_INVALID_ENUM:
+				cerr << "GL: enum argument out of range." << endl;
+				break;
+			case GL_INVALID_VALUE:
+				cerr << "GL: Numeric argument out of range." << endl;
+				break;
+			case GL_INVALID_OPERATION:
+				cerr << "GL: Operation illegal in current state." << endl;
+				break;
+			case GL_INVALID_FRAMEBUFFER_OPERATION:
+				cerr << "GL: Framebuffer object is not complete." << endl;
+				break;
+			case GL_OUT_OF_MEMORY:
+				cerr << "GL: Not enough memory left to execute command." << endl;
+				break;
+			default:
+				cerr << "GL: Unknown error." << endl;
 			}
 		}
 	}
@@ -104,19 +108,17 @@ void gameloop::run() {
 }
 
 
-void gameloop::cleanup() {
-	/* TODO
+void Gameloop::cleanup() {
 	shader.reset(nullptr);
-	cube.reset(nullptr);
-	*/
+	//cube.reset(nullptr);
 }
 
 
-void gameloop::update(float time_delta) {
+void Gameloop::update(float time_delta) {
 	// TODO: update the game logic and all scene objects here
 }
 
 
-void gameloop::draw() {
+void Gameloop::draw() {
 	// TODO: draw all objects here
 }
