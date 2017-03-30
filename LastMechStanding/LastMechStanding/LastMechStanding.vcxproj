@@ -154,7 +154,6 @@
   <ItemGroup>
     <ClCompile Include="Game\Gameloop.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Obj\Mech\asdf.cpp" />
     <ClCompile Include="Resources\Mesh.cpp" />
     <ClCompile Include="Resources\Shader.cpp" />
     <ClCompile Include="Scene\Cube.cpp" />
