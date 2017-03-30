@@ -12,8 +12,8 @@ namespace scene {
 
 		virtual void draw() = 0;
 		virtual void update(float time_delta) = 0;
-
-	private:
 		glm::mat4 modelMatrix;
 	};
 }
+
+#define SCENE_OBJECT

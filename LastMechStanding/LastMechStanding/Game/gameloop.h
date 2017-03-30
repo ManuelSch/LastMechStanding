@@ -14,6 +14,7 @@
 
 // game specific includes:
 #include "..\Resources\Shader.h"
+#include "..\Scene\Cube.h"
 
 
 namespace game {

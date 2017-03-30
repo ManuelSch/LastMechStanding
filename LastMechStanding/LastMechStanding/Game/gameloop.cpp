@@ -4,9 +4,11 @@ using namespace game;
 
 using namespace std;
 using namespace resources;
+using namespace scene;
 
 
 unique_ptr<resources::Shader> shader;
+unique_ptr<Cube> cube;
 
 
 Gameloop::Gameloop(GLFWwindow* _window) {
@@ -23,7 +25,8 @@ Gameloop::Gameloop(GLFWwindow* _window) {
 
 
 	shader = make_unique<Shader>("./Shaders/vbo_vao.vert", "./Shaders/vbo_vao.frag");
-	//cube = make_unique<Cube>(glm::mat4(1.0f), shader.get());
+	cube = make_unique<Cube>(glm::mat4(1.0f), shader.get());
+
 
 	shader->useShader();
 
@@ -110,15 +113,24 @@ void Gameloop::run() {
 
 void Gameloop::cleanup() {
 	shader.reset(nullptr);
-	//cube.reset(nullptr);
+
+	// TODO: Reset all objects here:
+	cube.reset(nullptr);
 }
 
 
 void Gameloop::update(float time_delta) {
-	// TODO: update the game logic and all scene objects here
+	// TODO: update the game logic and all scene objects here:
+	cube->update(time_delta);
 }
 
 
 void Gameloop::draw() {
-	// TODO: draw all objects here
+	// TODO: draw all objects here:
+	auto& model = cube->modelMatrix;
+	auto model_location = glGetUniformLocation(shader->programHandle, "model");
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model));
+
+	shader->useShader();
+	cube->draw();
 }

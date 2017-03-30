@@ -154,17 +154,31 @@
   <ItemGroup>
     <ClCompile Include="Game\Gameloop.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Obj\Mech\asdf.cpp" />
+    <ClCompile Include="Resources\Mesh.cpp" />
     <ClCompile Include="Resources\Shader.cpp" />
+    <ClCompile Include="Scene\Cube.cpp" />
     <ClCompile Include="Scene\SceneObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Gameloop.h" />
+    <ClInclude Include="Resources\Mesh.h" />
     <ClInclude Include="Resources\Shader.h" />
+    <ClInclude Include="Scene\Cube.h" />
     <ClInclude Include="Scene\SceneObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Obj\Mech\mech1.blend" />
+    <None Include="Obj\Mech\mech1.mtl" />
     <None Include="Shaders\vbo_vao.frag" />
     <None Include="Shaders\vbo_vao.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Obj\Mech\camouflage_texture781.jpg" />
+    <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Obj\Mech\mech1.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
