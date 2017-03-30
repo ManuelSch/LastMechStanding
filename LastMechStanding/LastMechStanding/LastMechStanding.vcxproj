@@ -167,6 +167,7 @@
     <ClInclude Include="Scene\SceneObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Obj\Mech\mech1.obj" />
     <None Include="Obj\Mech\mech1.blend" />
     <None Include="Obj\Mech\mech1.mtl" />
     <None Include="Shaders\vbo_vao.frag" />
@@ -175,9 +176,6 @@
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg" />
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Obj\Mech\mech1.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

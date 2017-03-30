@@ -56,6 +56,7 @@
     <None Include="Shaders\vbo_vao.vert" />
     <None Include="Obj\Mech\mech1.blend" />
     <None Include="Obj\Mech\mech1.mtl" />
+    <None Include="Obj\Mech\mech1.obj" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg">
@@ -64,8 +65,5 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Obj\Mech\mech1.obj" />
   </ItemGroup>
 </Project>
