@@ -1,4 +1,5 @@
-#include "Mesh.h"
+/*#include "Mesh.h"
+Derzeit nicht verwendet
 
 
 
@@ -32,3 +33,4 @@ void Mesh::draw() {
 
 	glBindVertexArray(0);
 }
+*/

@@ -1,3 +1,6 @@
+/*
+Derzeit nicht verwendet
+
 #pragma once
 
 
@@ -36,3 +39,4 @@ private:
 	unsigned int m_drawCount;
 };
 
+*/
