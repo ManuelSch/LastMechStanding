@@ -3,7 +3,7 @@ using namespace scene;
 
 #ifdef SCENE_OBJECT
 
-using namespace resources;
+using namespace util;
 
 
 Cube::Cube()

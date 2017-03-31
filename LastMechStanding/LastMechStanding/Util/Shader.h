@@ -10,7 +10,7 @@
 #include <glew.h>
 #include <glfw3.h>
 
-namespace resources {
+namespace util {
 	class Shader
 	{
 	public:

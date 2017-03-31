@@ -6,7 +6,7 @@
 #include <glm\gtc\matrix_transform.hpp>
 
 // game specific includes:
-#include "..\Resources\Shader.h"
+#include "..\Util\Shader.h"
 #include "..\Scene\SceneObject.h"
 #ifdef SCENE_OBJECT
 
@@ -15,7 +15,7 @@ namespace scene {
 	{
 	public:
 		Cube();
-		Cube(glm::mat4& matrix, resources::Shader* shader);
+		Cube(glm::mat4& matrix, util::Shader* shader);
 		virtual ~Cube();
 
 		virtual void update(float time_delta);
@@ -24,7 +24,7 @@ namespace scene {
 	private:
 		GLuint vao;
 		GLuint positionBuffer, normalsBuffer, indexBuffer;
-		resources::Shader* shader;
+		util::Shader* shader;
 
 		static const float positions[24 * 3];
 		static const unsigned int indices[36];

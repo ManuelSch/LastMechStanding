@@ -1,5 +1,5 @@
 #include "Shader.h"
-using namespace resources;
+using namespace util;
 
 
 using namespace std;

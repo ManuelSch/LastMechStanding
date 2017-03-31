@@ -13,7 +13,7 @@
 #include <glm\gtc\type_ptr.hpp>
 
 // game specific includes:
-#include "..\Resources\Shader.h"
+#include "..\Util\Shader.h"
 #include "..\Scene\Cube.h"
 
 

@@ -3,11 +3,11 @@ using namespace game;
 
 
 using namespace std;
-using namespace resources;
+using namespace util;
 using namespace scene;
 
 
-unique_ptr<resources::Shader> shader;
+unique_ptr<util::Shader> shader;
 unique_ptr<Cube> cube;
 
 
@@ -24,7 +24,7 @@ Gameloop::Gameloop(GLFWwindow* _window) {
 	glfwSetWindowTitle(window, "Last Mech Standing");
 
 
-	shader = make_unique<Shader>("./Shaders/vbo_vao.vert", "./Shaders/vbo_vao.frag");
+	shader = make_unique<Shader>("./Resources/Shaders/vbo_vao.vert", "./Resources/Shaders/vbo_vao.frag");
 	cube = make_unique<Cube>(glm::mat4(1.0f), shader.get());
 
 
