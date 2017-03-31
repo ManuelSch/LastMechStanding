@@ -10,38 +10,33 @@ using namespace util;
 Cube::Cube() : SceneObject() {
 }
 
-Cube::Cube(std::string& fileName) : SceneObject() {
-
-
-	// TODO: Hier weitermachen mit Model einbinden:
-	// siehe https://www.youtube.com/watch?v=NS980twY1ZE (ab 6:28)
-	//IndexedModel model = OBJModel(fileName).ToIndexedModel();
-
-}
-
-
-void InitMesh(const IndexedModel& model) {
-
-}
-
 
 Cube::Cube(glm::mat4& matrix, Shader* _shader)
 	: SceneObject(matrix), shader(_shader) {
 
+	std::vector< glm::vec3 > _vertices;
+	std::vector< glm::vec2 > _uvs;
+	std::vector< glm::vec3 > _normals; // Won't be used at the moment.
+
+	// TODO: hier weitermachen:
+	// siehe http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/#using-the-loaded-data
+	// "loadOBJ" fuehrt bei mir zu fehler!
+	//bool res = loadOBJ("cube.obj", _vertices, _uvs, _normals);
+
 	// Load data to buffer:
 	glGenBuffers(1, &positionBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, positionBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(glm::vec3), positions, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(glm::vec3), &_vertices[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &indexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(glm::vec3), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(glm::vec3), &_uvs[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &normalsBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, normalsBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 36 * sizeof(unsigned int), normals, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 36 * sizeof(unsigned int), &_normals[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	// Generate bindings:
