@@ -3,11 +3,25 @@ using namespace scene;
 
 #ifdef SCENE_OBJECT
 
+
 using namespace util;
 
 
-Cube::Cube()
-	: SceneObject(glm::mat4(1.0f)) {
+Cube::Cube() : SceneObject() {
+}
+
+Cube::Cube(std::string& fileName) : SceneObject() {
+
+
+	// TODO: Hier weitermachen mit Model einbinden:
+	// siehe https://www.youtube.com/watch?v=NS980twY1ZE (ab 6:28)
+	//IndexedModel model = OBJModel(fileName).ToIndexedModel();
+
+}
+
+
+void InitMesh(const IndexedModel& model) {
+
 }
 
 

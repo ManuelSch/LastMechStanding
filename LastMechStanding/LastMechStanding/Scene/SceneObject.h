@@ -7,6 +7,7 @@ namespace scene {
 	class SceneObject
 	{
 	public:
+		SceneObject() : modelMatrix(glm::mat4(1.0f)) {}
 		SceneObject(glm::mat4& modelMatrix);
 		virtual ~SceneObject();
 

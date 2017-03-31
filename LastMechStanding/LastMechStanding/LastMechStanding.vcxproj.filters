@@ -58,6 +58,7 @@
     <None Include="Resources\Shaders\vbo_vao.frag" />
     <None Include="Resources\Shaders\vbo_vao.vert" />
     <None Include="Resources\Models\Monkey\monkey3.object" />
+    <None Include="Resources\Models\Cube\cube.object" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg">
@@ -66,5 +67,6 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\Models\Cube\uvmap.DDS" />
   </ItemGroup>
 </Project>
