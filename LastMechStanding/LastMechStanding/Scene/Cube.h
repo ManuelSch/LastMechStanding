@@ -1,14 +1,21 @@
 #pragma once
+#include <vector>
+#include <stdio.h>
+#include <string>
+#include <cstring>
+#include <iostream>
 
 // OpenGL Libraries:
 #include <glm/glm.hpp>
 #include <glew.h>
 #include <glm\gtc\matrix_transform.hpp>
-#include "objloader\objloader.hpp"
 
 // game specific includes:
 #include "..\Util\Shader.h"
 #include "..\Scene\SceneObject.h"
+#include "..\objloader\objloader.hpp"
+
+
 #ifdef SCENE_OBJECT
 
 namespace scene {
@@ -30,6 +37,10 @@ namespace scene {
 		static const float positions[24 * 3];
 		static const unsigned int indices[36];
 		static const float normals[24 * 3];
+
+		std::vector< glm::vec3 > _vertices;
+		std::vector< glm::vec2 > _uvs;
+		std::vector< glm::vec3 > _normals;
 
 		//void InitMesh(const IndexedModel& model);
 	};

@@ -13,30 +13,24 @@ Cube::Cube() : SceneObject() {
 
 Cube::Cube(glm::mat4& matrix, Shader* _shader)
 	: SceneObject(matrix), shader(_shader) {
+	
+	bool res = loadOBJ("./Resources/Models/Cube/cube.object", _vertices, _uvs, _normals);
 
-	std::vector< glm::vec3 > _vertices;
-	std::vector< glm::vec2 > _uvs;
-	std::vector< glm::vec3 > _normals; // Won't be used at the moment.
-
-	// TODO: hier weitermachen:
-	// siehe http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/#using-the-loaded-data
-	// "loadOBJ" fuehrt bei mir zu fehler!
-	//bool res = loadOBJ("cube.obj", _vertices, _uvs, _normals);
 
 	// Load data to buffer:
 	glGenBuffers(1, &positionBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, positionBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(glm::vec3), &_vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(glm::vec3), &_vertices[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &indexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(glm::vec3), &_uvs[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, _uvs.size() * sizeof(glm::vec3), &_uvs[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &normalsBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, normalsBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 36 * sizeof(unsigned int), &_normals[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _normals.size() * sizeof(unsigned int), &_normals[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	// Generate bindings:
@@ -58,8 +52,6 @@ Cube::Cube(glm::mat4& matrix, Shader* _shader)
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
 }
 
 
@@ -75,7 +67,8 @@ void Cube::update(float time_delta) {
 
 void Cube::draw() {
 	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_TRIANGLES, 0, _vertices.size() * sizeof(glm::vec3));
+	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
