@@ -67,7 +67,7 @@ void Gameloop::run() {
 		auto time_new = glfwGetTime();
 		auto time_delta = (float)(time_new - time);
 		time = time_new;
-		cout << "frame time: " << time_delta * 1000 << "ms \t= " << 1.0 / time_delta << "fps" << endl;
+		//cout << "frame time: " << time_delta * 1000 << "ms \t= " << 1.0 / time_delta << "fps" << endl;
 
 		// fetch user inputs:
 		glfwPollEvents();

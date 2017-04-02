@@ -31,18 +31,18 @@ namespace scene {
 
 	private:
 		GLuint vao;
-		GLuint positionBuffer, normalsBuffer, indexBuffer;
+		GLuint positionBuffer, normalsBuffer, uvBuffer, indexBuffer;
 		util::Shader* shader;
 
-		static const float positions[24 * 3];
-		static const unsigned int indices[36];
-		static const float normals[24 * 3];
+		//static const float POSITIONS[24 * 3];
+		//static const unsigned int INDICES[36];
+		//static const float NORMALS[24 * 3];
+		//static const float UVS[24 * 2];
 
-		std::vector< glm::vec3 > _vertices;
-		std::vector< glm::vec2 > _uvs;
-		std::vector< glm::vec3 > _normals;
-
-		//void InitMesh(const IndexedModel& model);
+		std::vector< glm::vec3 > positions;
+		std::vector< glm::vec2 > indices;
+		std::vector< glm::vec2 > uvs;
+		std::vector< glm::vec3 > normals;
 	};
 }
 

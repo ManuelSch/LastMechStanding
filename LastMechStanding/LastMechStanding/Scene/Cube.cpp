@@ -14,24 +14,30 @@ Cube::Cube() : SceneObject() {
 Cube::Cube(glm::mat4& matrix, Shader* _shader)
 	: SceneObject(matrix), shader(_shader) {
 	
-	bool res = loadOBJ("./Resources/Models/Cube/cube.object", _vertices, _uvs, _normals);
-
+	bool res = loadOBJ("./Resources/Models/Cube/cube.object", positions, uvs, normals);
 
 	// Load data to buffer:
 	glGenBuffers(1, &positionBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, positionBuffer);
-	glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(glm::vec3), &_vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), &positions[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+	
+	/* ueberbleibsel aus dem cg-tutorial - noch benoetigt?
 	glGenBuffers(1, &indexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, _uvs.size() * sizeof(glm::vec3), &_uvs[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(glm::vec3), &indices[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	*/
+	glGenBuffers(1, &normalsBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(unsigned int), &normals[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glGenBuffers(1, &normalsBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, normalsBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _normals.size() * sizeof(unsigned int), &_normals[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glGenBuffers(1, &uvBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	
 
 	// Generate bindings:
 	glGenVertexArrays(1, &vao);
@@ -47,8 +53,14 @@ Cube::Cube(glm::mat4& matrix, Shader* _shader)
 	glEnableVertexAttribArray(normalIndex);
 	glVertexAttribPointer(normalIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+	auto uvIndex = glGetAttribLocation(shader->programHandle, "uv");
+	glEnableVertexAttribArray(uvIndex);
+	glVertexAttribPointer(uvIndex, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
+	/* ueberbleibsel aus dem cg-tutorial - noch benoetigt?
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	*/
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -56,7 +68,9 @@ Cube::Cube(glm::mat4& matrix, Shader* _shader)
 
 
 Cube::~Cube() {
+	glDeleteBuffers(1, &normalsBuffer);
 	glDeleteBuffers(1, &positionBuffer);
+	glDeleteBuffers(1, &uvBuffer);
 	glDeleteBuffers(1, &indexBuffer);
 	glDeleteVertexArrays(1, &vao);
 }
@@ -67,24 +81,14 @@ void Cube::update(float time_delta) {
 
 void Cube::draw() {
 	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, _vertices.size() * sizeof(glm::vec3));
+	glDrawArrays(GL_TRIANGLES, 0, positions.size() * sizeof(glm::vec3));
 	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
-const float old_positions[24 * 3] = {
-	0.5f,0.5f,0.5f,
-	0.5f,0.5f,-0.5f,
-	0.5f,-0.5f,-0.5f,
-	0.5f,-0.5f,0.5f,
 
-	-0.5f,0.5f,0.5f,
-	-0.5f,0.5f,-0.5f,
-	-0.5f,-0.5f,-0.5f,
-	-0.5f,-0.5f,0.5f
-};
-
-const float Cube::positions[24 * 3] = {
+/*
+const float Cube::POSITIONS[24 * 3] = {
 	// Back
 	-0.5f,-0.5f,-0.5f,
 	-0.5f,0.5f,-0.5f,
@@ -123,27 +127,7 @@ const float Cube::positions[24 * 3] = {
 
 };
 
-const unsigned int old_indices[36] = {
-	0,1,2,
-	0,2,3,
-
-	4,5,6,
-	4,6,7,
-
-	0,1,4,
-	1,5,4,
-
-	2,3,6,
-	3,7,6,
-
-	1,2,6,
-	1,6,5,
-
-	0,4,7,
-	0,7,3
-};
-
-const unsigned int Cube::indices[36] = {
+const unsigned int Cube::INDICES[36] = {
 	0,1,2,
 	0,2,3,
 
@@ -163,7 +147,7 @@ const unsigned int Cube::indices[36] = {
 	20,22,23
 };
 
-const float Cube::normals[24 * 3] = {
+const float Cube::NORMALS[24 * 3] = {
 	0.0f, 0.0f, -1.0f,
 	0.0f, 0.0f, -1.0f,
 	0.0f, 0.0f, -1.0f,
@@ -195,4 +179,26 @@ const float Cube::normals[24 * 3] = {
 	-1.0f, 0.0f, 0.0f,
 };
 
+const float Cube::UVS[24 * 2] = {
+	1.0f, 0.0f,
+	1.0f, 1.0f,
+	0.0f, 1.0f,
+	0.0f, 0.0f,
+
+	0.0f, 0.0f,
+	1.0f, 0.0f,
+	1.0f, 1.0f,
+	0.0f, 1.0f,
+
+	1.0f, 1.0f,
+	1.0f, 0.0f,
+	0.0f, 0.0f,
+	0.0f, 1.0f,
+
+	0.0f, 1.0f,
+	1.0f, 1.0f,
+	1.0f, 0.0f,
+	0.0f, 0.0f
+};
+*/
 #endif
