@@ -33,10 +33,10 @@
     <ClCompile Include="Util\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="objloader\objloader.cpp">
+    <ClCompile Include="External\classes\obj_loader\obj_loader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="obj_loader\obj_loader.cpp">
+    <ClCompile Include="External\classes\objloader\objloader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,10 +56,10 @@
     <ClInclude Include="Util\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="objloader\objloader.hpp">
+    <ClInclude Include="External\classes\obj_loader\obj_loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="obj_loader\obj_loader.h">
+    <ClInclude Include="External\classes\objloader\objloader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

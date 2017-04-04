@@ -9,11 +9,11 @@
 #include <glm/glm.hpp>
 #include <glew.h>
 #include <glm\gtc\matrix_transform.hpp>
+#include "..\External\classes\objloader\objloader.hpp"
 
 // game specific includes:
 #include "..\Util\Shader.h"
 #include "..\Scene\SceneObject.h"
-#include "..\objloader\objloader.hpp"
 
 
 #ifdef SCENE_OBJECT
