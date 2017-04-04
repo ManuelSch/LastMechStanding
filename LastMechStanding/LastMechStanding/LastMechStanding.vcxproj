@@ -175,6 +175,8 @@
     <None Include="Obj\Mech\mech1.blend" />
     <None Include="Obj\Mech\mech1.mtl" />
     <None Include="Resources\Models\Cube\cube.object" />
+    <None Include="Resources\Models\Mech\mech1.blend" />
+    <None Include="Resources\Models\Mech\mech1.dae" />
     <None Include="Resources\Models\Monkey\monkey3.object" />
     <None Include="Resources\Shaders\vbo_vao.frag" />
     <None Include="Resources\Shaders\vbo_vao.vert" />
@@ -183,6 +185,8 @@
     <Image Include="Obj\Mech\camouflage_texture781.jpg" />
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
     <Image Include="Resources\Models\Cube\uvmap.DDS" />
+    <Image Include="Resources\Models\Mech\camouflage_texture781.jpg" />
+    <Image Include="Resources\Models\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
