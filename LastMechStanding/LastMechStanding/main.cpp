@@ -1,12 +1,4 @@
-// C++ Libraries:
-#include <iostream>
-#include <memory>
-#include <string>
-#include <sstream>
-
-// OpenGL Libraries:
-#include <gl/glew.h>
-#include <glfw3.h>
+#include "commonHeader.h"
 
 // game specific includes:
 #include ".\Game\gameloop.h"

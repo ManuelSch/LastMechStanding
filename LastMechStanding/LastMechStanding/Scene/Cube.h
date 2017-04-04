@@ -1,13 +1,10 @@
 #pragma once
-#include <vector>
-#include <stdio.h>
-#include <string>
-#include <cstring>
-#include <iostream>
+
+#include "..\commonHeader.h"
+//#include <string>
+//#include <cstring>
 
 // OpenGL Libraries:
-#include <glm/glm.hpp>
-#include <gl/glew.h>
 #include <glm\gtc\matrix_transform.hpp>
 #include "..\External\classes\objloader\objloader.hpp"
 

@@ -1,7 +1,6 @@
 #pragma once
 
-// OpenGL Libraries:
-#include <glm/glm.hpp>
+#include "..\commonHeader.h"
 
 namespace scene {
 	class SceneObject

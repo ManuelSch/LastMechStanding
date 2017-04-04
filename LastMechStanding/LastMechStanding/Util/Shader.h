@@ -1,14 +1,6 @@
 #pragma once
 
-// C++ Libraries:
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <memory>
-
-// OpenGL Libraries:
-#include <gl/glew.h>
-#include <glfw3.h>
+#include "..\commonHeader.h"
 
 namespace util {
 	class Shader

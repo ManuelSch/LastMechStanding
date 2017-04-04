@@ -62,6 +62,9 @@
     <ClInclude Include="External\classes\objloader\objloader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="commonHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Obj\Mech\mech1.blend" />

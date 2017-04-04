@@ -1,14 +1,8 @@
 #pragma once
 
-// C++ Libraries:
-#include <iostream>
-#include <memory>
-#include <string>
-#include <sstream>
+#include "..\commonHeader.h"
 
 // OpenGL Libraries:
-#include <gl/glew.h>
-#include <glfw3.h>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 

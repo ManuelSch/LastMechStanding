@@ -162,6 +162,7 @@
     <ClCompile Include="Scene\SceneObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="commonHeader.h" />
     <ClInclude Include="Game\Gameloop.h" />
     <ClInclude Include="External\classes\objloader\objloader.hpp" />
     <ClInclude Include="External\classes\obj_loader\obj_loader.h" />
