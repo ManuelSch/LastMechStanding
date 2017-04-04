@@ -7,7 +7,7 @@
 
 // OpenGL Libraries:
 #include <glm/glm.hpp>
-#include <glew.h>
+#include <gl/glew.h>
 #include <glm\gtc\matrix_transform.hpp>
 #include "..\External\classes\objloader\objloader.hpp"
 

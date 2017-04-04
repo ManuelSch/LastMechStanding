@@ -5,7 +5,7 @@
 #include <sstream>
 
 // OpenGL Libraries:
-#include <glew.h>
+#include <gl/glew.h>
 #include <glfw3.h>
 
 // game specific includes:

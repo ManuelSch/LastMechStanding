@@ -6,7 +6,7 @@ Derzeit nicht verwendet
 
 // OpenGL Libraries:
 #include <glm/glm.hpp>
-#include <glew.h>
+#include <gl/glew.h>
 
 class Vertex {
 public:

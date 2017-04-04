@@ -7,7 +7,7 @@
 #include <memory>
 
 // OpenGL Libraries:
-#include <glew.h>
+#include <gl/glew.h>
 #include <glfw3.h>
 
 namespace util {
