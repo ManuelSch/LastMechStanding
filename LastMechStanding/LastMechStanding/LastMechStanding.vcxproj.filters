@@ -15,80 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Gameloop.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SceneObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Cube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Util\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Util\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="External\classes\obj_loader\obj_loader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="External\classes\objloader\objloader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Game\Gameloop.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="External\classes\obj_loader\obj_loader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="External\classes\objloader\objloader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="commonHeader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Obj\Mech\mech1.blend" />
     <None Include="Obj\Mech\mech1.mtl" />
     <None Include="Obj\Mech\mech1.obj" />
-    <None Include="Resources\Shaders\vbo_vao.frag" />
-    <None Include="Resources\Shaders\vbo_vao.vert" />
-    <None Include="Resources\Models\Monkey\monkey3.object" />
-    <None Include="Resources\Models\Cube\cube.object" />
-    <None Include="Resources\Models\Mech\mech1.blend" />
-    <None Include="Resources\Models\Mech\mech1.dae" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\Models\Cube\uvmap.DDS" />
-    <Image Include="Resources\Models\Mech\camouflage_texture781.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\Models\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

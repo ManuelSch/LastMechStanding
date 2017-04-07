@@ -152,42 +152,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Game\Gameloop.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="External\classes\objloader\objloader.cpp" />
-    <ClCompile Include="External\classes\obj_loader\obj_loader.cpp" />
-    <ClCompile Include="Util\Mesh.cpp" />
-    <ClCompile Include="Util\Shader.cpp" />
-    <ClCompile Include="Scene\Cube.cpp" />
-    <ClCompile Include="Scene\SceneObject.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="commonHeader.h" />
-    <ClInclude Include="Game\Gameloop.h" />
-    <ClInclude Include="External\classes\objloader\objloader.hpp" />
-    <ClInclude Include="External\classes\obj_loader\obj_loader.h" />
-    <ClInclude Include="Util\Mesh.h" />
-    <ClInclude Include="Util\Shader.h" />
-    <ClInclude Include="Scene\Cube.h" />
-    <ClInclude Include="Scene\SceneObject.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Obj\Mech\mech1.obj" />
     <None Include="Obj\Mech\mech1.blend" />
     <None Include="Obj\Mech\mech1.mtl" />
-    <None Include="Resources\Models\Cube\cube.object" />
-    <None Include="Resources\Models\Mech\mech1.blend" />
-    <None Include="Resources\Models\Mech\mech1.dae" />
-    <None Include="Resources\Models\Monkey\monkey3.object" />
-    <None Include="Resources\Shaders\vbo_vao.frag" />
-    <None Include="Resources\Shaders\vbo_vao.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg" />
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
-    <Image Include="Resources\Models\Cube\uvmap.DDS" />
-    <Image Include="Resources\Models\Mech\camouflage_texture781.jpg" />
-    <Image Include="Resources\Models\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
