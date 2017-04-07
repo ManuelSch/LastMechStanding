@@ -160,6 +160,13 @@
     <Image Include="Obj\Mech\camouflage_texture781.jpg" />
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="External\include\GLFW\glfw3.h" />
+    <ClInclude Include="External\include\GL\glew.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
