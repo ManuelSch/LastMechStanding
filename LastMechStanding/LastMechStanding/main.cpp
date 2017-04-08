@@ -1,10 +1,7 @@
-// C++ libraries:
-#include <iostream>
+#include ".\commonHeader.h"
 
-// OpenGL libraries
-#include <GL\glew.h>
-#include <GLFW\glfw3.h>
 
+#include ".\Shader.h"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 
@@ -59,6 +56,40 @@ int main()
 	// set key callback:
 	glfwSetKeyCallback(window, key_callback);
 
+
+	// define vertex data for a simple triangle:
+	GLfloat vertices[] = {
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		0.0f,  0.5f, 0.0f
+	};
+
+
+	// create a vertex array object and bind it:
+	GLuint VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	// create a vertex buffer object, bind it to the array buffer and apply it to the buffer memory for OpenGL to use:
+	GLuint VBO;
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// specify how OpenGL interprets vertex data:
+	// parameters (see also: https://learnopengl.com/#!Getting-started/Hello-Triangle):
+	// location (see also: basic.vert), size of the vertex attribute (vec3 -> 3 attributes), data type, GL_FALSE -> normalized data, space between two attribute sets, offset  
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
+	// unbind the vao:
+	glBindVertexArray(0);
+
+
+	// create shader object:
+	std::unique_ptr<Shader> shader = std::make_unique<Shader>("basic.vert", "basic.frag");
+
+
 	// game loop:
 	while (!glfwWindowShouldClose(window)) {
 
@@ -68,6 +99,18 @@ int main()
 		// Clear color:
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		// use specified shader for rendering:
+		shader->useShader();
+
+		// bind vao that we want to render:
+		glBindVertexArray(VAO);
+
+		// draw the object:
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		// unbind vao:  
+		glBindVertexArray(0);
 
 		// swap window and color buffer:
 		glfwSwapBuffers(window);

@@ -152,6 +152,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="basic.frag" />
+    <None Include="basic.vert" />
     <None Include="Obj\Mech\mech1.obj" />
     <None Include="Obj\Mech\mech1.blend" />
     <None Include="Obj\Mech\mech1.mtl" />
@@ -161,11 +163,14 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="commonHeader.h" />
     <ClInclude Include="External\include\GLFW\glfw3.h" />
     <ClInclude Include="External\include\GL\glew.h" />
+    <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
