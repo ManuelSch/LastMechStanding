@@ -105,6 +105,8 @@ int main()
 
 	// create shader object:
 	std::unique_ptr<Shader> shader = std::make_unique<Shader>("basic.vert", "basic.frag");
+	// use specified shader for rendering:
+	shader->useShader();
 
 
 	// first texture:
@@ -155,6 +157,8 @@ int main()
 
 
 
+
+
 	// game loop:
 	while (!glfwWindowShouldClose(window)) {
 
@@ -165,17 +169,22 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// use specified shader for rendering:
-		shader->useShader();
 
 		// bind the texture objects:
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
-		glUniform1i(shader->getUniformLocation("ourTexture1"), 0);
 		// second texture:
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
-		glUniform1i(shader->getUniformLocation("ourTexture2"), 1);
+
+		// transformation matrix:
+		glm::mat4 trans;
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		trans = glm::rotate(trans, (GLfloat)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		// pass it to the shader:
+		GLuint transformLoc = shader->getUniformLocation("transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
 
 		// bind vao that we want to render:
 		glBindVertexArray(VAO);
