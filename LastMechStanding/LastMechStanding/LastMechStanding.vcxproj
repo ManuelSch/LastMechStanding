@@ -95,7 +95,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)External\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)External\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMTD</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -129,7 +129,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)External\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)External\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMTD</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -164,11 +164,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonHeader.h" />
-    <ClInclude Include="External\include\GLFW\glfw3.h" />
-    <ClInclude Include="External\include\GL\glew.h" />
+    <ClInclude Include="External\include\SOIL\image_DXT.h" />
+    <ClInclude Include="External\include\SOIL\image_helper.h" />
+    <ClInclude Include="External\include\SOIL\SOIL.h" />
+    <ClInclude Include="External\include\SOIL\stbi_DDS_aug_c.h" />
+    <ClInclude Include="External\include\SOIL\stb_image_aug.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="External\include\SOIL\image_DXT.c" />
+    <ClCompile Include="External\include\SOIL\image_helper.c" />
+    <ClCompile Include="External\include\SOIL\SOIL.c" />
+    <ClCompile Include="External\include\SOIL\stb_image_aug.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>

@@ -57,12 +57,17 @@ int main()
 	glfwSetKeyCallback(window, key_callback);
 
 
-	// define vertex data for a simple triangle:
+	// define vertex data for a rectangle:
 	GLfloat vertices[] = {
-		// Positions        // Colors
-		0.5f, -0.5f, 0.0f,	1.0f, 0.0f, 0.0f,   // Bottom Right
-		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,   // Bottom Left
-		0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // Top 
+		// Positions          // Colors           // Texture Coords
+		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // Top Right
+		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // Bottom Right
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // Bottom Left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // Top Left 
+	};
+	GLuint indices[] = {  // Note that we start from 0!
+		0, 1, 3, // First Triangle
+		1, 2, 3  // Second Triangle
 	};
 
 
@@ -77,13 +82,22 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	// create an element buffer object (since we use indices), bind it and apply it to the buffer memory:
+	GLuint EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
 	// specify how OpenGL interprets vertex data:
 	// position attribute:
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 	// color attribute:
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+	// texture attribute:
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 
 	// unbind the vao:
 	glBindVertexArray(0);
@@ -91,6 +105,53 @@ int main()
 
 	// create shader object:
 	std::unique_ptr<Shader> shader = std::make_unique<Shader>("basic.vert", "basic.frag");
+
+
+	// first texture:
+	GLuint texture1;
+	glGenTextures(1, &texture1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture1);
+	glUniform1i(shader->getUniformLocation("ourTexture1"), 0);
+	// set the texture wrapping parameters:
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters:
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load the texture file:
+	int texWidth, texHeight;
+	unsigned char* image = SOIL_load_image("container.jpg", &texWidth, &texHeight, 0, SOIL_LOAD_RGB);
+	// genereate texture:
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	// automatically genereate mipmaps:
+	glGenerateMipmap(GL_TEXTURE_2D);
+	// free the image memory and unbind the texture object:
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// second texture:
+	GLuint texture2;
+	glGenTextures(1, &texture2);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	glUniform1i(shader->getUniformLocation("ourTexture2"), 1);
+	// set the texture wrapping parameters:
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters:
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load the texture file:
+	int texWidth2, texHeight2;
+	unsigned char* image2 = SOIL_load_image("awesomeface.png", &texWidth2, &texHeight2, 0, SOIL_LOAD_RGB);
+	// genereate texture:
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth2, texHeight2, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
+	// automatically genereate mipmaps:
+	glGenerateMipmap(GL_TEXTURE_2D);
+	// free the image memory and unbind the texture object:
+	SOIL_free_image_data(image2);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 
 
@@ -105,19 +166,22 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// use specified shader for rendering:
-
-		// change the vertex color:
-		GLfloat timeValue = glfwGetTime();
-		GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
-		GLint vertexColorLocation = shader->getUniformLocation("ourColor");
 		shader->useShader();
-		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
+		// bind the texture objects:
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture1);
+		glUniform1i(shader->getUniformLocation("ourTexture1"), 0);
+		// second texture:
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2);
+		glUniform1i(shader->getUniformLocation("ourTexture2"), 1);
 
 		// bind vao that we want to render:
 		glBindVertexArray(VAO);
 
 		// draw the object:
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// unbind vao:  
 		glBindVertexArray(0);
