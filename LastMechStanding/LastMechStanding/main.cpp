@@ -57,16 +57,12 @@ int main()
 	glfwSetKeyCallback(window, key_callback);
 
 
-	// define vertex data for a square:
+	// define vertex data for a simple triangle:
 	GLfloat vertices[] = {
-		0.5f,  0.5f, 0.0f,  // Top Right
-		0.5f, -0.5f, 0.0f,  // Bottom Right
-		-0.5f, -0.5f, 0.0f,  // Bottom Left
-		-0.5f,  0.5f, 0.0f   // Top Left 
-	};
-	GLuint indices[] = {
-		0, 1, 3,   // First Triangle
-		1, 2, 3    // Second Triangle
+		// Positions        // Colors
+		0.5f, -0.5f, 0.0f,	1.0f, 0.0f, 0.0f,   // Bottom Right
+		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,   // Bottom Left
+		0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // Top 
 	};
 
 
@@ -81,17 +77,13 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	// create an element buffer object (since we use indices), bind it and apply it to the buffer memory:
-	GLuint EBO;
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
 	// specify how OpenGL interprets vertex data:
-	// parameters (see also: https://learnopengl.com/#!Getting-started/Hello-Triangle):
-	// location (see also: basic.vert), size of the vertex attribute (vec3 -> 3 attributes), data type, GL_FALSE -> normalized data, space between two attribute sets, offset  
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	// position attribute:
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
+	// color attribute:
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
 
 	// unbind the vao:
 	glBindVertexArray(0);
@@ -100,10 +92,6 @@ int main()
 	// create shader object:
 	std::unique_ptr<Shader> shader = std::make_unique<Shader>("basic.vert", "basic.frag");
 
-
-	// chose between wireframe and fill mode:
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	// wireframe mode
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// default mode
 
 
 	// game loop:
@@ -117,16 +105,19 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// use specified shader for rendering:
+
+		// change the vertex color:
+		GLfloat timeValue = glfwGetTime();
+		GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
+		GLint vertexColorLocation = shader->getUniformLocation("ourColor");
 		shader->useShader();
+		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 		// bind vao that we want to render:
 		glBindVertexArray(VAO);
-		
-		// draw the object (without using indices and EBOs):
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
 
-		// draw the object (using indices and EBOs):
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		// draw the object:
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		// unbind vao:  
 		glBindVertexArray(0);

@@ -8,6 +8,7 @@ public:
 	~Shader();
 
 	void useShader();
+	GLint getUniformLocation(const std::string & uniformName);
 
 	GLuint shaderProgram;
 private:
