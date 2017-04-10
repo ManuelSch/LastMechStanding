@@ -20,6 +20,10 @@ void Shader::useShader() {
 	glUseProgram(shaderProgram);
 }
 
+GLint Shader::getUniformLocation(const std::string & uniformName) {
+	return glGetUniformLocation(shaderProgram, uniformName.c_str());;
+}
+
 void Shader::loadShader(const std::string & filePath, GLenum type, GLuint & shader) {
 
 	std::ifstream shaderFile(filePath);

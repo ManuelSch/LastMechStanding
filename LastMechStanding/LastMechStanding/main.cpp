@@ -90,6 +90,7 @@ int main()
 	std::unique_ptr<Shader> shader = std::make_unique<Shader>("basic.vert", "basic.frag");
 
 
+
 	// game loop:
 	while (!glfwWindowShouldClose(window)) {
 
@@ -101,7 +102,13 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// use specified shader for rendering:
+
+		// change the vertex color:
+		GLfloat timeValue = glfwGetTime();
+		GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
+		GLint vertexColorLocation = shader->getUniformLocation("ourColor");
 		shader->useShader();
+		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 		// bind vao that we want to render:
 		glBindVertexArray(VAO);
