@@ -260,6 +260,7 @@ int main()
 	glm::mat4 view;
 	GLuint viewLoc = shader->getUniformLocation("view");
 	// projection matrix:
+	glm::mat4 projection;
 	GLuint projLoc = shader->getUniformLocation("projection");
 	
 
@@ -305,8 +306,7 @@ int main()
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
 		// projection matrix:
-		glm::mat4 projection;
-		projection = glm::perspective(camera.zoom, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
+		projection = glm::perspective(glm::radians(camera.zoom), (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 
@@ -325,7 +325,6 @@ int main()
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// unbind vao:  
 		glBindVertexArray(0);
