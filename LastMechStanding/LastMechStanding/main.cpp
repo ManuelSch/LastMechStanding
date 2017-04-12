@@ -3,12 +3,85 @@
 
 #include ".\Shader.h"
 
+
+glm::vec3 cameraPos, cameraFront, cameraUp;
+bool keys[1024];
+GLfloat deltaTime;			// time between current frame and last frame
+GLfloat lastFrame;  		// time of last frame
+GLfloat pitch, yaw;			// pitch and yaw angles of the camera
+GLfloat lastX, lastY;		// cursor position in the last frame
+bool firstMouse = true;		// so the view doesn't jump when the cursor enters the window
+GLfloat fov = 45.0f;		// field of view
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 
 	// esc key -> close window:
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
+
+	if (action == GLFW_PRESS)
+		keys[key] = true;
+	else if (action == GLFW_RELEASE)
+		keys[key] = false;
+}
+
+void do_movement() {
+	GLfloat cameraSpeed = 5.0f * deltaTime;
+	if (keys[GLFW_KEY_W])
+		cameraPos += cameraSpeed * cameraFront;
+	if (keys[GLFW_KEY_S])
+		cameraPos -= cameraSpeed * cameraFront;
+	if (keys[GLFW_KEY_A])
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (keys[GLFW_KEY_D])
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	// calculate cursor offset since last frame:
+	GLfloat xoffset = xpos - lastX;
+	GLfloat yoffset = lastY - ypos; // Reversed since y-coordinates range from bottom to top
+	lastX = xpos;
+	lastY = ypos;
+
+	GLfloat sensitivity = 0.08f;	// mouse sensitivity
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	// constraint so player can't look further up or down than 90°
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	// calculate the direction vector:
+	glm::vec3 front;
+	front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
+	front.y = sin(glm::radians(pitch));
+	front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
+	cameraFront = glm::normalize(front);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	if (fov >= 1.0f && fov <= 45.0f)
+		fov -= yoffset*4;
+	if (fov <= 1.0f)
+		fov = 1.0f;
+	if (fov >= 45.0f)
+		fov = 45.0f;
 }
 
 
@@ -53,8 +126,10 @@ int main()
 	glViewport(0, 0, width, height);
 
 
-	// set key callback:
+	// set key, cursor and scrollwheel callbacks:
 	glfwSetKeyCallback(window, key_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 
 	// define vertex data for a cube:
@@ -191,30 +266,47 @@ int main()
 	SOIL_free_image_data(image2);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-
-	// perspective:
-	// model matrix: inside game loop
-	// view matrix:
-	glm::mat4 view;
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-	GLuint viewLoc = shader->getUniformLocation("view");
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-	// projection matrix:
-	glm::mat4 projection;
-	projection = glm::perspective((GLfloat)glm::radians(45.0), (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
-	GLuint projectionLoc = shader->getUniformLocation("projection");
-	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
+	
 	// enable z-buffer:
 	glEnable(GL_DEPTH_TEST);
 
+	// perspective:
+	// model matrix:
+	GLuint modelLoc = shader->getUniformLocation("model");
+	// camera (view) matrix:
+	glm::mat4 view;
+	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+	cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+	cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	GLuint viewLoc = shader->getUniformLocation("view");
+	// projection matrix:
+	GLuint projLoc = shader->getUniformLocation("projection");
+	
 
+	// hide and capture the cursor:
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	
+	// set initial cursor position:
+	lastX = width / 2.0;
+	lastY = height / 2.0;
+
+	
+	// frame independency:
+	deltaTime = 0.0f;	
+	lastFrame = 0.0f;
 
 	// game loop:
 	while (!glfwWindowShouldClose(window)) {
 
+		// calculate delta time for frame independency:
+		GLfloat currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+
 		// check if any events were triggered:
 		glfwPollEvents();
+		do_movement();
 
 		// clear color and depth buffers:
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -227,8 +319,17 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
-		
-	
+
+		// camera LookAt matrix:
+		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+		// projection matrix:
+		glm::mat4 projection;
+		projection = glm::perspective((GLfloat)glm::radians(fov), (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+
 		// bind vao that we want to render:
 		glBindVertexArray(VAO);
 
@@ -240,7 +341,6 @@ int main()
 			GLfloat angle = glm::radians(20.0f) * i;
 
 			model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
-			GLuint modelLoc = shader->getUniformLocation("model");
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);

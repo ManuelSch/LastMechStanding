@@ -163,6 +163,7 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="commonHeader.h" />
     <ClInclude Include="External\include\SOIL\image_DXT.h" />
     <ClInclude Include="External\include\SOIL\image_helper.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="External\include\SOIL\image_DXT.c" />
     <ClCompile Include="External\include\SOIL\image_helper.c" />
     <ClCompile Include="External\include\SOIL\SOIL.c" />
