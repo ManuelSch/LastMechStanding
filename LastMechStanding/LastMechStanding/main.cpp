@@ -2,16 +2,31 @@
 
 
 #include ".\Shader.h"
+#include ".\Camera.h"
 
-
-glm::vec3 cameraPos, cameraFront, cameraUp;
-bool keys[1024];
+// frame independency:
 GLfloat deltaTime;			// time between current frame and last frame
 GLfloat lastFrame;  		// time of last frame
-GLfloat pitch, yaw;			// pitch and yaw angles of the camera
+
+// camera:
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+bool keys[1024];
 GLfloat lastX, lastY;		// cursor position in the last frame
 bool firstMouse = true;		// so the view doesn't jump when the cursor enters the window
-GLfloat fov = 45.0f;		// field of view
+
+
+// moves/alters the camera positions based on user input
+void do_movement() {
+	// camera controls:
+	if (keys[GLFW_KEY_W])
+		camera.processKeyboard(FORWARD, deltaTime);
+	if (keys[GLFW_KEY_S])
+		camera.processKeyboard(BACKWARD, deltaTime);
+	if (keys[GLFW_KEY_A])
+		camera.processKeyboard(LEFT, deltaTime);
+	if (keys[GLFW_KEY_D])
+		camera.processKeyboard(RIGHT, deltaTime);
+}
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 
@@ -20,22 +35,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
 
-	if (action == GLFW_PRESS)
-		keys[key] = true;
-	else if (action == GLFW_RELEASE)
-		keys[key] = false;
-}
-
-void do_movement() {
-	GLfloat cameraSpeed = 5.0f * deltaTime;
-	if (keys[GLFW_KEY_W])
-		cameraPos += cameraSpeed * cameraFront;
-	if (keys[GLFW_KEY_S])
-		cameraPos -= cameraSpeed * cameraFront;
-	if (keys[GLFW_KEY_A])
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	if (keys[GLFW_KEY_D])
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (key >= 0 && key < 1024)
+	{
+		if (action == GLFW_PRESS)
+			keys[key] = true;
+		else if (action == GLFW_RELEASE)
+			keys[key] = false;
+	}
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -53,35 +59,12 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 	lastX = xpos;
 	lastY = ypos;
 
-	GLfloat sensitivity = 0.08f;	// mouse sensitivity
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	yaw += xoffset;
-	pitch += yoffset;
-
-	// constraint so player can't look further up or down than 90°
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-
-	// calculate the direction vector:
-	glm::vec3 front;
-	front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-	front.y = sin(glm::radians(pitch));
-	front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
-	cameraFront = glm::normalize(front);
+	camera.processMouseMovement(xoffset, yoffset);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	if (fov >= 1.0f && fov <= 45.0f)
-		fov -= yoffset*4;
-	if (fov <= 1.0f)
-		fov = 1.0f;
-	if (fov >= 45.0f)
-		fov = 45.0f;
+	camera.processMouseScroll(yoffset);
 }
 
 
@@ -275,9 +258,6 @@ int main()
 	GLuint modelLoc = shader->getUniformLocation("model");
 	// camera (view) matrix:
 	glm::mat4 view;
-	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-	cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-	cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	GLuint viewLoc = shader->getUniformLocation("view");
 	// projection matrix:
 	GLuint projLoc = shader->getUniformLocation("projection");
@@ -321,12 +301,12 @@ int main()
 
 
 		// camera LookAt matrix:
-		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		view = camera.getViewMatrix();
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
 		// projection matrix:
 		glm::mat4 projection;
-		projection = glm::perspective((GLfloat)glm::radians(fov), (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+		projection = glm::perspective(camera.zoom, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 
