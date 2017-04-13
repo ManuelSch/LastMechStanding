@@ -247,16 +247,29 @@ int main()
 		*/
 
 		lightingShader->useShader();
-		
-		// set container color (phong illumination model):
-		GLint objectColorLoc = lightingShader->getUniformLocation("objectColor");
-		GLint lightColorLoc = lightingShader->getUniformLocation("lightColor");
-		GLint lightPosLoc = lightingShader->getUniformLocation("lightPos");
+
+		// apply phong illumination model to container:
+		// set light properties:
+		GLint lightAmbientLoc = lightingShader->getUniformLocation("light.ambient");
+		GLint lightDiffuseLoc = lightingShader->getUniformLocation("light.diffuse");
+		GLint lightSpecularLoc = lightingShader->getUniformLocation("light.specular");
+		GLint lightPositionLoc = lightingShader->getUniformLocation("light.position");
+		glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
+		glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f);
+		glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
+		glUniform3f(lightPositionLoc, lightPos.x, lightPos.x, lightPos.z);
+		// send viewer position to the shader:
 		GLint viewPosLoc = lightingShader->getUniformLocation("viewPos");
-		glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
-		glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
-		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
 		glUniform3f(viewPosLoc, camera.position.x, camera.position.y, camera.position.z);
+		// set container material:
+		GLint matAmbientLoc = lightingShader->getUniformLocation("material.ambient");
+		GLint matDiffuseLoc = lightingShader->getUniformLocation("material.diffuse");
+		GLint matSpecularLoc = lightingShader->getUniformLocation("material.specular");
+		GLint matShineLoc = lightingShader->getUniformLocation("material.shininess");
+		glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
+		glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
+		glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+		glUniform1f(matShineLoc, 32.0f);
 
 		// model matrix:
 		glm::mat4 model;
