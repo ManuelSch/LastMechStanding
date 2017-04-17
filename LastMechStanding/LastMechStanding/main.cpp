@@ -161,6 +161,20 @@ int main()
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 	};
 
+	// positions of the ten cubes:
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(-1.7f,  3.0f, -7.5f),
+		glm::vec3(1.3f, -2.0f, -2.5f),
+		glm::vec3(1.5f,  2.0f, -2.5f),
+		glm::vec3(1.5f,  0.2f, -1.5f),
+		glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+
 	// create shader object:
 	std::unique_ptr<Shader> lightingShader = std::make_unique<Shader>("Resources/Shaders/lighting.vert", "Resources/Shaders/lighting.frag");
 
@@ -300,11 +314,11 @@ int main()
 		GLint lightAmbientLoc = lightingShader->getUniformLocation("light.ambient");
 		GLint lightDiffuseLoc = lightingShader->getUniformLocation("light.diffuse");
 		GLint lightSpecularLoc = lightingShader->getUniformLocation("light.specular");
-		GLint lightPositionLoc = lightingShader->getUniformLocation("light.position");
+		GLint lightDirPos = lightingShader->getUniformLocation("light.direction");
 		glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
 		glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f);
 		glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
-		glUniform3f(lightPositionLoc, lightPos.x, lightPos.x, lightPos.z);
+		glUniform3f(lightDirPos, -0.2f, -1.0f, -0.3f);
 		// send viewer position to the shader:
 		GLint viewPosLoc = lightingShader->getUniformLocation("viewPos");
 		glUniform3f(viewPosLoc, camera.position.x, camera.position.y, camera.position.z);
@@ -317,9 +331,7 @@ int main()
 		glUniform1f(matShineLoc, 32.0f);
 
 		// model matrix:
-		glm::mat4 model;
 		GLint modelLoc = lightingShader->getUniformLocation("model");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		// camera (view) matrix:
 		glm::mat4 view;
 		view = camera.getViewMatrix();
@@ -338,9 +350,18 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, specularMap);
 
-		// draw the container:
+		// draw the containers:
 		glBindVertexArray(containerVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		for (GLuint i = 0; i < 10; i++) {
+			// model matrix:
+			glm::mat4 model;
+			model = glm::translate(model, cubePositions[i]);
+			GLfloat angle = glm::radians(20.0f * i);
+			model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 		glBindVertexArray(0);
 
 
@@ -351,7 +372,7 @@ int main()
 		lampShader->useShader();
 
 		// model matrix:
-		model = glm::mat4();
+		glm::mat4 model = glm::mat4();
 		model = glm::translate(model, lightPos);
 		model = glm::scale(model, glm::vec3(0.2f));
 		modelLoc = lampShader->getUniformLocation("model");
