@@ -314,11 +314,17 @@ int main()
 		GLint lightAmbientLoc = lightingShader->getUniformLocation("light.ambient");
 		GLint lightDiffuseLoc = lightingShader->getUniformLocation("light.diffuse");
 		GLint lightSpecularLoc = lightingShader->getUniformLocation("light.specular");
-		GLint lightDirPos = lightingShader->getUniformLocation("light.direction");
+		GLint lightPositionLoc = lightingShader->getUniformLocation("light.position");
+		GLint lightConstantLoc = lightingShader->getUniformLocation("light.constant");
+		GLint lightLinearLoc = lightingShader->getUniformLocation("light.linear");
+		GLint lightQuadraticLoc = lightingShader->getUniformLocation("light.quadratic");
 		glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
 		glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f);
 		glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
-		glUniform3f(lightDirPos, -0.2f, -1.0f, -0.3f);
+		glUniform3f(lightPositionLoc, lightPos.x, lightPos.x, lightPos.z);
+		glUniform1f(lightConstantLoc, 1.0f);
+		glUniform1f(lightLinearLoc, 0.09);
+		glUniform1f(lightQuadraticLoc, 0.032);
 		// send viewer position to the shader:
 		GLint viewPosLoc = lightingShader->getUniformLocation("viewPos");
 		glUniform3f(viewPosLoc, camera.position.x, camera.position.y, camera.position.z);
