@@ -192,7 +192,7 @@ int main()
 	glBindVertexArray(0);
 
 	
-	// texture:
+	// diffuse map (texture):
 	GLuint diffuseMap;
 	glGenTextures(1, &diffuseMap);
 	glBindTexture(GL_TEXTURE_2D, diffuseMap);
@@ -213,6 +213,27 @@ int main()
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+
+	// specular map:
+	GLuint specularMap;
+	glGenTextures(1, &specularMap);
+	glBindTexture(GL_TEXTURE_2D, specularMap);
+	// set the texture wrapping parameters:
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters:
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load the texture file:
+	int texWidth2, texHeight2;
+	unsigned char* image2 = SOIL_load_image("Resources/Textures/container2_specular.png", &texWidth2, &texHeight2, 0, SOIL_LOAD_RGB);
+	// genereate texture:
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth2, texHeight2, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
+	// automatically genereate mipmaps:
+	glGenerateMipmap(GL_TEXTURE_2D);
+	// free the image memory and unbind the texture object:
+	SOIL_free_image_data(image2);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 
 	// create lamp shader object:
@@ -292,7 +313,7 @@ int main()
 		GLint matSpecularLoc = lightingShader->getUniformLocation("material.specular");
 		GLint matShineLoc = lightingShader->getUniformLocation("material.shininess");
 		glUniform1i(matDiffuseLoc, 0);
-		glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+		glUniform1i(matSpecularLoc, 1);
 		glUniform1f(matShineLoc, 32.0f);
 
 		// model matrix:
@@ -313,6 +334,9 @@ int main()
 		// Bind diffuse map:
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+		// Bind specular map:
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 		// draw the container:
 		glBindVertexArray(containerVAO);
