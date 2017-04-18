@@ -12,6 +12,7 @@ struct Vertex {
 struct Texture {
 	GLuint id;
 	std::string type;
+	aiString path;		// to check if it hasn't been loaded already
 };
 
 class Mesh

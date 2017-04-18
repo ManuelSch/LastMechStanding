@@ -24,6 +24,8 @@
     <None Include="Resources\Shaders\lamp.vert" />
     <None Include="Resources\Shaders\lighting.frag" />
     <None Include="Resources\Shaders\lighting.vert" />
+    <None Include="Resources\Shaders\model_loading.vert" />
+    <None Include="Resources\Shaders\model_loading.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg">
@@ -61,6 +63,9 @@
     <ClInclude Include="Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -85,6 +90,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
