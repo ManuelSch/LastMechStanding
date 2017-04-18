@@ -15,12 +15,15 @@
 ![Dd]ebug/*.dll
 !*.dll
 [Dd]ebugPublic/
-[Rr]elease/
+[Rr]elease/*.*
+![Rr]elease/*.dll
+!*.dll
 [Rr]eleases/
 [Xx]64/
 [Xx]86/
 [Bb]uild/
 [Bb]uild-debug/
+[Bb]uild-release/
 bld/
 [Bb]in/
 [Oo]bj/
