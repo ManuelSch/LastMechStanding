@@ -174,6 +174,7 @@
     <ClInclude Include="External\include\SOIL\SOIL.h" />
     <ClInclude Include="External\include\SOIL\stbi_DDS_aug_c.h" />
     <ClInclude Include="External\include\SOIL\stb_image_aug.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClCompile Include="External\include\SOIL\SOIL.c" />
     <ClCompile Include="External\include\SOIL\stb_image_aug.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
