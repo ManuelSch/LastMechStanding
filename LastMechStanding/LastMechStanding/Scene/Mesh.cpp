@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures)
+Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures)
 {
 	this->vertices = vertices;
 	this->indices = indices;
@@ -10,7 +10,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vecto
 	this->setupMesh();
 }
 
-void Mesh::Draw(Shader shader)
+void Mesh::Draw(Shader* shader)
 {
 	GLuint diffuseNr = 1;
 	GLuint specularNr = 1;
@@ -20,9 +20,9 @@ void Mesh::Draw(Shader shader)
 		// activate texture unit before binding:
 		glActiveTexture(GL_TEXTURE0 + i);
 
-		std::stringstream ss;
-		std::string number;
-		std::string name = this->textures[i].type;
+		stringstream ss;
+		string number;
+		string name = this->textures[i].type;
 		if (name == "texture_diffuse") {
 			ss << diffuseNr++;
 		}
@@ -31,7 +31,7 @@ void Mesh::Draw(Shader shader)
 		}
 		number = ss.str();
 
-		glUniform1f(shader.getUniformLocation("material." + name + number), i);
+		glUniform1f(shader->getUniformLocation("material." + name + number), i);
 		glBindTexture(GL_TEXTURE_2D, this->textures[i].id);
 	}
 

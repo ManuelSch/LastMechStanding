@@ -1,6 +1,6 @@
 #include "Shader.h"
 
-Shader::Shader(const std::string & vertexShaderFilePath, const std::string & fragmentShaderFilePath) {
+Shader::Shader(const string & vertexShaderFilePath, const string & fragmentShaderFilePath) {
 
 	// create shader program:
 	shaderProgram = glCreateProgram();
@@ -20,17 +20,17 @@ void Shader::useShader() {
 	glUseProgram(shaderProgram);
 }
 
-GLint Shader::getUniformLocation(const std::string & uniformName) {
+GLint Shader::getUniformLocation(const string & uniformName) {
 	return glGetUniformLocation(shaderProgram, uniformName.c_str());;
 }
 
-void Shader::loadShader(const std::string & filePath, GLenum type, GLuint & shader) {
+void Shader::loadShader(const string & filePath, GLenum type, GLuint & shader) {
 
-	std::ifstream shaderFile(filePath);
+	ifstream shaderFile(filePath);
 
 	if (shaderFile.good()) {
 		// read source code from shader file:
-		std::string code = std::string(std::istreambuf_iterator<char>(shaderFile), std::istreambuf_iterator<char>());
+		string code = string(istreambuf_iterator<char>(shaderFile), istreambuf_iterator<char>());
 
 		shaderFile.close();
 
@@ -48,7 +48,7 @@ void Shader::loadShader(const std::string & filePath, GLenum type, GLuint & shad
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 		if (!success) {
 			glGetShaderInfoLog(shader, 512, NULL, infoLog);
-			std::cout << "ERROR: Shader compilation failed:\n" << infoLog << std::endl;
+			cout << "ERROR: Shader compilation failed:\n" << infoLog << endl;
 		}
 
 		//  attach shader to program object and link it:
@@ -59,7 +59,7 @@ void Shader::loadShader(const std::string & filePath, GLenum type, GLuint & shad
 		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 		if (!success) {
 			glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-			std::cout << "ERROR: Shader linking failed:\n" << infoLog << std::endl;
+			cout << "ERROR: Shader linking failed:\n" << infoLog << endl;
 		}
 	}
 }

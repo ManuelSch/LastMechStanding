@@ -4,15 +4,15 @@
 
 class Shader {
 public:
-	Shader(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath);
+	Shader(const string& vertexShaderFilePath, const string& fragmentShaderFilePath);
 	~Shader();
 
 	void useShader();
-	GLint getUniformLocation(const std::string & uniformName);
+	GLint getUniformLocation(const string & uniformName);
 
 	GLuint shaderProgram;
 private:
-	void loadShader(const std::string& filePath, GLenum type, GLuint& shader);
+	void loadShader(const string& filePath, GLenum type, GLuint& shader);
 
 	GLuint vertexShader;
 	GLuint fragmentShader;

@@ -169,26 +169,31 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="Scene\Camera.h" />
     <ClInclude Include="commonHeader.h" />
+    <ClInclude Include="Game\Display.h" />
     <ClInclude Include="External\include\SOIL\image_DXT.h" />
     <ClInclude Include="External\include\SOIL\image_helper.h" />
     <ClInclude Include="External\include\SOIL\SOIL.h" />
     <ClInclude Include="External\include\SOIL\stbi_DDS_aug_c.h" />
     <ClInclude Include="External\include\SOIL\stb_image_aug.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Model.h" />
+    <ClInclude Include="Game\Gameloop.h" />
+    <ClInclude Include="Scene\Mesh.h" />
+    <ClInclude Include="Scene\Model.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Scene\Camera.cpp" />
+    <ClCompile Include="Game\Display.cpp" />
     <ClCompile Include="External\include\SOIL\image_DXT.c" />
     <ClCompile Include="External\include\SOIL\image_helper.c" />
     <ClCompile Include="External\include\SOIL\SOIL.c" />
     <ClCompile Include="External\include\SOIL\stb_image_aug.c" />
+    <ClCompile Include="Game\Gameloop.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Scene\Mesh.cpp" />
+    <ClCompile Include="Scene\Model.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

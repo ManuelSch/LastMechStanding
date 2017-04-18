@@ -1,183 +1,94 @@
 #include ".\commonHeader.h"
 
 
+#include ".\Game\Display.h"
+#include ".\Game\Gameloop.h"
 #include ".\Shader.h"
-#include ".\Camera.h"
-#include ".\Model.h"
-
-// frame independency:
-GLfloat deltaTime;			// time between current frame and last frame
-GLfloat lastFrame;  		// time of last frame
-
-// camera:
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-bool keys[1024];
-GLfloat lastX, lastY;		// cursor position in the last frame
-bool firstMouse = true;		// so the view doesn't jump when the cursor enters the window
+#include "main.h"
 
 
-// moves/alters the camera positions based on user input
-void do_movement() {
-	// camera controls:
-	if (keys[GLFW_KEY_W])
-		camera.processKeyboard(FORWARD, deltaTime);
-	if (keys[GLFW_KEY_S])
-		camera.processKeyboard(BACKWARD, deltaTime);
-	if (keys[GLFW_KEY_A])
-		camera.processKeyboard(LEFT, deltaTime);
-	if (keys[GLFW_KEY_D])
-		camera.processKeyboard(RIGHT, deltaTime);
-}
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+unique_ptr<Display> display;
+unique_ptr<Shader> shader;
+unique_ptr<Gameloop> gameloop;
 
-	// esc key -> close window:
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-		glfwSetWindowShouldClose(window, GL_TRUE);
-	}
 
-	if (key >= 0 && key < 1024)
-	{
-		if (action == GLFW_PRESS)
-			keys[key] = true;
-		else if (action == GLFW_RELEASE)
-			keys[key] = false;
-	}
-}
+/*
+* FUNCTION PROTOTYPES:
+*/
+// fatal error:
+void showFatalErrorMessage(string message);
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+// input callbacks:
+void key_callback(GLFWwindow * window, int key, int scancode, int action, int mode);
+void mouse_callback(GLFWwindow * window, double xpos, double ypos);
+void scroll_callback(GLFWwindow * window, double xoffset, double yoffset);
 
-	if (firstMouse)
-	{
-		lastX = xpos;
-		lastY = ypos;
-		firstMouse = false;
-	}
 
-	// calculate cursor offset since last frame:
-	GLfloat xoffset = xpos - lastX;
-	GLfloat yoffset = lastY - ypos; // Reversed since y-coordinates range from bottom to top
-	lastX = xpos;
-	lastY = ypos;
-
-	camera.processMouseMovement(xoffset, yoffset);
-}
-
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+/*
+* MAIN PROGRAM
+*/
+int main(int argc, char** argv)
 {
-	camera.processMouseScroll(yoffset);
-}
+	// standard display dimensions (used if program arguments are null):
+	int width = 800;
+	int height = 600;
+	bool fullscreen = false;
 
+	// get display configuration from program arguments:
+	if (argc >= 3) {
+		cout << "You are executing '" << argv[0] << "'" << endl;
 
-int main()
-{
+		if ((stringstream(argv[1]) >> width).fail()) {
+			showFatalErrorMessage("Could not parse first command-line-argument as integer");
+		}
+
+		if ((stringstream(argv[2]) >> height).fail()) {
+			showFatalErrorMessage("Could not parse second command-line-argument as integer");
+		}
+
+		if (argc >= 4 && (std::stringstream(argv[3]) >> fullscreen).fail()) {
+			showFatalErrorMessage("Could not parse third command-line-argument as boolean");
+		}
+	}
 
 	// initialize glfw:
-	glfwInit();
+	if (!glfwInit()) {
+		showFatalErrorMessage("Could not initialize glfw");
+	}
 
-	// define OpenGL version (v3.3)
+	// define which opengl version to use (v3.3)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	// use core profile only:
+	// use core profile only (deactivate deprecated fixed function pipeline):
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// make window non resizable:
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	// create new window:
-	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", nullptr, nullptr);
-	if (window == nullptr)
-	{
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-	glfwMakeContextCurrent(window);
+	// initialize display:
+	display = make_unique<Display>(width, height, fullscreen);
+
 
 	// initialize glew:
 	glewExperimental = GL_TRUE;
-	if (glewInit() != GLEW_OK)
-	{
-		std::cout << "Failed to initialize GLEW" << std::endl;
-		return -1;
+	if (glewInit() != GLEW_OK) {
+		glfwTerminate();
+		showFatalErrorMessage("Could not initialize glew");
 	}
-
-	// set viewport size:
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-
-	glViewport(0, 0, width, height);
-
-
-	// set key, cursor and scrollwheel callbacks:
-	glfwSetKeyCallback(window, key_callback);
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetScrollCallback(window, scroll_callback);
-
-
-	// enable z-buffer:
-	glEnable(GL_DEPTH_TEST);
-
-	// hide and capture the cursor:
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	// set initial cursor position:
-	lastX = width / 2.0;
-	lastY = height / 2.0;
-
-
 
 	// create shader object:
-	Shader shader("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
+	shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 
-	// Load models:
-	Model ourModel("Resources/Models/Nanosuit/nanosuit.obj");
+	// create gameloop object:
+	gameloop = make_unique<Gameloop>(display.get(), shader.get());
 
+	// set key, cursor and scrollwheel callbacks:
+	glfwSetKeyCallback(display->window, key_callback);
+	glfwSetCursorPosCallback(display->window, mouse_callback);
+	glfwSetScrollCallback(display->window, scroll_callback);
 
-	
-
-	
-	// frame independency:
-	deltaTime = 0.0f;	
-	lastFrame = 0.0f;
-
-	// game loop:
-	while (!glfwWindowShouldClose(window)) {
-
-		// calculate delta time for frame independency:
-		GLfloat currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-
-		// check if any events were triggered:
-		glfwPollEvents();
-		do_movement();
-
-		// clear color and depth buffers:
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-		shader.useShader();
-
-		// transformation matrices:
-		glm::mat4 projection = glm::perspective(camera.zoom, (float)width / (float)height, 0.1f, 100.0f);
-		glm::mat4 view = camera.getViewMatrix();
-		glUniformMatrix4fv(shader.getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(shader.getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(view));
-
-		// draw the loaded model:
-		glm::mat4 model;
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-		glUniformMatrix4fv(shader.getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
-		ourModel.Draw(shader);
-		
-
-		// swap window and color buffer:
-		glfwSwapBuffers(window);
-	}
+	// start gameloop:
+	gameloop->run();
 
 	//glDeleteVertexArrays(1, &containerVAO);
 	//glDeleteBuffers(1, &VBO);
@@ -186,4 +97,28 @@ int main()
 	glfwTerminate();
 
 	return 0;
+}
+
+
+/*
+* FUNCTIONS:
+*/
+
+// FATAL ERROR
+// shows an error message and shuts down the program afterwards
+void showFatalErrorMessage(string message) {
+	cerr << "ERROR: " << message << endl;
+	system("PAUSE");
+	exit(EXIT_FAILURE);
+}
+
+// input callbacks:
+void key_callback(GLFWwindow * window, int key, int scancode, int action, int mode) {
+	gameloop->key_callback(window, key, scancode, action, mode);
+}
+void mouse_callback(GLFWwindow * window, double xpos, double ypos) {
+	gameloop->mouse_callback(window, xpos, ypos);
+}
+void scroll_callback(GLFWwindow * window, double xoffset, double yoffset) {
+	gameloop->scroll_callback(window, xoffset, yoffset);
 }
