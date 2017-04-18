@@ -2,15 +2,12 @@
 
 
 Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures)
+	: vertices(vertices), indices(indices), textures(textures)
 {
-	this->vertices = vertices;
-	this->indices = indices;
-	this->textures = textures;
-
 	this->setupMesh();
 }
 
-void Mesh::Draw(Shader* shader)
+void Mesh::draw(Shader* shader)
 {
 	GLuint diffuseNr = 1;
 	GLuint specularNr = 1;
@@ -20,18 +17,16 @@ void Mesh::Draw(Shader* shader)
 		// activate texture unit before binding:
 		glActiveTexture(GL_TEXTURE0 + i);
 
-		stringstream ss;
-		string number;
-		string name = this->textures[i].type;
-		if (name == "texture_diffuse") {
-			ss << diffuseNr++;
+		stringstream number;
+		Texture::Type name = this->textures[i].type;
+		if (name == Texture::DIFFUSE) {
+			number << diffuseNr++;
 		}
-		else if (name == "texture_specular") {
-			ss << specularNr++;
+		else if (name == Texture::SPECULAR) {
+			number << specularNr++;
 		}
-		number = ss.str();
 
-		glUniform1f(shader->getUniformLocation("material." + name + number), i);
+		glUniform1f(shader->getUniformLocation("material." + name + number.str()), i);
 		glBindTexture(GL_TEXTURE_2D, this->textures[i].id);
 	}
 
@@ -63,17 +58,16 @@ void Mesh::setupMesh()
 	glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(Vertex), &this->vertices[0], GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices.size() * sizeof(GLuint), &this->indices[0], GL_STATIC_DRAW);
 
-	// vertex positions:
+	// vertex data:
+	// positions:
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
-
-	// vertex normals:
+	// normals:
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal));
-
-	// vertex texture coordinates:
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
+	// texture coordinates:
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texCoords));
 
 	glBindVertexArray(0);
 }

@@ -5,10 +5,10 @@ Model::Model(GLchar * path)
 	this->loadModel(path);
 }
 
-void Model::Draw(Shader* shader)
+void Model::draw(Shader* shader)
 {
 	for (GLuint i = 0; i < this->meshes.size(); i++) {
-		this->meshes[i].Draw(shader);
+		this->meshes[i].draw(shader);
 	}
 }
 
@@ -22,11 +22,12 @@ void Model::loadModel(string path)
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-		cout << "ERROR::ASSIMP::" << import.GetErrorString() << endl;
-		return;
+		cerr << "ERROR: Assimp could not load model:  " << string(import.GetErrorString()) << endl;
+		system("PAUSE");
+		exit(EXIT_FAILURE);
 	}
 
-	this->directory = path.substr(0, path.find_last_of('/'));
+	this->directory = path.substr(0, path.find_last_of("/"));
 
 	this->processNode(scene->mRootNode, scene);
 }
@@ -60,23 +61,23 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		vector.x = mesh->mVertices[i].x;
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
-		vertex.Position = vector;
+		vertex.position = vector;
 
 		// process vertex normals:
 		vector.x = mesh->mNormals[i].x;
 		vector.y = mesh->mNormals[i].y;
 		vector.z = mesh->mNormals[i].z;
-		vertex.Normal = vector;
+		vertex.normal = vector;
 
 		// process texture coordinates (if the mesh contains any):
 		if (mesh->mTextureCoords[0]) {
 			glm::vec2 vec;
 			vec.x = mesh->mTextureCoords[0][i].x;
 			vec.y = mesh->mTextureCoords[0][i].y;
-			vertex.TexCoords = vec;
+			vertex.texCoords = vec;
 		}
 		else {
-			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+			vertex.texCoords = glm::vec2(0.0f, 0.0f);
 		}
 
 		vertices.push_back(vertex);
@@ -97,8 +98,8 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 		// load mesh's diffuse and specular maps:
-		vector<Texture> diffuseMaps = this->loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-		vector<Texture> specularMaps = this->loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+		vector<Texture> diffuseMaps = this->loadMaterialTextures(material, aiTextureType_DIFFUSE, Texture::DIFFUSE);
+		vector<Texture> specularMaps = this->loadMaterialTextures(material, aiTextureType_SPECULAR, Texture::SPECULAR);
 
 		// store texture at the end of the model's textures vector:
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -108,14 +109,14 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	return Mesh(vertices, indices, textures);
 }
 
-vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, string typeName)
+vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType aiType, Texture::Type type)
 {
 	vector<Texture> textures;
 
 	// iterate over all texture locations of the given texture type:
-	for (GLuint i = 0; i < mat->GetTextureCount(type); i++) {
+	for (GLuint i = 0; i < mat->GetTextureCount(aiType); i++) {
 		aiString str;
-		mat->GetTexture(type, i, &str);
+		mat->GetTexture(aiType, i, &str);
 
 		// check if texture has already been loaded:
 		GLboolean skip = false;
@@ -130,8 +131,8 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type
 		// skip if texture has already been loaded: 
 		if (!skip) {
 			Texture texture;
-			texture.id = TextureFromFile(str.C_Str(), this->directory);
-			texture.type = typeName;
+			texture.id = textureFromFile(str.C_Str(), this->directory);
+			texture.type = type;
 			texture.path = str;
 			textures.push_back(texture);
 			this->textures_loaded.push_back(texture);
@@ -141,7 +142,7 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type
 	return textures;
 }
 
-GLint Model::TextureFromFile(const char * path, string directory)
+GLint Model::textureFromFile(const char * path, string directory)
 {
 	// generate the texture ID and load the texture data:
 	string filename = string(path);

@@ -4,16 +4,21 @@
 #include "..\Shader.h"
 
 struct Vertex {
-	glm::vec3 Position;
-	glm::vec3 Normal;
-	glm::vec2 TexCoords;
+	glm::vec3 position;
+	glm::vec3 normal;
+	glm::vec2 texCoords;
 };
 
 struct Texture {
+	enum Type {
+		DIFFUSE,
+		SPECULAR
+	};
 	GLuint id;
-	string type;
+	Type type;
 	aiString path;		// to check if it hasn't been loaded already
 };
+
 
 class Mesh
 {
@@ -24,8 +29,9 @@ public:
 	vector<Texture> textures;
 	
 	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures);
-	void Draw(Shader* shader);
+	void draw(Shader* shader);
 	~Mesh();
+
 
 private:
 	GLuint VAO, VBO, EBO;	// render data

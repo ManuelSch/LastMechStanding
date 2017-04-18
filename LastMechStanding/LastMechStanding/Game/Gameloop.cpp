@@ -69,7 +69,7 @@ void Gameloop::run()
 		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
-		ourModel.Draw(shader);
+		ourModel.draw(shader);
 
 
 

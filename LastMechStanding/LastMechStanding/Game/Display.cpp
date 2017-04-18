@@ -18,8 +18,8 @@ Display::Display(int _width, int _height, bool _fullscreen) : width(_width), hei
 	this->window = glfwCreateWindow(width, height, "Last Mech Standing", nullptr, nullptr);
 	if (this->window == nullptr)
 	{
-		cout << "Could not open glfw window" << endl;
 		glfwTerminate();
+		cerr << "ERROR: Could not open glfw window" << endl;
 		system("PAUSE");
 		exit(EXIT_FAILURE);
 	}
