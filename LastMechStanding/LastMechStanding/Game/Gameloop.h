@@ -5,16 +5,14 @@
 */
 
 #include "..\commonHeader.h"
-
 #include "..\Game\Display.h"
 #include "..\Scene\Camera.h"
-#include "..\Scene\Model.h"
-#include "..\Util\Shader.h"
+#include "..\Scene\Character.h"
 
 class Gameloop
 {
 public:
-	Gameloop(Display* _display, Shader* _shader);
+	Gameloop(Display* _display);
 	~Gameloop();
 
 	// starts the game loop:
@@ -27,7 +25,6 @@ public:
 
 private:
 	Display* display;
-	Shader* shader;
 
 	// frame independency:
 	GLfloat deltaTime;		// time between current frame and last frame

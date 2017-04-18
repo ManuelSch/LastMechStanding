@@ -2,7 +2,7 @@
 
 
 
-Gameloop::Gameloop(Display* _display, Shader* _shader) : display(_display), shader(_shader), camera(glm::vec3(0.0f, 0.0f, 3.0f))
+Gameloop::Gameloop(Display* _display) : display(_display), camera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
 	// initial member variables:
 	for (GLuint i = 0; i < 1024; i++) {
@@ -28,9 +28,14 @@ Gameloop::~Gameloop()
 
 void Gameloop::run()
 {
-	// Load model:
-	Model ourModel("Resources/Models/Nanosuit/nanosuit.obj");
+	unique_ptr<Character> testCharacter = make_unique<Character>();
+	testCharacter->translate(glm::vec3(0.0f, -1.75f, 0.0f));
+	testCharacter->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 
+	unique_ptr<Character> testCharacter2 = make_unique<Character>();
+	testCharacter2->translate(glm::vec3(2.0f, -1.75f, 0.0f));
+	testCharacter2->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	testCharacter2->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	// frame independency:
 	deltaTime = 0.0f;
@@ -52,24 +57,17 @@ void Gameloop::run()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		/*
+		* Update objects:
+		*/
+		testCharacter->update(deltaTime);
+		testCharacter2->update(deltaTime);
 
 		/*
 		* Draw objects:
 		*/
-		shader->useShader();
-
-		// transformation matrices:
-		glm::mat4 projection = glm::perspective(camera.zoom, (float)display->width / (float)display->height, 0.1f, 100.0f);
-		glm::mat4 view = camera.getViewMatrix();
-		glUniformMatrix4fv(shader->getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(shader->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(view));
-
-		// draw the loaded model:
-		glm::mat4 model;
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-		glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
-		ourModel.draw(shader);
+		testCharacter->draw(&camera, this->display);
+		testCharacter2->draw(&camera, this->display);
 
 
 

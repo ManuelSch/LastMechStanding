@@ -8,7 +8,6 @@
 
 
 unique_ptr<Display> display;
-unique_ptr<Shader> shader;
 unique_ptr<Gameloop> gameloop;
 
 
@@ -75,11 +74,8 @@ int main(int argc, char** argv)
 		showFatalErrorMessage("Could not initialize glew");
 	}
 
-	// create shader object:
-	shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
-
 	// create gameloop object:
-	gameloop = make_unique<Gameloop>(display.get(), shader.get());
+	gameloop = make_unique<Gameloop>(display.get());
 
 	// set key, cursor and scrollwheel callbacks:
 	glfwSetKeyCallback(display->window, key_callback);

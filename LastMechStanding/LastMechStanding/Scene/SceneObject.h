@@ -1,0 +1,27 @@
+#pragma once
+
+#include "..\commonHeader.h"
+#include "..\Util\Shader.h"
+#include "..\Scene\Camera.h"
+#include "..\Game\Display.h"
+#include ".\Assimp\Model.h"
+
+class SceneObject
+{
+public:
+	SceneObject();
+	virtual ~SceneObject();
+
+	unique_ptr<Shader> shader;
+	Model model;
+	glm::mat4 modelMatrix;
+
+	virtual void draw(Camera* camera, Display* display) = 0;
+	virtual void update(float timeDelta) = 0;
+
+	void translate(glm::vec3 transformation);
+	void rotate(GLfloat angle, glm::vec3 transformation);
+	void scale(glm::vec3 transformation);
+};
+
+#define SCENE_OBJECT

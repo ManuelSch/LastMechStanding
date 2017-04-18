@@ -1,7 +1,7 @@
 #pragma once
 
-#include "..\commonHeader.h"
-#include "..\Util\Shader.h"
+#include "..\..\commonHeader.h"
+#include "..\..\Util\Shader.h"
 
 struct Vertex {
 	glm::vec3 position;
