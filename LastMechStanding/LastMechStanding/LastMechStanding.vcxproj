@@ -180,7 +180,7 @@
     <ClInclude Include="Game\Gameloop.h" />
     <ClInclude Include="Scene\Mesh.h" />
     <ClInclude Include="Scene\Model.h" />
-    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Util\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene\Camera.cpp" />
@@ -193,7 +193,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene\Mesh.cpp" />
     <ClCompile Include="Scene\Model.cpp" />
-    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Util\Shader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

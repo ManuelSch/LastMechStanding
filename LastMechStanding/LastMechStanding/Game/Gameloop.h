@@ -9,7 +9,7 @@
 #include "..\Game\Display.h"
 #include "..\Scene\Camera.h"
 #include "..\Scene\Model.h"
-#include "..\Shader.h"
+#include "..\Util\Shader.h"
 
 class Gameloop
 {

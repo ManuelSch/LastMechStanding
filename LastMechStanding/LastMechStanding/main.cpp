@@ -3,7 +3,7 @@
 
 #include ".\Game\Display.h"
 #include ".\Game\Gameloop.h"
-#include ".\Shader.h"
+#include ".\Util\Shader.h"
 
 
 

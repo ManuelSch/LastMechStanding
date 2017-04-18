@@ -1,6 +1,6 @@
 #pragma once
 
-#include ".\commonHeader.h"
+#include "..\commonHeader.h"
 
 class Shader {
 public:

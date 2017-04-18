@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\commonHeader.h"
-#include "..\Shader.h"
+#include "..\Util\Shader.h"
 #include "Mesh.h"
 
 class Model
