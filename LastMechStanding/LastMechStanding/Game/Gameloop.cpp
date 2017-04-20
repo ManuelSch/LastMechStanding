@@ -2,7 +2,7 @@
 
 
 
-Gameloop::Gameloop(Display* _display) : display(_display), camera(glm::vec3(0.0f, 0.0f, 3.0f))
+Gameloop::Gameloop(Display* _display) : display(_display), camera(glm::vec3(0.0f, 0.0f, 3.0f) )
 {
 	// initial member variables:
 	for (GLuint i = 0; i < 1024; i++) {
@@ -32,10 +32,10 @@ void Gameloop::run()
 	testCharacter->translate(glm::vec3(0.0f, -1.75f, 0.0f));
 	testCharacter->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 
-	unique_ptr<Character> testCharacter2 = make_unique<Character>();
-	testCharacter2->translate(glm::vec3(2.0f, -1.75f, 0.0f));
-	testCharacter2->scale(glm::vec3(0.2f, 0.2f, 0.2f));
-	testCharacter2->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
+	//unique_ptr<Character> testCharacter2 = make_unique<Character>();
+	//testCharacter2->translate(glm::vec3(2.0f, -1.75f, 0.0f));
+	//testCharacter2->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	//testCharacter2->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	// frame independency:
 	deltaTime = 0.0f;
@@ -61,13 +61,13 @@ void Gameloop::run()
 		* Update objects:
 		*/
 		testCharacter->update(deltaTime);
-		testCharacter2->update(deltaTime);
+		//testCharacter2->update(deltaTime);
 
 		/*
 		* Draw objects:
 		*/
 		testCharacter->draw(&camera, this->display);
-		testCharacter2->draw(&camera, this->display);
+		//testCharacter2->draw(&camera, this->display);
 
 
 
