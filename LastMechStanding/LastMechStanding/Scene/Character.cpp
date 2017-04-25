@@ -4,7 +4,7 @@
 Character::Character()
 {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
-	this->model = Model("Resources/Models/Nanosuit/nanosuit.obj");
+	this->model = Model("Resources/Models/Cube/cube.obj");
 }
 
 Character::~Character()
