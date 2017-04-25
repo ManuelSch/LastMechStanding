@@ -4,7 +4,7 @@
 
 Gameloop::Gameloop(Display* _display) : display(_display), camera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
-	// initial member variables:
+	// initialize member variables:
 	for (GLuint i = 0; i < 1024; i++) {
 		keys[i] = false;
 	}
@@ -28,14 +28,18 @@ Gameloop::~Gameloop()
 
 void Gameloop::run()
 {
-	unique_ptr<Character> testCharacter = make_unique<Character>();
-	testCharacter->translate(glm::vec3(0.0f, -1.75f, 0.0f));
-	testCharacter->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	shared_ptr<SceneObject> newObject;
 
-	unique_ptr<Character> testCharacter2 = make_unique<Character>();
-	testCharacter2->translate(glm::vec3(2.0f, -1.75f, 0.0f));
-	testCharacter2->scale(glm::vec3(0.2f, 0.2f, 0.2f));
-	testCharacter2->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
+	newObject = make_shared<Character>();
+	newObject->translate(glm::vec3(0.0f, -1.75f, 0.0f));
+	newObject->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	sceneObjects.push_back(newObject);
+
+	newObject = make_shared<Character>();
+	newObject->translate(glm::vec3(2.0f, -1.75f, 0.0f));
+	newObject->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	newObject->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
+	sceneObjects.push_back(newObject);
 
 	// frame independency:
 	deltaTime = 0.0f;
@@ -60,15 +64,24 @@ void Gameloop::run()
 		/*
 		* Update objects:
 		*/
-		testCharacter->update(deltaTime);
-		testCharacter2->update(deltaTime);
+		for (GLuint i = 0; i < sceneObjects.size(); i++) {
+			if (sceneObjects[i] != nullptr) {
+				sceneObjects[i]->update(deltaTime);
+			}
+		}
 
 		/*
 		* Draw objects:
 		*/
-		testCharacter->draw(&camera, this->display);
-		testCharacter2->draw(&camera, this->display);
+		// transformation matrices:
+		glm::mat4 projection = glm::perspective(camera.zoom, (float)display->width / (float)display->height, 0.1f, 100.0f);
+		glm::mat4 view = camera.getViewMatrix();
 
+		for (GLuint i = 0; i < sceneObjects.size(); i++) {
+			if (sceneObjects[i] != nullptr) {
+				sceneObjects[i]->draw(&view, &projection);
+			}
+		}
 
 
 		// swap window and color buffer:

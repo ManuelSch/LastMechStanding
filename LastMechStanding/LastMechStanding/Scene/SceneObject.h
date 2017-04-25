@@ -16,7 +16,7 @@ public:
 	Model model;
 	glm::mat4 modelMatrix;
 
-	virtual void draw(Camera* camera, Display* display) = 0;
+	virtual void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix) = 0;
 	virtual void update(float timeDelta) = 0;
 
 	void translate(glm::vec3 transformation);

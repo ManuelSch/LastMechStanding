@@ -169,6 +169,7 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\DirectionalLight.h" />
     <ClInclude Include="Scene\Character.h" />
     <ClInclude Include="Scene\SceneObject.h" />
     <ClInclude Include="Scene\Camera.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Util\Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Scene\DirectionalLight.cpp" />
     <ClCompile Include="Scene\Character.cpp" />
     <ClCompile Include="Scene\SceneObject.cpp" />
     <ClCompile Include="Scene\Camera.cpp" />

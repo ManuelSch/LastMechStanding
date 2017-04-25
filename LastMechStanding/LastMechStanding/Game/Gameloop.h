@@ -36,6 +36,9 @@ private:
 	GLfloat lastX, lastY;		// cursor position in the last frame
 	bool firstMouse = true;		// so the view doesn't jump when the cursor enters the window
 
+	// scene objects:
+	vector<shared_ptr<SceneObject>> sceneObjects;
+
 	// moves the camera positions based on user input
 	void do_movement();
 };

@@ -15,15 +15,13 @@ void Character::update(float deltaTime)
 {
 }
 
-void Character::draw(Camera* camera, Display* display)
+void Character::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix)
 {
 	shader->useShader();
 
-	// transformation matrices:
-	glm::mat4 projection = glm::perspective(camera->zoom, (float)display->width / (float)display->height, 0.1f, 100.0f);
-	glm::mat4 view = camera->getViewMatrix();
-	glUniformMatrix4fv(shader->getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
-	glUniformMatrix4fv(shader->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(view));
+	// apply view and projection matrices:
+	glUniformMatrix4fv(shader->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(*viewMatrix));
+	glUniformMatrix4fv(shader->getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(*projectionMatrix));
 
 	// draw the loaded model:
 	glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
