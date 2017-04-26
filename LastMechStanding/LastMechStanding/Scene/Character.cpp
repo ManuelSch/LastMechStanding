@@ -5,7 +5,7 @@
 Character::Character()
 {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
-	this->model = Model("Resources/Models/Cube/cube.obj");
+	this->model = Model("Resources/Models/Cube/cube.dae");
 }
 
 Character::~Character()

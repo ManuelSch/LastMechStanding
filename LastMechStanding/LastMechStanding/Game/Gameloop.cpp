@@ -28,20 +28,21 @@ Gameloop::~Gameloop()
 
 void Gameloop::run()
 {
-	shared_ptr<SceneObject> newObject;
+	shared_ptr<SceneObject> player;
+	shared_ptr<SceneObject> enemy;
 
 	// first cube:
-	newObject = make_shared<Character>();
-	newObject->translate(glm::vec3(0.0f, -1.75f, 0.0f));
-	newObject->scale(glm::vec3(0.2f, 0.2f, 0.2f));
-	sceneObjects.push_back(newObject);
+	player = make_shared<Character>();
+	player->translate(glm::vec3(0.0f, -1.75f, 0.0f));
+	player->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	sceneObjects.push_back(player);
 	
 	// second cube:
-	newObject = make_shared<Character>();
-	newObject->translate(glm::vec3(2.0f, -1.75f, 0.0f));
-	newObject->scale(glm::vec3(0.2f, 0.2f, 0.2f));
-	newObject->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
-	sceneObjects.push_back(newObject);
+	enemy = make_shared<Character>();
+	enemy->translate(glm::vec3(2.0f, -1.75f, 0.0f));
+	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
+	sceneObjects.push_back(enemy);
 
 	// sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
@@ -67,7 +68,7 @@ void Gameloop::run()
 
 		// check if any events were triggered:
 		glfwPollEvents();
-		do_movement();
+		do_movement(player);
 
 		// clear color and depth buffers:
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -102,17 +103,21 @@ void Gameloop::run()
 }
 
 
-void Gameloop::do_movement()
+void Gameloop::do_movement(shared_ptr<SceneObject> player)
 {
 	// camera controls:
 	if (keys[GLFW_KEY_W])
-		this->camera.processKeyboard(FORWARD, deltaTime);
+		//this->camera.processKeyboard(FORWARD, deltaTime);
+		player->translate(glm::vec3(1.0f*deltaTime, 0.0f, 0.0f));
 	if (keys[GLFW_KEY_S])
-		this->camera.processKeyboard(BACKWARD, deltaTime);
+		//this->camera.processKeyboard(BACKWARD, deltaTime);
+		player->translate(glm::vec3(-1.0f*deltaTime, 0.0f, 0.0f));
 	if (keys[GLFW_KEY_A])
-		this->camera.processKeyboard(LEFT, deltaTime);
+		//this->camera.processKeyboard(LEFT, deltaTime);
+		player->translate(glm::vec3(0.0f, 0.0f, 1.0f*deltaTime));
 	if (keys[GLFW_KEY_D])
-		this->camera.processKeyboard(RIGHT, deltaTime);
+		//this->camera.processKeyboard(RIGHT, deltaTime);
+		player->translate(glm::vec3(0.0f, 0.0f, -1.0f*deltaTime));
 }
 
 void Gameloop::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
