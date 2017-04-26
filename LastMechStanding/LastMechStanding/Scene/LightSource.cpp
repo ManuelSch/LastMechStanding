@@ -2,7 +2,7 @@
 
 
 
-LightSource::LightSource(Type type)
+LightSource::LightSource(Type type) : type(type)
 {
 }
 
