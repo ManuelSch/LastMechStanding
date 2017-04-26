@@ -1,7 +1,7 @@
-# Blender MTL File: 'nanosuit.blend'
+# Blender MTL File: 'testmech.blend'
 # Material Count: 6
 
-newmtl Arm
+newmtl Camo1
 Ns 96.078431
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
@@ -10,10 +10,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump arm_showroom_ddn.png
-map_Kd arm_dif.png
 
-newmtl Body
+newmtl Ketten
 Ns 96.078431
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
@@ -22,10 +20,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd body_dif.png
-map_Bump body_showroom_ddn.png
 
-newmtl Glass
+newmtl Material.001
 Ns 96.078431
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
@@ -34,10 +30,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump glass_ddn.png
-map_Kd glass_dif.png
 
-newmtl Hand
+newmtl Material.002
 Ns 96.078431
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
@@ -46,10 +40,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump hand_showroom_ddn.png
-map_Kd hand_dif.png
 
-newmtl Helmet
+newmtl Weisse_Glasscheibe
 Ns 96.078431
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
@@ -58,10 +50,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump helmet_showroom_ddn.png
-map_Kd helmet_diff.png
 
-newmtl Leg
+newmtl Zahnraeder
 Ns 96.078431
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
@@ -70,5 +60,3 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump leg_showroom_ddn.png
-map_Kd leg_dif.png
