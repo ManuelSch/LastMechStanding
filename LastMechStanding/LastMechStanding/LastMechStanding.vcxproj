@@ -154,6 +154,8 @@
   <ItemGroup>
     <None Include="Resources\Shaders\basic.frag" />
     <None Include="Resources\Shaders\basic.vert" />
+    <None Include="Resources\Shaders\color_picking.frag" />
+    <None Include="Resources\Shaders\color_picking.vert" />
     <None Include="Resources\Shaders\lighting.frag" />
     <None Include="Resources\Shaders\lighting.vert" />
     <None Include="Resources\Shaders\lamp.frag" />
