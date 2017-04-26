@@ -10,12 +10,8 @@ struct Vertex {
 };
 
 struct Texture {
-	enum Type {
-		DIFFUSE,
-		SPECULAR
-	};
 	GLuint id;
-	Type type;
+	string type;
 	aiString path;		// to check if it hasn't been loaded already
 };
 

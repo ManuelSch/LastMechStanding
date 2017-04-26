@@ -8,6 +8,7 @@
 #include "..\Game\Display.h"
 #include "..\Scene\Camera.h"
 #include "..\Scene\Character.h"
+#include "..\Scene\LightSource.h"
 
 class Gameloop
 {
@@ -38,6 +39,7 @@ private:
 
 	// scene objects:
 	vector<shared_ptr<SceneObject>> sceneObjects;
+	vector<shared_ptr<LightSource>> lightSources;
 
 	// moves the camera positions based on user input
 	void do_movement();

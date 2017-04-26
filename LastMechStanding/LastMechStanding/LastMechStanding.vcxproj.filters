@@ -78,7 +78,7 @@
     <ClInclude Include="Scene\Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\DirectionalLight.h">
+    <ClInclude Include="Scene\LightSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -122,7 +122,7 @@
     <ClCompile Include="Scene\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\DirectionalLight.cpp">
+    <ClCompile Include="Scene\LightSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

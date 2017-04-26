@@ -12,7 +12,7 @@ public:
 	virtual ~Character();
 
 	virtual void update(float deltaTime);
-	virtual void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix);
+	virtual void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources);
 };
 
 #endif

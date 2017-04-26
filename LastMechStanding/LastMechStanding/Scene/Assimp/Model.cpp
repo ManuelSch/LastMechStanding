@@ -98,8 +98,8 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 		// load mesh's diffuse and specular maps:
-		vector<Texture> diffuseMaps = this->loadMaterialTextures(material, aiTextureType_DIFFUSE, Texture::DIFFUSE);
-		vector<Texture> specularMaps = this->loadMaterialTextures(material, aiTextureType_SPECULAR, Texture::SPECULAR);
+		vector<Texture> diffuseMaps = this->loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		vector<Texture> specularMaps = this->loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 
 		// store texture at the end of the model's textures vector:
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -109,7 +109,7 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	return Mesh(vertices, indices, textures);
 }
 
-vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType aiType, Texture::Type type)
+vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType aiType, string typeName)
 {
 	vector<Texture> textures;
 
@@ -132,7 +132,7 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType aiTy
 		if (!skip) {
 			Texture texture;
 			texture.id = textureFromFile(str.C_Str(), this->directory);
-			texture.type = type;
+			texture.type = typeName;
 			texture.path = str;
 			textures.push_back(texture);
 			this->textures_loaded.push_back(texture);

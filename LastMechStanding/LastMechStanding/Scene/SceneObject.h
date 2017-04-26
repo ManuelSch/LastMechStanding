@@ -5,6 +5,7 @@
 #include "..\Scene\Camera.h"
 #include "..\Game\Display.h"
 #include ".\Assimp\Model.h"
+#include "..\Scene\LightSource.h"
 
 class SceneObject
 {
@@ -16,7 +17,7 @@ public:
 	Model model;
 	glm::mat4 modelMatrix;
 
-	virtual void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix) = 0;
+	virtual void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources) = 0;
 	virtual void update(float timeDelta) = 0;
 
 	void translate(glm::vec3 transformation);

@@ -30,16 +30,28 @@ void Gameloop::run()
 {
 	shared_ptr<SceneObject> newObject;
 
+	// first cube:
 	newObject = make_shared<Character>();
 	newObject->translate(glm::vec3(0.0f, -1.75f, 0.0f));
 	newObject->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	sceneObjects.push_back(newObject);
-
+	
+	// second cube:
 	newObject = make_shared<Character>();
 	newObject->translate(glm::vec3(2.0f, -1.75f, 0.0f));
 	newObject->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	newObject->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(newObject);
+
+	// sunlight:
+	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
+	sunLight->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
+	sunLight->ambient = glm::vec3(0.05f, 0.05f, 0.05f);
+	sunLight->diffuse = glm::vec3(0.4f, 0.4f, 0.4f);
+	sunLight->specular = glm::vec3(0.5f, 0.5f, 0.5f);
+	lightSources.push_back(sunLight);
+	
+
 
 	// frame independency:
 	deltaTime = 0.0f;
@@ -79,7 +91,7 @@ void Gameloop::run()
 
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
-				sceneObjects[i]->draw(&view, &projection);
+				sceneObjects[i]->draw(&view, &projection, &camera, &lightSources);
 			}
 		}
 

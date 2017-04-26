@@ -20,7 +20,7 @@ private:
 	void loadModel(string path);
 	void processNode(aiNode* node, const aiScene* scene);
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType aiType, Texture::Type type);
+	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType aiType, string typeName);
 	GLint textureFromFile(const char* path, string directory);
 };
 

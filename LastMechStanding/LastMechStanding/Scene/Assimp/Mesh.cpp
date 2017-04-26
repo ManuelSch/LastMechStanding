@@ -17,18 +17,22 @@ void Mesh::draw(Shader* shader)
 		// activate texture unit before binding:
 		glActiveTexture(GL_TEXTURE0 + i);
 
-		stringstream number;
-		Texture::Type name = this->textures[i].type;
-		if (name == Texture::DIFFUSE) {
-			number << diffuseNr++;
+		stringstream ss;
+		string number;
+		string name = this->textures[i].type;
+		if (name == "texture_diffuse") {
+			ss << diffuseNr++;
 		}
-		else if (name == Texture::SPECULAR) {
-			number << specularNr++;
+		else if (name == "texture_specular") {
+			ss << specularNr++;
 		}
 
-		glUniform1f(shader->getUniformLocation("material." + name + number.str()), i);
+		glUniform1i(shader->getUniformLocation((name + number).c_str()), i);
 		glBindTexture(GL_TEXTURE_2D, this->textures[i].id);
 	}
+
+	// default shininess:
+	glUniform1f(shader->getUniformLocation("material.shininess"), 16.0f);
 
 	glActiveTexture(GL_TEXTURE0);
 
@@ -36,6 +40,13 @@ void Mesh::draw(Shader* shader)
 	glBindVertexArray(this->VAO);
 	glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+
+	// set everything back to defaults once configured:
+	for (GLuint i = 0; i < this->textures.size(); i++)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 }
 
 Mesh::~Mesh()
