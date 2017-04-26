@@ -26,6 +26,8 @@
     <None Include="Resources\Shaders\lighting.vert" />
     <None Include="Resources\Shaders\model_loading.vert" />
     <None Include="Resources\Shaders\model_loading.frag" />
+    <None Include="Resources\Shaders\color_picking.vert" />
+    <None Include="Resources\Shaders\color_picking.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg">

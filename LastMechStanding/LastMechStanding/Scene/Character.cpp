@@ -4,7 +4,8 @@
 
 Character::Character()
 {
-	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
+	//this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
+	this->shader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->model = Model("Resources/Models/Cube/cube.dae");
 }
 
@@ -19,6 +20,8 @@ void Character::update(float deltaTime)
 void Character::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources)
 {
 	shader->useShader();
+
+	glUniform4f(shader->getUniformLocation("pickingColor"), pickingColor.x, pickingColor.y, pickingColor.z, pickingColor.x);
 
 	// send light parameters to the shader:
 	for (GLuint i = 0; i < lightSources->size(); i++)

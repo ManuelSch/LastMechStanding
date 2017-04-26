@@ -31,18 +31,35 @@ void Gameloop::run()
 	shared_ptr<SceneObject> player;
 	shared_ptr<SceneObject> enemy;
 
-	// first cube:
 	player = make_shared<Character>();
 	player->translate(glm::vec3(0.0f, -1.75f, 0.0f));
 	player->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	sceneObjects.push_back(player);
-	
-	// second cube:
+
 	enemy = make_shared<Character>();
 	enemy->translate(glm::vec3(2.0f, -1.75f, 0.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(enemy);
+
+	enemy = make_shared<Character>();
+	enemy->translate(glm::vec3(5.0f, -1.75f, 0.0f));
+	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
+	sceneObjects.push_back(enemy);
+
+	enemy = make_shared<Character>();
+	enemy->translate(glm::vec3(5.0f, -1.75f, 3.0f));
+	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
+	sceneObjects.push_back(enemy);
+
+	enemy = make_shared<Character>();
+	enemy->translate(glm::vec3(-5.0f, -1.75f, 3.0f));
+	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
+	sceneObjects.push_back(enemy);
+
 
 	// sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
@@ -92,10 +109,31 @@ void Gameloop::run()
 
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
+				int r = (i & 0x000000FF) >> 0;
+				int g = (i & 0x0000FF00) >> 8;
+				int b = (i & 0x00FF0000) >> 16;
+				sceneObjects[i]->pickingColor = glm::vec4(r/255.0f, g / 255.0f, b / 255.0f, 1.0f);
 				sceneObjects[i]->draw(&view, &projection, &camera, &lightSources);
 			}
 		}
 
+		glFlush();
+		glFinish();
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		unsigned char data[4];
+		glReadPixels(display->width / 2, display->height / 2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		int pickedID =
+			data[0] +
+			data[1] * 256 +
+			data[2] * 256 * 256;
+		if (pickedID == 5000243) {
+			cout << "background" << endl;
+		}
+		else {
+			std::ostringstream oss; // C++ strings suck
+			cout << "mesh " << pickedID << endl;
+		}
 
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
@@ -108,16 +146,16 @@ void Gameloop::do_movement(shared_ptr<SceneObject> player)
 	// camera controls:
 	if (keys[GLFW_KEY_W])
 		//this->camera.processKeyboard(FORWARD, deltaTime);
-		player->translate(glm::vec3(1.0f*deltaTime, 0.0f, 0.0f));
+		player->translate(glm::vec3(5.0f*deltaTime, 0.0f, 0.0f));
 	if (keys[GLFW_KEY_S])
 		//this->camera.processKeyboard(BACKWARD, deltaTime);
-		player->translate(glm::vec3(-1.0f*deltaTime, 0.0f, 0.0f));
+		player->translate(glm::vec3(-5.0f*deltaTime, 0.0f, 0.0f));
 	if (keys[GLFW_KEY_A])
 		//this->camera.processKeyboard(LEFT, deltaTime);
-		player->translate(glm::vec3(0.0f, 0.0f, 1.0f*deltaTime));
+		player->translate(glm::vec3(0.0f, 0.0f, -5.0f*deltaTime));
 	if (keys[GLFW_KEY_D])
 		//this->camera.processKeyboard(RIGHT, deltaTime);
-		player->translate(glm::vec3(0.0f, 0.0f, -1.0f*deltaTime));
+		player->translate(glm::vec3(0.0f, 0.0f, 5.0f*deltaTime));
 }
 
 void Gameloop::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
