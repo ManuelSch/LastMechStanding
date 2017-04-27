@@ -4,7 +4,7 @@
 
 Floor::Floor() {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
-	this->model = Model("Resources/Models/Map/floor.obj");
+	this->model = Model("Resources/Models/Map/floor.dae");
 
 }
 

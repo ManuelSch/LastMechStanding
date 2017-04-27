@@ -10,6 +10,7 @@ Enemy::Enemy()
 	
 	this->health = 500;
 	this->movedirection = glm::vec3(0, 0, 0);
+	this->moveSpeed = 3;
 }
 
 Enemy::~Enemy()
@@ -18,10 +19,36 @@ Enemy::~Enemy()
 
 void Enemy::update(float deltaTime)
 {
-	this->translate(glm::vec3(0.0f, 0.2f*deltaTime, 0.0f));
+	//auto lastMoveDirection = movedirection;
+	glm::vec4 enemyPosition = this->modelMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	glm::vec3 destination = glm::vec3(1.0f, 1.0f, 0.0f);
+
+	movedirection = destination - glm::vec3(enemyPosition.x, enemyPosition.y, enemyPosition.z);
+
+	movedirection = glm::normalize(movedirection);
+
+	//tried to rotate object to direction but didn't work
+	//auto dot = glm::dot(movedirection, lastMoveDirection);
+	//auto angle = glm::acos(dot);
+	//glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 1, 0));
+	
+
+	glm::vec3 movement = glm::vec3(movedirection.x * moveSpeed * deltaTime,
+		movedirection.y * moveSpeed * deltaTime,
+		movedirection.z * moveSpeed * deltaTime);
+
+
+	//cube is moving, but spawns in wrong destination
+	//modelMatrix = glm::translate(glm::mat4(1.0), movement) * modelMatrix;
+
+	//
+	this->translate(movement);
+
 }
 
-
+void Enemy::move() {
+	
+}
 
 
 

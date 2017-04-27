@@ -36,6 +36,7 @@ void Gameloop::run()
 	//floor:
 	floor = make_shared<Floor>();
 	floor->translate(glm::vec3(0.0f, -2.0f, 0.0f));
+	floor->scale(glm::vec3(6.0f, 0.01f, 3.0f));
 	sceneObjects.push_back(floor);
 
 	// first cube:
@@ -106,6 +107,8 @@ void Gameloop::run()
 		//draw HUD
 		drawHUD();
 
+
+
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
 	}
@@ -113,39 +116,22 @@ void Gameloop::run()
 
 void Gameloop::drawHUD() {
 
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0, display->width, display->height, 0, 0, 1);
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
+	
 
 	//draw HUD elements here
 	drawHUDelements();
 
-	//
-
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
+	
 
 }
 
 void Gameloop::drawHUDelements() {
-	glPointSize(10);
 	glLineWidth(2.5);
-	glColor3f(1.0f, 0.0f, 0.0f); // red
-
-	glBegin(GL_LINES);              
-		
-		glVertex2f(0.5f, -0.5f);    // x, y
-		
-	glEnd();
-
-	glFlush();  // Render now
+	glColor3f(1.0, 0.0, 0.0);
+	glBegin(GL_LINES);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(15, 0, 0);
+	glEnd(); // Render now
 }
 
 
@@ -215,3 +201,6 @@ void Gameloop::scroll_callback(GLFWwindow* window, double xoffset, double yoffse
 {
 	this->camera.processMouseScroll(yoffset);
 }
+
+
+

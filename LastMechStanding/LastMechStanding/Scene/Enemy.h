@@ -15,13 +15,15 @@ public:
 	virtual void update(float deltaTime);
 	virtual void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources);
 
-	void move(float deltatime);
+	void move();
 	void hitEnemy(int damage);
 
 private:
 
 	int health;
 	glm::vec3 movedirection;
+
+	int moveSpeed;
 
 };
 
