@@ -16,6 +16,7 @@ public:
 
 	void hitCharacter(int damage);
 
+
 private:
 	int health;
 };

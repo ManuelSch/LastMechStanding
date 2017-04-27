@@ -1,27 +1,22 @@
-#include "Character.h"
+#include "Floor.h"
 
-#include "LightSource.h"
+#include "../LightSource.h"
 
-Character::Character()
-{
+Floor::Floor() {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
-	this->model = Model("Resources/Models/Cube/cube.dae");
-	this->health = 1000;
+	this->model = Model("Resources/Models/Map/floor.obj");
 
-	
 }
 
-Character::~Character()
+Floor::~Floor() {
+
+}
+
+void Floor::update(float deltaTime)
 {
 }
 
-void Character::update(float deltaTime)
-{
-}
-
-
-
-void Character::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources)
+void Floor::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources)
 {
 	shader->useShader();
 
@@ -49,15 +44,4 @@ void Character::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera*
 	// draw the loaded model:
 	glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	this->model.draw(shader.get());
-}
-
-void Character::hitCharacter(int damage) {
-	int newhealth = this->health - damage;
-
-	if (newhealth <= 0) {
-		//character dead
-	}
-	else {
-		this->health = newhealth;
-	}
 }

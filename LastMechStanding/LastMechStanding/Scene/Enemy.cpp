@@ -1,10 +1,15 @@
 #include "Enemy.h"
 
+#include "LightSource.h"
+
+
 Enemy::Enemy()
 {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
-	this->model = Model("Resources/Models/Cube/cube.dae");
+	this->model = Model("Resources/Models/Enemy/enemy.dae");
+	
 	this->health = 500;
+	this->movedirection = glm::vec3(0, 0, 0);
 }
 
 Enemy::~Enemy()
@@ -13,7 +18,14 @@ Enemy::~Enemy()
 
 void Enemy::update(float deltaTime)
 {
+	this->translate(glm::vec3(0.0f, 0.2f*deltaTime, 0.0f));
 }
+
+
+
+
+
+
 
 void Enemy::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources)
 {

@@ -30,6 +30,13 @@ void Gameloop::run()
 {
 	shared_ptr<SceneObject> player;
 	shared_ptr<SceneObject> enemy;
+	shared_ptr<SceneObject> floor;
+
+
+	//floor:
+	floor = make_shared<Floor>();
+	floor->translate(glm::vec3(0.0f, -2.0f, 0.0f));
+	sceneObjects.push_back(floor);
 
 	// first cube:
 	player = make_shared<Character>();
@@ -38,7 +45,7 @@ void Gameloop::run()
 	sceneObjects.push_back(player);
 	
 	// second cube:
-	enemy = make_shared<Character>();
+	enemy = make_shared<Enemy>();
 	enemy->translate(glm::vec3(2.0f, -1.75f, 0.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -68,7 +75,7 @@ void Gameloop::run()
 
 		// check if any events were triggered:
 		glfwPollEvents();
-		do_movement(player);
+		do_movement(player, enemy);
 
 		// clear color and depth buffers:
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -96,28 +103,78 @@ void Gameloop::run()
 			}
 		}
 
+		//draw HUD
+		drawHUD();
 
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
 	}
 }
 
+void Gameloop::drawHUD() {
 
-void Gameloop::do_movement(shared_ptr<SceneObject> player)
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0, display->width, display->height, 0, 0, 1);
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	//draw HUD elements here
+	drawHUDelements();
+
+	//
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+
+}
+
+void Gameloop::drawHUDelements() {
+	glPointSize(10);
+	glLineWidth(2.5);
+	glColor3f(1.0f, 0.0f, 0.0f); // red
+
+	glBegin(GL_LINES);              
+		
+		glVertex2f(0.5f, -0.5f);    // x, y
+		
+	glEnd();
+
+	glFlush();  // Render now
+}
+
+
+void Gameloop::do_movement(shared_ptr<SceneObject> player, shared_ptr<SceneObject> enemy)
 {
+	bool liftUp = false;
+
 	// camera controls:
 	if (keys[GLFW_KEY_W])
-		//this->camera.processKeyboard(FORWARD, deltaTime);
-		player->translate(glm::vec3(1.0f*deltaTime, 0.0f, 0.0f));
+		this->camera.processKeyboard(FORWARD, deltaTime);
 	if (keys[GLFW_KEY_S])
-		//this->camera.processKeyboard(BACKWARD, deltaTime);
-		player->translate(glm::vec3(-1.0f*deltaTime, 0.0f, 0.0f));
+		this->camera.processKeyboard(BACKWARD, deltaTime);
 	if (keys[GLFW_KEY_A])
-		//this->camera.processKeyboard(LEFT, deltaTime);
-		player->translate(glm::vec3(0.0f, 0.0f, 1.0f*deltaTime));
+		this->camera.processKeyboard(LEFT, deltaTime);
 	if (keys[GLFW_KEY_D])
-		//this->camera.processKeyboard(RIGHT, deltaTime);
+		this->camera.processKeyboard(RIGHT, deltaTime);
+
+	//character controll:
+	if (keys[GLFW_KEY_UP])
+		player->translate(glm::vec3(1.0f*deltaTime, 0.0f, 0.0f));
+	if (keys[GLFW_KEY_DOWN])
+		player->translate(glm::vec3(-1.0f*deltaTime, 0.0f, 0.0f));
+	if (keys[GLFW_KEY_LEFT])
 		player->translate(glm::vec3(0.0f, 0.0f, -1.0f*deltaTime));
+	if (keys[GLFW_KEY_RIGHT])
+		player->translate(glm::vec3(0.0f, 0.0f, 1.0f*deltaTime));
+
+
+
 }
 
 void Gameloop::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)

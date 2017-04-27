@@ -8,7 +8,11 @@
 #include "..\Game\Display.h"
 #include "..\Scene\Camera.h"
 #include "..\Scene\Character.h"
+#include "..\Scene\Enemy.h"
+//map files
+#include "..\Scene\Map\Floor.h"
 #include "..\Scene\LightSource.h"
+
 
 class Gameloop
 {
@@ -24,6 +28,8 @@ public:
 	void mouse_callback(GLFWwindow * window, double xpos, double ypos);
 	void scroll_callback(GLFWwindow * window, double xoffset, double yoffset);
 
+	void drawHUD();
+	void drawHUDelements();
 private:
 	Display* display;
 
@@ -42,6 +48,6 @@ private:
 	vector<shared_ptr<LightSource>> lightSources;
 
 	// moves the camera positions based on user input
-	void do_movement(shared_ptr<SceneObject> player);
+	void do_movement(shared_ptr<SceneObject> player, shared_ptr<SceneObject> enemy);
 };
 

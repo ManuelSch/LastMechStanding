@@ -172,6 +172,7 @@
     <ClInclude Include="Scene\Enemy.h" />
     <ClInclude Include="Scene\LightSource.h" />
     <ClInclude Include="Scene\Character.h" />
+    <ClInclude Include="Scene\Map\Floor.h" />
     <ClInclude Include="Scene\SceneObject.h" />
     <ClInclude Include="Scene\Camera.h" />
     <ClInclude Include="commonHeader.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="Scene\Enemy.cpp" />
     <ClCompile Include="Scene\LightSource.cpp" />
     <ClCompile Include="Scene\Character.cpp" />
+    <ClCompile Include="Scene\Map\Floor.cpp" />
     <ClCompile Include="Scene\SceneObject.cpp" />
     <ClCompile Include="Scene\Camera.cpp" />
     <ClCompile Include="Game\Display.cpp" />
