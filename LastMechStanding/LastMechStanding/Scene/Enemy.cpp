@@ -41,8 +41,8 @@ void Enemy::update(float deltaTime)
 	//cube is moving, but spawns in wrong destination
 	//modelMatrix = glm::translate(glm::mat4(1.0), movement) * modelMatrix;
 
-	//
-	this->translate(movement);
+	//cube is orbiting and moving to direction, also from false spawn point
+	//this->translate(movement);
 
 }
 
