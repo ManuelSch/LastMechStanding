@@ -17,6 +17,7 @@ public:
 	unique_ptr<Shader> pickingShader;
 	Model model;
 	glm::mat4 modelMatrix;
+	glm::vec4 pickingColor;
 
 	virtual void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources) = 0;
 	virtual void drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID) = 0;
