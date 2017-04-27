@@ -1,23 +1,21 @@
-#include "Character.h"
+#include "Player.h"
 
-#include "LightSource.h"
-
-Character::Character()
+Player::Player()
 {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	this->pickingShader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
-	this->model = Model("Resources/Models/Cube/cube.dae");
+	this->model = Model("Resources/Models/CubePlayer/cubePlayer.dae");
 }
 
-Character::~Character()
+Player::~Player()
 {
 }
 
-void Character::update(float deltaTime)
+void Player::update(float deltaTime)
 {
 }
 
-void Character::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources)
+void Player::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources)
 {
 	shader->useShader();
 
@@ -47,7 +45,7 @@ void Character::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera*
 	this->model.draw(shader.get());
 }
 
-void Character::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID)
+void Player::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID)
 {
 	pickingShader->useShader();
 

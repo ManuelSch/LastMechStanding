@@ -1,11 +1,11 @@
 #pragma once
 
-#include "..\commonHeader.h"
-#include "..\Util\Shader.h"
-#include "..\Scene\Camera.h"
-#include "..\Game\Display.h"
-#include ".\Assimp\Model.h"
-#include "..\Scene\LightSource.h"
+#include "..\..\commonHeader.h"
+#include "..\..\Util\Shader.h"
+#include "..\..\Scene\Camera.h"
+#include "..\..\Game\Display.h"
+#include ".\..\Assimp\Model.h"
+#include "..\..\Scene\LightSource.h"
 
 class SceneObject
 {

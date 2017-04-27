@@ -68,19 +68,22 @@
     <ClInclude Include="Util\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\SceneObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Assimp\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Assimp\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Character.h">
+    <ClInclude Include="Scene\LightSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\LightSource.h">
+    <ClInclude Include="Scene\SceneObjects\SceneObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneObjects\Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneObjects\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -112,19 +115,22 @@
     <ClCompile Include="Util\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\SceneObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Assimp\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Assimp\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Character.cpp">
+    <ClCompile Include="Scene\LightSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\LightSource.cpp">
+    <ClCompile Include="Scene\SceneObjects\SceneObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneObjects\Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneObjects\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

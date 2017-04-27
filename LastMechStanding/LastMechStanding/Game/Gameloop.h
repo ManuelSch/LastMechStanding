@@ -7,7 +7,8 @@
 #include "..\commonHeader.h"
 #include "..\Game\Display.h"
 #include "..\Scene\Camera.h"
-#include "..\Scene\Character.h"
+#include "..\Scene\SceneObjects\Player.h"
+#include "..\Scene\SceneObjects\Enemy.h"
 #include "..\Scene\LightSource.h"
 
 class Gameloop

@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.70.0 commit date:2014-04-10, commit time:11:49, hash:f93bc76</authoring_tool>
     </contributor>
-    <created>2017-04-26T21:23:05</created>
-    <modified>2017-04-26T21:23:05</modified>
+    <created>2017-04-27T18:59:20</created>
+    <modified>2017-04-27T18:59:20</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -81,21 +81,21 @@
     </light>
   </library_lights>
   <library_images>
-    <image id="camouflage_red_jpg" name="camouflage_red_jpg">
-      <init_from>camouflage_red.jpg</init_from>
+    <image id="camouflage_green_jpg" name="camouflage_green_jpg">
+      <init_from>camouflage_green.jpg</init_from>
     </image>
   </library_images>
   <library_effects>
     <effect id="Material_005-effect">
       <profile_COMMON>
-        <newparam sid="camouflage_red_jpg-surface">
+        <newparam sid="camouflage_green_jpg-surface">
           <surface type="2D">
-            <init_from>camouflage_red_jpg</init_from>
+            <init_from>camouflage_green_jpg</init_from>
           </surface>
         </newparam>
-        <newparam sid="camouflage_red_jpg-sampler">
+        <newparam sid="camouflage_green_jpg-sampler">
           <sampler2D>
-            <source>camouflage_red_jpg-surface</source>
+            <source>camouflage_green_jpg-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -107,7 +107,7 @@
               <color sid="ambient">0 0 0 1</color>
             </ambient>
             <diffuse>
-              <texture texture="camouflage_red_jpg-sampler" texcoord="UVMap"/>
+              <texture texture="camouflage_green_jpg-sampler" texcoord="UVMap"/>
             </diffuse>
             <specular>
               <color sid="specular">0.5 0.5 0.5 1</color>

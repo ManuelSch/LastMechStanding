@@ -31,30 +31,30 @@ void Gameloop::run()
 	shared_ptr<SceneObject> player;
 	shared_ptr<SceneObject> enemy;
 
-	player = make_shared<Character>();
+	player = make_shared<Player>();
 	player->translate(glm::vec3(0.0f, -1.75f, 0.0f));
 	player->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	sceneObjects.push_back(player);
 
-	enemy = make_shared<Character>();
+	enemy = make_shared<Enemy>();
 	enemy->translate(glm::vec3(2.0f, -1.75f, 0.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(enemy);
 
-	enemy = make_shared<Character>();
+	enemy = make_shared<Enemy>();
 	enemy->translate(glm::vec3(5.0f, -1.75f, 0.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(enemy);
 
-	enemy = make_shared<Character>();
+	enemy = make_shared<Enemy>();
 	enemy->translate(glm::vec3(5.0f, -1.75f, 3.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(enemy);
 
-	enemy = make_shared<Character>();
+	enemy = make_shared<Enemy>();
 	enemy->translate(glm::vec3(-5.0f, -1.75f, 3.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
