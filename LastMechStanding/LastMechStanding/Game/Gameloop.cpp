@@ -28,8 +28,8 @@ Gameloop::~Gameloop()
 
 void Gameloop::run()
 {
-	shared_ptr<SceneObject> player;
-	shared_ptr<SceneObject> enemy;
+	shared_ptr<Player> player;
+	shared_ptr<Enemy> enemy;
 
 	player = make_shared<Player>();
 	player->translate(glm::vec3(0.0f, -1.75f, 0.0f));
@@ -151,21 +151,17 @@ void Gameloop::run()
 }
 
 
-void Gameloop::do_movement(shared_ptr<SceneObject> player)
+void Gameloop::do_movement(shared_ptr<Player> player)
 {
-	// camera controls:
+	// player controls:
 	if (keys[GLFW_KEY_W])
-		//this->camera.processKeyboard(FORWARD, deltaTime);
-		player->translate(glm::vec3(5.0f*deltaTime, 0.0f, 0.0f));
+		player->move(Player::FORWARD, deltaTime);
 	if (keys[GLFW_KEY_S])
-		//this->camera.processKeyboard(BACKWARD, deltaTime);
-		player->translate(glm::vec3(-5.0f*deltaTime, 0.0f, 0.0f));
+		player->move(Player::BACKWARD, deltaTime);
 	if (keys[GLFW_KEY_A])
-		//this->camera.processKeyboard(LEFT, deltaTime);
-		player->translate(glm::vec3(0.0f, 0.0f, -5.0f*deltaTime));
+		player->move(Player::LEFT, deltaTime);
 	if (keys[GLFW_KEY_D])
-		//this->camera.processKeyboard(RIGHT, deltaTime);
-		player->translate(glm::vec3(0.0f, 0.0f, 5.0f*deltaTime));
+		player->move(Player::RIGHT, deltaTime);
 }
 
 void Gameloop::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)

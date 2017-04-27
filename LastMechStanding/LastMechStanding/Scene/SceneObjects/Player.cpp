@@ -5,6 +5,8 @@ Player::Player()
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	this->pickingShader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->model = Model("Resources/Models/CubePlayer/cubePlayer.dae");
+
+	movementSpeed = 5;
 }
 
 Player::~Player()
@@ -65,4 +67,17 @@ void Player::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Cam
 	// draw the loaded model:
 	glUniformMatrix4fv(pickingShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	this->model.draw(pickingShader.get());
+}
+
+void Player::move(MovementDirection direction, GLfloat deltaTime)
+{
+	GLfloat velocity = this->movementSpeed * deltaTime;
+	if (direction == FORWARD)
+		this->translate(glm::vec3(movementSpeed*deltaTime, 0.0f, 0.0f));
+	if (direction == BACKWARD)
+		this->translate(glm::vec3(-movementSpeed*deltaTime, 0.0f, 0.0f));
+	if (direction == LEFT)
+		this->translate(glm::vec3(0.0f, 0.0f, -movementSpeed*deltaTime));
+	if (direction == RIGHT)
+		this->translate(glm::vec3(0.0f, 0.0f, movementSpeed*deltaTime));
 }
