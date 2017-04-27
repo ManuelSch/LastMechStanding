@@ -6,6 +6,8 @@ Character::Character()
 {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	this->model = Model("Resources/Models/Cube/cube.dae");
+	this->health = 1000;
+
 }
 
 Character::~Character()
@@ -44,4 +46,15 @@ void Character::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera*
 	// draw the loaded model:
 	glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	this->model.draw(shader.get());
+}
+
+void Character::hitCharacter(int damage) {
+	int newhealth = this->health - damage;
+
+	if (newhealth <= 0) {
+		//character dead
+	}
+	else {
+		this->health = newhealth;
+	}
 }
