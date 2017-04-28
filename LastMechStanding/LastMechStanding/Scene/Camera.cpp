@@ -3,7 +3,7 @@
 
 // Constructor with vectors
 Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
-	: front(glm::vec3(0.0f, 0.0f, -1.0f)), movementSpeed(SPEED), mouseSensitivity(SENSITIVTY)
+	: front(glm::vec3(0.0f, 0.0f, -1.0f))
 {
 	this->position = position;
 	this->worldUp = up;

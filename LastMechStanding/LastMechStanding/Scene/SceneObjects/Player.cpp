@@ -6,8 +6,10 @@ Player::Player(Camera* camera) : camera(camera)
 	this->pickingShader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->model = Model("Resources/Models/Player/Player.obj");
 
-	movementSpeed = 7;
-	mouseSensitivity = 0.25f;
+	movementSpeed = 5;
+	mouseSensitivity = 0.2f;
+
+	this->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 
 	camera->updateCameraVectors(position, angle);
 }
@@ -31,12 +33,10 @@ void Player::movePosition(Movement direction, GLfloat deltaTime)
 		this->translate(glm::rotate(glm::vec3(-velocity, 0.0f, 0.0f), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
 		break;
 	case LEFT:
-		//this->translate(glm::vec3(0.0f, 0.0f, -velocity));
-		//this->rotate(0.5, glm::vec3(0.0f, 1.0f, 0.0f));
+		this->translate(glm::rotate(glm::vec3(0.0f, 0.0f, -velocity), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
 		break;
 	case RIGHT:
-		//this->translate(glm::vec3(0.0f, 0.0f, velocity));
-		//this->rotate(0.5, glm::vec3(0.0f, -1.0f, 0.0f));
+		this->translate(glm::rotate(glm::vec3(0.0f, 0.0f, velocity), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
 		break;
 	}
 

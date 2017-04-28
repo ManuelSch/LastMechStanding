@@ -79,6 +79,10 @@ void SceneObject::scale(glm::vec3 transformation)
 	this->scaling *= transformation;
 }
 
+void SceneObject::onClick()
+{
+}
+
 glm::mat4 SceneObject::getModelMatrix()
 {
 	glm::mat4 modelMatrix;

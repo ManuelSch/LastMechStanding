@@ -20,6 +20,7 @@ void showFatalErrorMessage(string message);
 // input callbacks:
 void key_callback(GLFWwindow * window, int key, int scancode, int action, int mode);
 void mouse_callback(GLFWwindow * window, double xpos, double ypos);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 
 /*
@@ -79,6 +80,7 @@ int main(int argc, char** argv)
 	// set key and cursor callbacks:
 	glfwSetKeyCallback(display->window, key_callback);
 	glfwSetCursorPosCallback(display->window, mouse_callback);
+	glfwSetMouseButtonCallback(display->window, mouse_button_callback);
 
 	// start gameloop:
 	gameloop->run();
@@ -108,8 +110,11 @@ void showFatalErrorMessage(string message) {
 
 // input callbacks:
 void key_callback(GLFWwindow * window, int key, int scancode, int action, int mode) {
-	gameloop->key_callback(window, key, scancode, action, mode);
+	gameloop->keyboardCallback(window, key, scancode, action, mode);
 }
 void mouse_callback(GLFWwindow * window, double xpos, double ypos) {
-	gameloop->mouse_callback(window, xpos, ypos);
+	gameloop->mouseCallback(window, xpos, ypos);
+}
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+	gameloop->mouseButtonCallback(window, button, action, mods);
 }
