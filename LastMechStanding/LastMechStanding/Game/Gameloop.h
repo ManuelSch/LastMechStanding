@@ -9,6 +9,7 @@
 #include "..\Scene\Camera.h"
 #include "..\Scene\SceneObjects\Player.h"
 #include "..\Scene\SceneObjects\Enemy.h"
+#include "..\Scene\SceneObjects\Arena.h"
 #include "..\Scene\LightSource.h"
 
 class Gameloop
@@ -23,9 +24,10 @@ public:
 	// input callbacks:
 	void key_callback(GLFWwindow * window, int key, int scancode, int action, int mode);
 	void mouse_callback(GLFWwindow * window, double xpos, double ypos);
-	void scroll_callback(GLFWwindow * window, double xoffset, double yoffset);
 
 private:
+	shared_ptr<Player> player;
+
 	Display* display;
 
 	// frame independency:
@@ -43,6 +45,6 @@ private:
 	vector<shared_ptr<LightSource>> lightSources;
 
 	// moves the camera positions based on user input
-	void do_movement(shared_ptr<Player> player);
+	void do_movement();
 };
 

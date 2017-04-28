@@ -8,24 +8,18 @@
 class Player : public SceneObject
 {
 public:
-	enum MovementDirection {
-		FORWARD,
-		BACKWARD,
-		LEFT,
-		RIGHT
-	};
 
-	Player();
+	Player(Camera* camera);
 	virtual ~Player();
 
 	virtual void update(float deltaTime);
-	virtual void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources);
-	virtual void drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID);
 
-	void Player::move(MovementDirection direction, GLfloat deltaTime);
+	void movePosition(Movement direction, GLfloat deltaTime);
+	void moveView(GLfloat xOffset, GLfloat yOffset);
 
 private:
-	GLfloat movementSpeed;
+	GLfloat movementSpeed, mouseSensitivity;
+	Camera* camera;
 };
 
 #endif

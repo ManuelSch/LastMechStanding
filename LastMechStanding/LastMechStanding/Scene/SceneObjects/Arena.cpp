@@ -1,16 +1,19 @@
-#include "Enemy.h"
+#include "Arena.h"
 
-Enemy::Enemy()
+
+
+Arena::Arena()
 {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	this->pickingShader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
-	this->model = Model("Resources/Models/CubeEnemy/cubeEnemy.dae");
+	this->model = Model("Resources/Models/ArenaTest/arenaTest.obj");
 }
 
-Enemy::~Enemy()
+
+Arena::~Arena()
 {
 }
 
-void Enemy::update(float deltaTime)
+void Arena::update(float deltaTime)
 {
 }

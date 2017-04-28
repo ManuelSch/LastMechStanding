@@ -1,17 +1,18 @@
 #pragma once
 
 #include "..\..\commonHeader.h"
-#include "SceneObject.h"
+#include ".\SceneObject.h"
 
 #ifdef SCENE_OBJECT
 
-class Enemy : public SceneObject
+class Arena : public SceneObject
 {
 public:
-	Enemy();
-	virtual ~Enemy();
+	Arena();
+	~Arena();
 
 	virtual void update(float deltaTime);
 };
 
 #endif
+
