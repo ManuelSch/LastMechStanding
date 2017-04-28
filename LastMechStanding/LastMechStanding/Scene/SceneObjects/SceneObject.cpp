@@ -89,3 +89,4 @@ glm::mat4 SceneObject::getModelMatrix()
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(angle.z), glm::vec3(0.0f, 0.0f, 1.0f));
 	return modelMatrix;
 }
+

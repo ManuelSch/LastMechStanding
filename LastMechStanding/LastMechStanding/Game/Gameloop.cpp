@@ -150,11 +150,69 @@ void Gameloop::run()
 			if (sceneObjects[i] != nullptr) {
 				sceneObjects[i]->draw(&view, &projection, &camera, &lightSources);
 			}
-		}		
+		}
+
+		//should draw HUD, doesn't work
+		drawHUD();
 
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
 	}
+}
+
+void Gameloop::drawHUD() {
+
+	//switch to projection matrix
+	glMatrixMode(GL_PROJECTION);
+	//push on new Matrix
+	glPushMatrix();
+	//reset current matrix
+	glLoadIdentity();
+	//pas in 2D Ortho screen coordinates
+	glOrtho(0, display->width, display->height, 0, -1, 1);
+	//switch to model view
+	glMatrixMode(GL_MODELVIEW);
+	//initialize current model view matrix
+	glLoadIdentity();
+
+	//disabel depth-testing
+	glDisable(GL_DEPTH_TEST);
+
+
+	glColor3ub(240, 240, 240);//white
+	glLineWidth(2.0);
+	glBegin(GL_LINES);
+	//horizontal line
+	glVertex2i(display->width / 2 - 7, display->height / 2);
+	glVertex2i(display->width / 2 + 7, display->height / 2);
+	glEnd();
+	//vertical line
+	glBegin(GL_LINES);
+	glVertex2i(display->width / 2, display->height / 2 + 7);
+	glVertex2i(display->width / 2, display->height / 2 - 7);
+	glEnd();
+
+	//Enable depth-testing
+	glEnable(GL_DEPTH_TEST);
+
+	//enter into projection matrix mode
+	glMatrixMode(GL_PROJECTION);
+
+	//pop off last matrix
+	glPopMatrix();
+
+	//back to model view matrix in 3D
+	glMatrixMode(GL_MODELVIEW);
+
+}
+
+void Gameloop::drawHUDelements() {
+	glLineWidth(2.5);
+	glColor3f(1.0, 0.0, 0.0);
+	glBegin(GL_LINES);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(15, 0, 0);
+	glEnd(); // Render now
 }
 
 

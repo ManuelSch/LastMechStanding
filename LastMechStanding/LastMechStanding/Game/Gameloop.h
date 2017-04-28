@@ -25,6 +25,8 @@ public:
 	void key_callback(GLFWwindow * window, int key, int scancode, int action, int mode);
 	void mouse_callback(GLFWwindow * window, double xpos, double ypos);
 
+	void drawHUD();
+	void drawHUDelements();
 private:
 	shared_ptr<Player> player;
 
