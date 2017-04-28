@@ -174,7 +174,6 @@
     <ClInclude Include="Scene\SceneObjects\Arena.h" />
     <ClInclude Include="Scene\SceneObjects\Enemy.h" />
     <ClInclude Include="Scene\LightSource.h" />
-    <ClInclude Include="Scene\SceneObjects\Map\Floor.h" />
     <ClInclude Include="Scene\SceneObjects\Map\Map.h" />
     <ClInclude Include="Scene\SceneObjects\Player.h" />
     <ClInclude Include="Scene\SceneObjects\SceneObject.h" />
@@ -195,7 +194,6 @@
     <ClCompile Include="Scene\SceneObjects\Arena.cpp" />
     <ClCompile Include="Scene\SceneObjects\Enemy.cpp" />
     <ClCompile Include="Scene\LightSource.cpp" />
-    <ClCompile Include="Scene\SceneObjects\Map\Floor.cpp" />
     <ClCompile Include="Scene\SceneObjects\Map\Map.cpp" />
     <ClCompile Include="Scene\SceneObjects\Player.cpp" />
     <ClCompile Include="Scene\SceneObjects\SceneObject.cpp" />

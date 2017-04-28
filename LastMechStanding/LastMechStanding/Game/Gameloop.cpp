@@ -103,6 +103,7 @@ void Gameloop::run()
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
 				sceneObjects[i]->drawPicking(&view, &projection, &camera, i);
@@ -146,6 +147,7 @@ void Gameloop::run()
 		// clear color and depth buffers:
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glLoadIdentity();
 
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
@@ -161,6 +163,7 @@ void Gameloop::run()
 	}
 }
 
+
 void Gameloop::drawHUD() {
 
 	//switch to projection matrix
@@ -169,18 +172,17 @@ void Gameloop::drawHUD() {
 	glPushMatrix();
 	//reset current matrix
 	glLoadIdentity();
-	//pas in 2D Ortho screen coordinates
-	glOrtho(0, display->width, display->height, 0, -1, 1);
+	//pass in 2D Ortho screen coordinates
+	glOrtho(0, display->width, display->height, 0, -1, 10);
 	//switch to model view
 	glMatrixMode(GL_MODELVIEW);
 	//initialize current model view matrix
 	glLoadIdentity();
 
-	//disabel depth-testing
+	//disable depth testing
 	glDisable(GL_DEPTH_TEST);
 
-
-	glColor3ub(240, 240, 240);//white
+	glColor3f(1.0, 1.0, 1.0); //white
 	glLineWidth(2.0);
 	glBegin(GL_LINES);
 	//horizontal line

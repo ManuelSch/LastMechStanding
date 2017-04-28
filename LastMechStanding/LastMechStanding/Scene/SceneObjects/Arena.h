@@ -3,7 +3,7 @@
 #include "..\..\commonHeader.h"
 #include ".\SceneObject.h"
 
-#ifdef MAP
+#ifdef SCENE_OBJECT
 
 class Arena : public SceneObject
 {
