@@ -7,10 +7,10 @@
 #include "..\commonHeader.h"
 #include "..\Game\Display.h"
 #include "..\Scene\Camera.h"
-#include "..\Scene\Character.h"
-#include "..\Scene\Enemy.h"
+#include "..\Scene\SceneObjects\Player.h"
+#include "..\Scene\SceneObjects\Enemy.h"
 //map files
-#include "..\Scene\Map\Floor.h"
+#include "..\Scene\SceneObjects\Map\Floor.h"
 #include "..\Scene\LightSource.h"
 
 

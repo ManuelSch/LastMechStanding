@@ -39,8 +39,8 @@ void Gameloop::run()
 	floor->scale(glm::vec3(6.0f, 0.01f, 3.0f));
 	sceneObjects.push_back(floor);
 
-	// first cube:
-	player = make_shared<Character>();
+	
+	player = make_shared<Player>();
 	player->translate(glm::vec3(0.0f, -1.75f, 0.0f));
 	player->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	sceneObjects.push_back(player);
