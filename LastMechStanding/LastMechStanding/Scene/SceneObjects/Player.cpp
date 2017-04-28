@@ -31,12 +31,10 @@ void Player::movePosition(Movement direction, GLfloat deltaTime)
 		this->translate(glm::rotate(glm::vec3(-velocity, 0.0f, 0.0f), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
 		break;
 	case LEFT:
-		//this->translate(glm::vec3(0.0f, 0.0f, -velocity));
-		//this->rotate(0.5, glm::vec3(0.0f, 1.0f, 0.0f));
+		this->translate(glm::rotate(glm::vec3(0.0f, 0.0f, -velocity), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
 		break;
 	case RIGHT:
-		//this->translate(glm::vec3(0.0f, 0.0f, velocity));
-		//this->rotate(0.5, glm::vec3(0.0f, -1.0f, 0.0f));
+		this->translate(glm::rotate(glm::vec3(0.0f, 0.0f, velocity), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
 		break;
 	}
 
