@@ -28,29 +28,27 @@ Gameloop::~Gameloop()
 
 void Gameloop::run()
 {
-	shared_ptr<SceneObject> player;
-	shared_ptr<SceneObject> enemy;
-	shared_ptr<SceneObject> floor;
+	shared_ptr<Enemy> enemy;
+	shared_ptr<Arena> arena;
 
-
-	//floor:
-	floor = make_shared<Floor>();
-	floor->translate(glm::vec3(0.0f, -2.0f, 0.0f));
-	floor->scale(glm::vec3(6.0f, 0.01f, 3.0f));
-	sceneObjects.push_back(floor);
-
-	// first cube:
-	player = make_shared<Character>();
-	player->translate(glm::vec3(0.0f, -1.75f, 0.0f));
+	player = make_shared<Player>(&camera);
+	//player->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	player->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	sceneObjects.push_back(player);
 
+	arena = make_shared<Arena>();
+	sceneObjects.push_back(arena);
+
+	/*
 	enemy = make_shared<Enemy>();
-	enemy->translate(glm::vec3(2.0f, -1.75f, 0.0f));
+	enemy->translate(glm::vec3(2.0f, 0.0f, 0.0f));
+	enemy->translate(glm::vec3(0.0f, -1.0f, 0.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(enemy);
 
+	*/
+	/*
 	enemy = make_shared<Enemy>();
 	enemy->translate(glm::vec3(5.0f, -1.75f, 0.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
@@ -68,7 +66,7 @@ void Gameloop::run()
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(enemy);
-
+	*/
 
 	// sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
@@ -94,11 +92,7 @@ void Gameloop::run()
 
 		// check if any events were triggered:
 		glfwPollEvents();
-		do_movement(player, enemy);
-
-		// clear color and depth buffers:
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		do_movement();
 
 		/*
 		* Update objects:
@@ -111,7 +105,7 @@ void Gameloop::run()
 
 
 		// transformation matrices:
-		glm::mat4 projection = glm::perspective(camera.zoom, (float)display->width / (float)display->height, 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(45.0f, (float)display->width / (float)display->height, 0.1f, 100.0f);
 		glm::mat4 view = camera.getViewMatrix();
 
 		/*
@@ -156,11 +150,10 @@ void Gameloop::run()
 			if (sceneObjects[i] != nullptr) {
 				sceneObjects[i]->draw(&view, &projection, &camera, &lightSources);
 			}
-		}		
+		}
 
 		//should draw HUD, doesn't work
 		drawHUD();
-
 
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
@@ -223,17 +216,17 @@ void Gameloop::drawHUDelements() {
 }
 
 
-void Gameloop::do_movement(shared_ptr<SceneObject> player, shared_ptr<SceneObject> enemy)
+void Gameloop::do_movement()
 {
 	// player controls:
 	if (keys[GLFW_KEY_W])
-		player->move(Player::FORWARD, deltaTime);
+		player->movePosition(FORWARD, deltaTime);
 	if (keys[GLFW_KEY_S])
-		player->move(Player::BACKWARD, deltaTime);
+		player->movePosition(BACKWARD, deltaTime);
 	if (keys[GLFW_KEY_A])
-		player->move(Player::LEFT, deltaTime);
+		player->movePosition(LEFT, deltaTime);
 	if (keys[GLFW_KEY_D])
-		player->move(Player::RIGHT, deltaTime);
+		player->movePosition(RIGHT, deltaTime);
 }
 
 void Gameloop::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
@@ -267,13 +260,5 @@ void Gameloop::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	this->lastX = xpos;
 	this->lastY = ypos;
 
-	this->camera.processMouseMovement(xoffset, yoffset);
+	this->player->moveView(xoffset, yoffset);
 }
-
-void Gameloop::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	this->camera.processMouseScroll(yoffset);
-}
-
-
-

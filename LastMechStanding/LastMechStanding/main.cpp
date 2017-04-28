@@ -20,7 +20,6 @@ void showFatalErrorMessage(string message);
 // input callbacks:
 void key_callback(GLFWwindow * window, int key, int scancode, int action, int mode);
 void mouse_callback(GLFWwindow * window, double xpos, double ypos);
-void scroll_callback(GLFWwindow * window, double xoffset, double yoffset);
 
 
 /*
@@ -77,10 +76,9 @@ int main(int argc, char** argv)
 	// create gameloop object:
 	gameloop = make_unique<Gameloop>(display.get());
 
-	// set key, cursor and scrollwheel callbacks:
+	// set key and cursor callbacks:
 	glfwSetKeyCallback(display->window, key_callback);
 	glfwSetCursorPosCallback(display->window, mouse_callback);
-	glfwSetScrollCallback(display->window, scroll_callback);
 
 	// start gameloop:
 	gameloop->run();
@@ -114,7 +112,4 @@ void key_callback(GLFWwindow * window, int key, int scancode, int action, int mo
 }
 void mouse_callback(GLFWwindow * window, double xpos, double ypos) {
 	gameloop->mouse_callback(window, xpos, ypos);
-}
-void scroll_callback(GLFWwindow * window, double xoffset, double yoffset) {
-	gameloop->scroll_callback(window, xoffset, yoffset);
 }
