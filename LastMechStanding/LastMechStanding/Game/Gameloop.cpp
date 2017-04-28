@@ -117,6 +117,37 @@ void Gameloop::run()
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		for (GLuint i = 0; i < sceneObjects.size(); i++) {
+			if (sceneObjects[i] != nullptr) {
+				sceneObjects[i]->drawPicking(&view, &projection, &camera, i);
+			}
+		}
+
+		glFlush();
+		glFinish();
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		unsigned char data[4];
+		glReadPixels(display->width / 2, display->height / 2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		int pickedID =
+			data[0] +
+			data[1] * 256 +
+			data[2] * 256 * 256;
+		if (pickedID == 16777215) {
+			cout << "background" << endl;
+		}
+		else {
+			std::ostringstream oss; // C++ strings suck
+			cout << "mesh " << pickedID << endl;
+		}
+		
+		/*
+		* Draw picking colors:
+		*/
+		// clear color and depth buffers:
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
