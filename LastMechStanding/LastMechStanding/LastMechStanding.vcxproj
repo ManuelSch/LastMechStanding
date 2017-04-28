@@ -173,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="Scene\SceneObjects\Enemy.h" />
     <ClInclude Include="Scene\LightSource.h" />
+    <ClInclude Include="Scene\SceneObjects\Map\Map.h" />
     <ClInclude Include="Scene\SceneObjects\Player.h" />
     <ClInclude Include="Scene\SceneObjects\SceneObject.h" />
     <ClInclude Include="Scene\Camera.h" />
@@ -191,6 +192,7 @@
   <ItemGroup>
     <ClCompile Include="Scene\SceneObjects\Enemy.cpp" />
     <ClCompile Include="Scene\LightSource.cpp" />
+    <ClCompile Include="Scene\SceneObjects\Map\Map.cpp" />
     <ClCompile Include="Scene\SceneObjects\Player.cpp" />
     <ClCompile Include="Scene\SceneObjects\SceneObject.cpp" />
     <ClCompile Include="Scene\Camera.cpp" />

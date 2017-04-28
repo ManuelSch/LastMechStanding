@@ -1,11 +1,11 @@
 #pragma once
 
 #include "..\..\commonHeader.h"
-#include "..\SceneObject.h"
+#include "Map.h"
 
-#ifdef SCENE_OBJECT
+#ifdef MAP
 
-class Floor : public SceneObject 
+class Floor : public Map
 {
 public:
 	Floor();

@@ -48,6 +48,6 @@ private:
 	vector<shared_ptr<LightSource>> lightSources;
 
 	// moves the camera positions based on user input
-	void do_movement(shared_ptr<SceneObject> player, shared_ptr<SceneObject> enemy);
+	void do_movement(shared_ptr<Player> player, shared_ptr<Enemy> enemy);
 };
 

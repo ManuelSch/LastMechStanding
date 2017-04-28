@@ -1,6 +1,6 @@
 #include "Floor.h"
 
-#include "../LightSource.h"
+#include "../../LightSource.h"
 
 Floor::Floor() {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");

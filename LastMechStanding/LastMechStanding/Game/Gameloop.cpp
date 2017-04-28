@@ -28,16 +28,16 @@ Gameloop::~Gameloop()
 
 void Gameloop::run()
 {
-	shared_ptr<SceneObject> player;
-	shared_ptr<SceneObject> enemy;
-	shared_ptr<SceneObject> floor;
+	shared_ptr<Player> player;
+	shared_ptr<Enemy> enemy;
+	shared_ptr<Floor> floor;
 
 
 	//floor:
-	floor = make_shared<Floor>();
-	floor->translate(glm::vec3(0.0f, -2.0f, 0.0f));
-	floor->scale(glm::vec3(6.0f, 0.01f, 3.0f));
-	sceneObjects.push_back(floor);
+	//floor = make_shared<Floor>();
+	//floor->translate(glm::vec3(0.0f, -2.0f, 0.0f));
+	//floor->scale(glm::vec3(6.0f, 0.01f, 3.0f));
+	//sceneObjects.push_back(floor); 
 
 	
 	player = make_shared<Player>();
@@ -219,7 +219,7 @@ void Gameloop::drawHUDelements() {
 }
 
 
-void Gameloop::do_movement(shared_ptr<SceneObject> player, shared_ptr<SceneObject> enemy)
+void Gameloop::do_movement(shared_ptr<Player> player, shared_ptr<Enemy> enemy)
 {
 	// player controls:
 	if (keys[GLFW_KEY_W])
