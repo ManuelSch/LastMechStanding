@@ -6,8 +6,10 @@ Player::Player(Camera* camera) : camera(camera)
 	this->pickingShader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->model = Model("Resources/Models/Player/Player.obj");
 
-	movementSpeed = 7;
-	mouseSensitivity = 0.25f;
+	movementSpeed = 5;
+	mouseSensitivity = 0.2f;
+
+	this->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 
 	camera->updateCameraVectors(position, angle);
 }

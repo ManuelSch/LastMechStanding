@@ -12,6 +12,10 @@ public:
 	virtual ~Enemy();
 
 	virtual void update(float deltaTime);
+
+	virtual void onClick();
+
+	GLfloat healthPoints;
 };
 
 #endif

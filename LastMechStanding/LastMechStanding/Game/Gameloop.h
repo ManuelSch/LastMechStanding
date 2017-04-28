@@ -22,8 +22,9 @@ public:
 	void run();
 
 	// input callbacks:
-	void key_callback(GLFWwindow * window, int key, int scancode, int action, int mode);
-	void mouse_callback(GLFWwindow * window, double xpos, double ypos);
+	void keyboardCallback(GLFWwindow * window, int key, int scancode, int action, int mode);
+	void mouseCallback(GLFWwindow * window, double xpos, double ypos);
+	void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
 	void drawHUD();
 	void drawHUDelements();
@@ -39,6 +40,7 @@ private:
 	// camera:
 	Camera camera;
 	bool keys[1024];			// keyboard key IDs
+	bool mouseButtons[8];		// mouse button IDs
 	GLfloat lastX, lastY;		// cursor position in the last frame
 	bool firstMouse = true;		// so the view doesn't jump when the cursor enters the window
 
@@ -46,7 +48,8 @@ private:
 	vector<shared_ptr<SceneObject>> sceneObjects;
 	vector<shared_ptr<LightSource>> lightSources;
 
-	// moves the camera positions based on user input
-	void do_movement();
+	// moves the player position based on the user input
+	void processKeyboardInput();
+	void processMouseButtonInput(shared_ptr<SceneObject> pickedObject);
 };
 

@@ -8,6 +8,9 @@ Gameloop::Gameloop(Display* _display) : display(_display), camera(glm::vec3(0.0f
 	for (GLuint i = 0; i < 1024; i++) {
 		keys[i] = false;
 	}
+	for (GLuint i = 0; i < 8; i++) {
+		mouseButtons[i] = false;
+	}
 
 	// set initial cursor position:
 	lastX = display->width / 2.0;
@@ -32,22 +35,15 @@ void Gameloop::run()
 	shared_ptr<Arena> arena;
 
 	player = make_shared<Player>(&camera);
-	//player->translate(glm::vec3(0.0f, 0.0f, 0.0f));
-	player->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	sceneObjects.push_back(player);
 
 	arena = make_shared<Arena>();
 	sceneObjects.push_back(arena);
 
-	/*
 	enemy = make_shared<Enemy>();
 	enemy->translate(glm::vec3(2.0f, 0.0f, 0.0f));
-	enemy->translate(glm::vec3(0.0f, -1.0f, 0.0f));
-	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
-	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(enemy);
 
-	*/
 	/*
 	enemy = make_shared<Enemy>();
 	enemy->translate(glm::vec3(5.0f, -1.75f, 0.0f));
@@ -75,7 +71,10 @@ void Gameloop::run()
 	sunLight->diffuse = glm::vec3(0.4f, 0.4f, 0.4f);
 	sunLight->specular = glm::vec3(0.5f, 0.5f, 0.5f);
 	lightSources.push_back(sunLight);
-	
+
+
+	// projection matrix:
+	glm::mat4 projection = glm::perspective(45.0f, (float)display->width / (float)display->height, 0.1f, 100.0f);
 
 
 	// frame independency:
@@ -92,20 +91,9 @@ void Gameloop::run()
 
 		// check if any events were triggered:
 		glfwPollEvents();
-		do_movement();
-
-		/*
-		* Update objects:
-		*/
-		for (GLuint i = 0; i < sceneObjects.size(); i++) {
-			if (sceneObjects[i] != nullptr) {
-				sceneObjects[i]->update(deltaTime);
-			}
-		}
-
+		processKeyboardInput();
 
 		// transformation matrices:
-		glm::mat4 projection = glm::perspective(45.0f, (float)display->width / (float)display->height, 0.1f, 100.0f);
 		glm::mat4 view = camera.getViewMatrix();
 
 		/*
@@ -135,9 +123,22 @@ void Gameloop::run()
 			cout << "background" << endl;
 		}
 		else {
-			std::ostringstream oss; // C++ strings suck
 			cout << "mesh " << pickedID << endl;
+			processMouseButtonInput(sceneObjects[pickedID]);
 		}
+
+
+
+
+		/*
+		* Update objects:
+		*/
+		for (GLuint i = 0; i < sceneObjects.size(); i++) {
+			if (sceneObjects[i] != nullptr) {
+				sceneObjects[i]->update(deltaTime);
+			}
+		}
+
 		
 		/*
 		* Draw objects:
@@ -216,20 +217,32 @@ void Gameloop::drawHUDelements() {
 }
 
 
-void Gameloop::do_movement()
+void Gameloop::processKeyboardInput()
 {
 	// player controls:
-	if (keys[GLFW_KEY_W])
+	if (keys[GLFW_KEY_W]) {
 		player->movePosition(FORWARD, deltaTime);
-	if (keys[GLFW_KEY_S])
+	}
+	if (keys[GLFW_KEY_S]) {
 		player->movePosition(BACKWARD, deltaTime);
-	if (keys[GLFW_KEY_A])
+	}
+	if (keys[GLFW_KEY_A]) {
 		player->movePosition(LEFT, deltaTime);
-	if (keys[GLFW_KEY_D])
+	}
+	if (keys[GLFW_KEY_D]) {
 		player->movePosition(RIGHT, deltaTime);
+	}
 }
 
-void Gameloop::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+void Gameloop::processMouseButtonInput(shared_ptr<SceneObject> pickedObject)
+{
+	if (mouseButtons[GLFW_MOUSE_BUTTON_LEFT]) {
+		pickedObject->onClick();
+		mouseButtons[GLFW_MOUSE_BUTTON_LEFT] = false;
+	}
+}
+
+void Gameloop::keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	// esc key -> close window:
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
@@ -245,7 +258,19 @@ void Gameloop::key_callback(GLFWwindow* window, int key, int scancode, int actio
 	}
 }
 
-void Gameloop::mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void Gameloop::mouseButtonCallback(GLFWwindow * window, int button, int action, int mods)
+{
+
+	if (button >= 0 && button < 8)
+	{
+		if (action == GLFW_PRESS)
+			mouseButtons[button] = true;
+		else if (action == GLFW_RELEASE)
+			mouseButtons[button] = false;
+	}
+}
+
+void Gameloop::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	if (this->firstMouse)
 	{

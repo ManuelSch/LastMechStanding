@@ -6,8 +6,6 @@
 // Default camera values
 const GLfloat YAW = -90.0f;
 const GLfloat PITCH = 0.0f;
-const GLfloat SPEED = 3.0f;
-const GLfloat SENSITIVTY = 0.25f;
 
 // An abstract camera class that processes input and calculates the corresponding Eular Angles, Vectors and Matrices for use in OpenGL
 class Camera
@@ -23,10 +21,6 @@ public:
 
 	// eular angles:
 	GLfloat yaw, pitch;
-
-	// camera options:
-	GLfloat movementSpeed;
-	GLfloat mouseSensitivity;
 
 	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw = YAW, GLfloat pitch = PITCH);
 	glm::mat4 getViewMatrix();
