@@ -154,6 +154,8 @@
   <ItemGroup>
     <None Include="Resources\Shaders\basic.frag" />
     <None Include="Resources\Shaders\basic.vert" />
+    <None Include="Resources\Shaders\color_picking.frag" />
+    <None Include="Resources\Shaders\color_picking.vert" />
     <None Include="Resources\Shaders\lighting.frag" />
     <None Include="Resources\Shaders\lighting.vert" />
     <None Include="Resources\Shaders\lamp.frag" />
@@ -169,11 +171,10 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scene\Enemy.h" />
+    <ClInclude Include="Scene\SceneObjects\Enemy.h" />
     <ClInclude Include="Scene\LightSource.h" />
-    <ClInclude Include="Scene\Character.h" />
-    <ClInclude Include="Scene\Map\Floor.h" />
-    <ClInclude Include="Scene\SceneObject.h" />
+    <ClInclude Include="Scene\SceneObjects\Player.h" />
+    <ClInclude Include="Scene\SceneObjects\SceneObject.h" />
     <ClInclude Include="Scene\Camera.h" />
     <ClInclude Include="commonHeader.h" />
     <ClInclude Include="Game\Display.h" />
@@ -188,11 +189,10 @@
     <ClInclude Include="Util\Shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Scene\Enemy.cpp" />
+    <ClCompile Include="Scene\SceneObjects\Enemy.cpp" />
     <ClCompile Include="Scene\LightSource.cpp" />
-    <ClCompile Include="Scene\Character.cpp" />
-    <ClCompile Include="Scene\Map\Floor.cpp" />
-    <ClCompile Include="Scene\SceneObject.cpp" />
+    <ClCompile Include="Scene\SceneObjects\Player.cpp" />
+    <ClCompile Include="Scene\SceneObjects\SceneObject.cpp" />
     <ClCompile Include="Scene\Camera.cpp" />
     <ClCompile Include="Game\Display.cpp" />
     <ClCompile Include="External\include\SOIL\image_DXT.c" />

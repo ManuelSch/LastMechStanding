@@ -1,24 +1,19 @@
 #pragma once
 
-#include "..\commonHeader.h"
+#include "..\..\commonHeader.h"
 #include "SceneObject.h"
 
 #ifdef SCENE_OBJECT
 
-class Character : public SceneObject
+class Enemy : public SceneObject
 {
 public:
-	Character();
-	virtual ~Character();
+	Enemy();
+	virtual ~Enemy();
 
 	virtual void update(float deltaTime);
 	virtual void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources);
-
-	void hitCharacter(int damage);
-
-
-private:
-	int health;
+	virtual void drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID);
 };
 
 #endif
