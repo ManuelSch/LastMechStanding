@@ -1,12 +1,17 @@
 #include "Player.h"
 
-Player::Player()
+Player::Player(Camera* camera) : camera(camera)
 {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	this->pickingShader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
-	this->model = Model("Resources/Models/CubePlayer/cubePlayer.dae");
+	this->model = Model("Resources/Models/Player/Player.obj");
 
 	movementSpeed = 5;
+	mouseSensitivity = 0.2f;
+
+	this->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+
+	camera->updateCameraVectors(position, angle);
 }
 
 Player::~Player()
@@ -17,67 +22,44 @@ void Player::update(float deltaTime)
 {
 }
 
-void Player::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources)
-{
-	shader->useShader();
-
-	// send light parameters to the shader:
-	for (GLuint i = 0; i < lightSources->size(); i++)
-	{
-		if ((*lightSources)[i]->type == LightSource::DIRECTIONAL) {
-			glUniform3f(shader->getUniformLocation("dirLight.direction"), (*lightSources)[i]->direction.x, (*lightSources)[i]->direction.y, (*lightSources)[i]->direction.z);
-			glUniform3f(shader->getUniformLocation("dirLight.ambient"), (*lightSources)[i]->ambient.x, (*lightSources)[i]->ambient.y, (*lightSources)[i]->ambient.z);
-			glUniform3f(shader->getUniformLocation("dirLight.diffuse"), (*lightSources)[i]->diffuse.x, (*lightSources)[i]->diffuse.y, (*lightSources)[i]->diffuse.z);
-			glUniform3f(shader->getUniformLocation("dirLight.specular"), (*lightSources)[i]->specular.x, (*lightSources)[i]->specular.y, (*lightSources)[i]->specular.z);
-		}
-		else if ((*lightSources)[i]->type == LightSource::POINT) {
-			// TODO
-		}
-	}
-
-	// send viewer position to the shader:
-	glUniform3f(shader->getUniformLocation("viewPos"), camera->position.x, camera->position.y, camera->position.z);
-
-	// apply view and projection matrices:
-	glUniformMatrix4fv(shader->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(*viewMatrix));
-	glUniformMatrix4fv(shader->getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(*projectionMatrix));
-
-	// draw the loaded model:
-	glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-	this->model.draw(shader.get());
-}
-
-void Player::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID)
-{
-	pickingShader->useShader();
-
-	// calculate picking ID of the object:
-	GLint r = (pickingID & 0x000000FF) >> 0;
-	GLint g = (pickingID & 0x0000FF00) >> 8;
-	GLint b = (pickingID & 0x00FF0000) >> 16;
-	glUniform4f(pickingShader->getUniformLocation("pickingColor"), r/255.0f, g/255.0f, b/255.0f, 1.0f);
-
-	// send viewer position to the shader:
-	glUniform3f(pickingShader->getUniformLocation("viewPos"), camera->position.x, camera->position.y, camera->position.z);
-
-	// apply view and projection matrices:
-	glUniformMatrix4fv(pickingShader->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(*viewMatrix));
-	glUniformMatrix4fv(pickingShader->getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(*projectionMatrix));
-
-	// draw the loaded model:
-	glUniformMatrix4fv(pickingShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-	this->model.draw(pickingShader.get());
-}
-
-void Player::move(MovementDirection direction, GLfloat deltaTime)
+void Player::movePosition(Movement direction, GLfloat deltaTime)
 {
 	GLfloat velocity = this->movementSpeed * deltaTime;
-	if (direction == FORWARD)
-		this->translate(glm::vec3(movementSpeed*deltaTime, 0.0f, 0.0f));
-	if (direction == BACKWARD)
-		this->translate(glm::vec3(-movementSpeed*deltaTime, 0.0f, 0.0f));
-	if (direction == LEFT)
-		this->translate(glm::vec3(0.0f, 0.0f, -movementSpeed*deltaTime));
-	if (direction == RIGHT)
-		this->translate(glm::vec3(0.0f, 0.0f, movementSpeed*deltaTime));
+	switch (direction) {
+	case FORWARD:
+		this->translate(glm::rotate(glm::vec3(velocity, 0.0f, 0.0f), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
+		break;
+	case BACKWARD:
+		this->translate(glm::rotate(glm::vec3(-velocity, 0.0f, 0.0f), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
+		break;
+	case LEFT:
+		this->translate(glm::rotate(glm::vec3(0.0f, 0.0f, -velocity), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
+		break;
+	case RIGHT:
+		this->translate(glm::rotate(glm::vec3(0.0f, 0.0f, velocity), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
+		break;
+	}
+
+	camera->updateCameraVectors(position, angle);
+}
+
+void Player::moveView(GLfloat xOffset, GLfloat yOffset)
+{
+	// apply mouse sensitivity:
+	xOffset *= this->mouseSensitivity;
+	yOffset *= this->mouseSensitivity;
+
+	this->rotate(xOffset, glm::vec3(0.0f, -1.0f, 0.0f));
+	this->rotate(yOffset, glm::vec3(0.0f, 0.0f, 1.0f));
+	
+	// constraint so player can't look further up or down than 90°:
+	if (true)
+	{
+		if (this->angle.z > 89.0f)
+			this->angle.z = 89.0f;
+		if (this->angle.z < -89.0f)
+			this->angle.z = -89.0f;
+	}
+
+	camera->updateCameraVectors(position, angle);
 }

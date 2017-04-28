@@ -8,6 +8,9 @@ Gameloop::Gameloop(Display* _display) : display(_display), camera(glm::vec3(0.0f
 	for (GLuint i = 0; i < 1024; i++) {
 		keys[i] = false;
 	}
+	for (GLuint i = 0; i < 8; i++) {
+		mouseButtons[i] = false;
+	}
 
 	// set initial cursor position:
 	lastX = display->width / 2.0;
@@ -28,29 +31,20 @@ Gameloop::~Gameloop()
 
 void Gameloop::run()
 {
-	shared_ptr<Player> player;
 	shared_ptr<Enemy> enemy;
-	shared_ptr<Floor> floor;
+	shared_ptr<Arena> arena;
 
-
-	//floor:
-	floor = make_shared<Floor>();
-	floor->translate(glm::vec3(0.0f, -2.0f, 0.0f));
-	floor->scale(glm::vec3(6.0f, 0.01f, 3.0f));
-	mapObjects.push_back(floor); 
-
-	
-	player = make_shared<Player>();
-	player->translate(glm::vec3(0.0f, -1.75f, 0.0f));
-	player->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	player = make_shared<Player>(&camera);
 	sceneObjects.push_back(player);
 
+	arena = make_shared<Arena>();
+	sceneObjects.push_back(arena);
+
 	enemy = make_shared<Enemy>();
-	enemy->translate(glm::vec3(2.0f, -1.75f, 0.0f));
-	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
-	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
+	enemy->translate(glm::vec3(2.0f, 0.0f, 0.0f));
 	sceneObjects.push_back(enemy);
 
+	/*
 	enemy = make_shared<Enemy>();
 	enemy->translate(glm::vec3(5.0f, -1.75f, 0.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
@@ -68,7 +62,7 @@ void Gameloop::run()
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(enemy);
-
+	*/
 
 	// sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
@@ -77,7 +71,10 @@ void Gameloop::run()
 	sunLight->diffuse = glm::vec3(0.4f, 0.4f, 0.4f);
 	sunLight->specular = glm::vec3(0.5f, 0.5f, 0.5f);
 	lightSources.push_back(sunLight);
-	
+
+
+	// projection matrix:
+	glm::mat4 projection = glm::perspective(45.0f, (float)display->width / (float)display->height, 0.1f, 100.0f);
 
 
 	// frame independency:
@@ -94,20 +91,9 @@ void Gameloop::run()
 
 		// check if any events were triggered:
 		glfwPollEvents();
-		do_movement(player, enemy);
-
-		/*
-		* Update objects:
-		*/
-		for (GLuint i = 0; i < sceneObjects.size(); i++) {
-			if (sceneObjects[i] != nullptr) {
-				sceneObjects[i]->update(deltaTime);
-			}
-		}
-
+		processKeyboardInput();
 
 		// transformation matrices:
-		glm::mat4 projection = glm::perspective(camera.zoom, (float)display->width / (float)display->height, 0.1f, 100.0f);
 		glm::mat4 view = camera.getViewMatrix();
 
 		/*
@@ -137,42 +123,22 @@ void Gameloop::run()
 			cout << "background" << endl;
 		}
 		else {
-			std::ostringstream oss; // C++ strings suck
 			cout << "mesh " << pickedID << endl;
+			processMouseButtonInput(sceneObjects[pickedID]);
 		}
-		
+
+
+
+
 		/*
-		* Draw picking colors:
+		* Update objects:
 		*/
-		// clear color and depth buffers:
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
-				sceneObjects[i]->drawPicking(&view, &projection, &camera, i);
+				sceneObjects[i]->update(deltaTime);
 			}
 		}
 
-		glFlush();
-		glFinish();
-
-
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		unsigned char data[4];
-		glReadPixels(display->width / 2, display->height / 2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		int pickedID =
-			data[0] +
-			data[1] * 256 +
-			data[2] * 256 * 256;
-		if (pickedID == 16777215) {
-			cout << "background" << endl;
-		}
-		else {
-			std::ostringstream oss; // C++ strings suck
-			cout << "mesh " << pickedID << endl;
-		}
 		
 		/*
 		* Draw objects:
@@ -180,23 +146,15 @@ void Gameloop::run()
 		// clear color and depth buffers:
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glLoadIdentity();
 
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
 				sceneObjects[i]->draw(&view, &projection, &camera, &lightSources);
 			}
-		}	
-
-		for (GLuint i = 0; i < mapObjects.size(); i++) {
-			if (mapObjects[i] != nullptr) {
-				mapObjects[i]->draw(&view, &projection, &camera, &lightSources);
-			}
 		}
 
 		//should draw HUD, doesn't work
 		drawHUD();
-
 
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
@@ -221,7 +179,7 @@ void Gameloop::drawHUD() {
 	//disabel depth-testing
 	glDisable(GL_DEPTH_TEST);
 
-	//Draw HUD elements
+
 	glColor3ub(240, 240, 240);//white
 	glLineWidth(2.0);
 	glBegin(GL_LINES);
@@ -259,20 +217,32 @@ void Gameloop::drawHUDelements() {
 }
 
 
-void Gameloop::do_movement(shared_ptr<Player> player, shared_ptr<Enemy> enemy)
+void Gameloop::processKeyboardInput()
 {
 	// player controls:
-	if (keys[GLFW_KEY_W])
-		player->move(Player::FORWARD, deltaTime);
-	if (keys[GLFW_KEY_S])
-		player->move(Player::BACKWARD, deltaTime);
-	if (keys[GLFW_KEY_A])
-		player->move(Player::LEFT, deltaTime);
-	if (keys[GLFW_KEY_D])
-		player->move(Player::RIGHT, deltaTime);
+	if (keys[GLFW_KEY_W]) {
+		player->movePosition(FORWARD, deltaTime);
+	}
+	if (keys[GLFW_KEY_S]) {
+		player->movePosition(BACKWARD, deltaTime);
+	}
+	if (keys[GLFW_KEY_A]) {
+		player->movePosition(LEFT, deltaTime);
+	}
+	if (keys[GLFW_KEY_D]) {
+		player->movePosition(RIGHT, deltaTime);
+	}
 }
 
-void Gameloop::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+void Gameloop::processMouseButtonInput(shared_ptr<SceneObject> pickedObject)
+{
+	if (mouseButtons[GLFW_MOUSE_BUTTON_LEFT]) {
+		pickedObject->onClick();
+		mouseButtons[GLFW_MOUSE_BUTTON_LEFT] = false;
+	}
+}
+
+void Gameloop::keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	// esc key -> close window:
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
@@ -288,7 +258,19 @@ void Gameloop::key_callback(GLFWwindow* window, int key, int scancode, int actio
 	}
 }
 
-void Gameloop::mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void Gameloop::mouseButtonCallback(GLFWwindow * window, int button, int action, int mods)
+{
+
+	if (button >= 0 && button < 8)
+	{
+		if (action == GLFW_PRESS)
+			mouseButtons[button] = true;
+		else if (action == GLFW_RELEASE)
+			mouseButtons[button] = false;
+	}
+}
+
+void Gameloop::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	if (this->firstMouse)
 	{
@@ -303,13 +285,5 @@ void Gameloop::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	this->lastX = xpos;
 	this->lastY = ypos;
 
-	this->camera.processMouseMovement(xoffset, yoffset);
+	this->player->moveView(xoffset, yoffset);
 }
-
-void Gameloop::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	this->camera.processMouseScroll(yoffset);
-}
-
-
-
