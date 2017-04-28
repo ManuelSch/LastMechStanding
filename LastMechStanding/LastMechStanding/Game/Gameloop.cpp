@@ -28,10 +28,19 @@ Gameloop::~Gameloop()
 
 void Gameloop::run()
 {
-	shared_ptr<Player> player;
-	shared_ptr<Enemy> enemy;
+	shared_ptr<SceneObject> player;
+	shared_ptr<SceneObject> enemy;
+	shared_ptr<SceneObject> floor;
 
-	player = make_shared<Player>();
+
+	//floor:
+	floor = make_shared<Floor>();
+	floor->translate(glm::vec3(0.0f, -2.0f, 0.0f));
+	floor->scale(glm::vec3(6.0f, 0.01f, 3.0f));
+	sceneObjects.push_back(floor);
+
+	// first cube:
+	player = make_shared<Character>();
 	player->translate(glm::vec3(0.0f, -1.75f, 0.0f));
 	player->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	sceneObjects.push_back(player);
@@ -85,7 +94,11 @@ void Gameloop::run()
 
 		// check if any events were triggered:
 		glfwPollEvents();
-		do_movement(player);
+		do_movement(player, enemy);
+
+		// clear color and depth buffers:
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		/*
 		* Update objects:
@@ -145,13 +158,72 @@ void Gameloop::run()
 			}
 		}		
 
+		//should draw HUD, doesn't work
+		drawHUD();
+
+
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
 	}
 }
 
+void Gameloop::drawHUD() {
 
-void Gameloop::do_movement(shared_ptr<Player> player)
+	//switch to projection matrix
+	glMatrixMode(GL_PROJECTION);
+	//push on new Matrix
+	glPushMatrix();
+	//reset current matrix
+	glLoadIdentity();
+	//pas in 2D Ortho screen coordinates
+	glOrtho(0, display->width, display->height, 0, -1, 1);
+	//switch to model view
+	glMatrixMode(GL_MODELVIEW);
+	//initialize current model view matrix
+	glLoadIdentity();
+
+	//disabel depth-testing
+	glDisable(GL_DEPTH_TEST);
+
+
+	glColor3ub(240, 240, 240);//white
+	glLineWidth(2.0);
+	glBegin(GL_LINES);
+	//horizontal line
+	glVertex2i(display->width / 2 - 7, display->height / 2);
+	glVertex2i(display->width / 2 + 7, display->height / 2);
+	glEnd();
+	//vertical line
+	glBegin(GL_LINES);
+	glVertex2i(display->width / 2, display->height / 2 + 7);
+	glVertex2i(display->width / 2, display->height / 2 - 7);
+	glEnd();
+
+	//Enable depth-testing
+	glEnable(GL_DEPTH_TEST);
+
+	//enter into projection matrix mode
+	glMatrixMode(GL_PROJECTION);
+
+	//pop off last matrix
+	glPopMatrix();
+
+	//back to model view matrix in 3D
+	glMatrixMode(GL_MODELVIEW);
+
+}
+
+void Gameloop::drawHUDelements() {
+	glLineWidth(2.5);
+	glColor3f(1.0, 0.0, 0.0);
+	glBegin(GL_LINES);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(15, 0, 0);
+	glEnd(); // Render now
+}
+
+
+void Gameloop::do_movement(shared_ptr<SceneObject> player, shared_ptr<SceneObject> enemy)
 {
 	// player controls:
 	if (keys[GLFW_KEY_W])
@@ -202,3 +274,6 @@ void Gameloop::scroll_callback(GLFWwindow* window, double xoffset, double yoffse
 {
 	this->camera.processMouseScroll(yoffset);
 }
+
+
+

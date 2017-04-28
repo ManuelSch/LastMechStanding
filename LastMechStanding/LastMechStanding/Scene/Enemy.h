@@ -1,7 +1,8 @@
 #pragma once
 
-#include "..\..\commonHeader.h"
+#include "..\commonHeader.h"
 #include "SceneObject.h"
+#include "Character.h"
 
 #ifdef SCENE_OBJECT
 
@@ -13,7 +14,17 @@ public:
 
 	virtual void update(float deltaTime);
 	virtual void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources);
-	virtual void drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID);
+
+	void move();
+	void hitEnemy(int damage);
+
+private:
+
+	int health;
+	glm::vec3 movedirection;
+
+	int moveSpeed;
+
 };
 
 #endif

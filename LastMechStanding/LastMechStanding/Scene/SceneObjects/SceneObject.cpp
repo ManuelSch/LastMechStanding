@@ -25,3 +25,4 @@ void SceneObject::scale(glm::vec3 transformation)
 {
 	this->modelMatrix = glm::scale(this->modelMatrix, transformation);
 }
+
