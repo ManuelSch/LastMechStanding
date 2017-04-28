@@ -1,15 +1,14 @@
 #include "Floor.h"
 
-#include "../../LightSource.h"
-
-Floor::Floor() {
+Floor::Floor()
+{
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
+	this->pickingShader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->model = Model("Resources/Models/Map/floor.dae");
-
 }
 
-Floor::~Floor() {
-
+Floor::~Floor()
+{
 }
 
 void Floor::update(float deltaTime)
@@ -45,3 +44,4 @@ void Floor::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* cam
 	glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	this->model.draw(shader.get());
 }
+

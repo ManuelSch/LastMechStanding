@@ -9,7 +9,6 @@
 #include "..\Scene\Camera.h"
 #include "..\Scene\SceneObjects\Player.h"
 #include "..\Scene\SceneObjects\Enemy.h"
-//map files
 #include "..\Scene\SceneObjects\Map\Floor.h"
 #include "..\Scene\LightSource.h"
 
@@ -45,6 +44,7 @@ private:
 
 	// scene objects:
 	vector<shared_ptr<SceneObject>> sceneObjects;
+	vector<shared_ptr<Map>> mapObjects;
 	vector<shared_ptr<LightSource>> lightSources;
 
 	// moves the camera positions based on user input

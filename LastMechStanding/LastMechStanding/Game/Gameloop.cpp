@@ -34,10 +34,10 @@ void Gameloop::run()
 
 
 	//floor:
-	//floor = make_shared<Floor>();
-	//floor->translate(glm::vec3(0.0f, -2.0f, 0.0f));
-	//floor->scale(glm::vec3(6.0f, 0.01f, 3.0f));
-	//sceneObjects.push_back(floor); 
+	floor = make_shared<Floor>();
+	floor->translate(glm::vec3(0.0f, -2.0f, 0.0f));
+	floor->scale(glm::vec3(6.0f, 0.01f, 3.0f));
+	mapObjects.push_back(floor); 
 
 	
 	player = make_shared<Player>();
@@ -117,6 +117,7 @@ void Gameloop::run()
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
 				sceneObjects[i]->drawPicking(&view, &projection, &camera, i);
@@ -125,6 +126,7 @@ void Gameloop::run()
 
 		glFlush();
 		glFinish();
+
 
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		unsigned char data[4];
@@ -147,12 +149,19 @@ void Gameloop::run()
 		// clear color and depth buffers:
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glLoadIdentity();
 
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
 				sceneObjects[i]->draw(&view, &projection, &camera, &lightSources);
 			}
-		}		
+		}	
+
+		for (GLuint i = 0; i < mapObjects.size(); i++) {
+			if (mapObjects[i] != nullptr) {
+				mapObjects[i]->draw(&view, &projection, &camera, &lightSources);
+			}
+		}
 
 		//should draw HUD, doesn't work
 		drawHUD();
@@ -181,7 +190,7 @@ void Gameloop::drawHUD() {
 	//disabel depth-testing
 	glDisable(GL_DEPTH_TEST);
 
-
+	//Draw HUD elements
 	glColor3ub(240, 240, 240);//white
 	glLineWidth(2.0);
 	glBegin(GL_LINES);
