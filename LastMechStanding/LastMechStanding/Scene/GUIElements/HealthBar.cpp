@@ -1,8 +1,8 @@
-#include "HealthPoints.h"
+#include "HealthBar.h"
 
 
 
-HealthPoints::HealthPoints()
+HealthBar::HealthBar()
 {
 	this->position = glm::vec3(POS_X, POS_Y, POS_Z);
 	this->width = WIDTH;
@@ -22,11 +22,11 @@ HealthPoints::HealthPoints()
 	updateVertexData();
 }
 
-HealthPoints::~HealthPoints()
+HealthBar::~HealthBar()
 {
 }
 
-void HealthPoints::setHealthPointsInPercent(GLfloat percent)
+void HealthBar::setHealthPointsInPercent(GLfloat percent)
 {
 	this->height = HEIGHT * percent;
 

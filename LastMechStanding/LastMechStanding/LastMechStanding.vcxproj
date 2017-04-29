@@ -173,7 +173,7 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scene\GUIElements\HealthPoints.h" />
+    <ClInclude Include="Scene\GUIElements\HealthBar.h" />
     <ClInclude Include="Scene\GUIElements\GUIElement.h" />
     <ClInclude Include="Scene\GUI.h" />
     <ClInclude Include="Scene\SceneObjects\Arena.h" />
@@ -196,7 +196,7 @@
     <ClInclude Include="Util\Shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Scene\GUIElements\HealthPoints.cpp" />
+    <ClCompile Include="Scene\GUIElements\HealthBar.cpp" />
     <ClCompile Include="Scene\GUIElements\GUIElement.cpp" />
     <ClCompile Include="Scene\GUI.cpp" />
     <ClCompile Include="Scene\SceneObjects\Arena.cpp" />

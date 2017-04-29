@@ -5,7 +5,7 @@
 */
 
 #include "../../commonHeader.h"
-#include "./GUIElements/HealthPoints.h"
+#include "./GUIElements/HealthBar.h"
 
 class GUI
 {
@@ -13,5 +13,5 @@ public:
 	GUI();
 	~GUI();
 
-	shared_ptr<HealthPoints> healthPoints;
+	shared_ptr<HealthBar> healthBar;
 };

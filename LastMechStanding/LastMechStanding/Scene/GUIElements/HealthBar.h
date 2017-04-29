@@ -9,11 +9,12 @@
 #define WIDTH 0.03
 #define HEIGHT 0.6
 
-class HealthPoints : public GUIElement
+class HealthBar : public GUIElement
 {
 public:
-	HealthPoints();
-	~HealthPoints();
+
+	HealthBar();
+	~HealthBar();
 
 	void setHealthPointsInPercent(GLfloat percent);
 };

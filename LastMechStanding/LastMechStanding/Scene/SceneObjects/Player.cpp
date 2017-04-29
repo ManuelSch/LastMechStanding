@@ -69,5 +69,5 @@ void Player::decreaseHealthPoints(GLfloat damage)
 {
 	this->healthPoints -= damage;
 
-	this->gui->healthPoints->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
+	this->gui->healthBar->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
 }

@@ -2,7 +2,7 @@
 
 GUI::GUI()
 {
-	this->healthPoints = make_shared<HealthPoints>();
+	this->healthBar = make_shared<HealthBar>();
 }
 
 GUI::~GUI()

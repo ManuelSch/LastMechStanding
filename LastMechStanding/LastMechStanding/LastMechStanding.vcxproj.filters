@@ -97,10 +97,10 @@
     <ClInclude Include="Scene\GUIElements\GUIElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\GUIElements\HealthPoints.h">
+    <ClInclude Include="Scene\GUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\GUI.h">
+    <ClInclude Include="Scene\GUIElements\HealthBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -159,10 +159,10 @@
     <ClCompile Include="Scene\GUIElements\GUIElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\GUIElements\HealthPoints.cpp">
+    <ClCompile Include="Scene\GUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\GUI.cpp">
+    <ClCompile Include="Scene\GUIElements\HealthBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

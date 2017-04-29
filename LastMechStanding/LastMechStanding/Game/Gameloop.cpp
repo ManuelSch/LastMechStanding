@@ -159,7 +159,7 @@ void Gameloop::run()
 		//should draw HUD, doesn't work
 		drawHUD();
 
-		gui->healthPoints->draw();
+		gui->healthBar->draw();
 
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
