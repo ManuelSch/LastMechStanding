@@ -10,6 +10,7 @@
 #include "..\Scene\SceneObjects\Player.h"
 #include "..\Scene\SceneObjects\Enemy.h"
 #include "..\Scene\SceneObjects\Arena.h"
+#include "..\Scene\GUI.h"
 #include "..\Scene\LightSource.h"
 
 class Gameloop

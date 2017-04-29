@@ -1,13 +1,14 @@
 #include "Player.h"
 
-Player::Player(Camera* camera) : camera(camera)
+Player::Player(Camera* camera, shared_ptr<GUI> gui) : camera(camera), gui(gui)
 {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	this->pickingShader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->model = Model("Resources/Models/Player/Player.obj");
 
-	movementSpeed = 5;
-	mouseSensitivity = 0.2f;
+	movementSpeed = MOVEMENT_SPEED;
+	mouseSensitivity = MOUSE_SENSITIVITY;
+	healthPoints = HEALTH_POINTS_MAX;
 
 	this->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 
@@ -62,4 +63,11 @@ void Player::moveView(GLfloat xOffset, GLfloat yOffset)
 	}
 
 	camera->updateCameraVectors(position, angle);
+}
+
+void Player::decreaseHealthPoints(GLfloat damage)
+{
+	this->healthPoints -= damage;
+
+	this->gui->healthPoints->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
 }

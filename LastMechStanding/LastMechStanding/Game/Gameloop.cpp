@@ -31,10 +31,14 @@ Gameloop::~Gameloop()
 
 void Gameloop::run()
 {
+	// create GUI:
+	shared_ptr<GUI> gui = make_shared<GUI>();
+
+	// create player and enemy objects:
 	shared_ptr<Enemy> enemy;
 	shared_ptr<Arena> arena;
 
-	player = make_shared<Player>(&camera);
+	player = make_shared<Player>(&camera, gui);
 	sceneObjects.push_back(player);
 
 	arena = make_shared<Arena>();
@@ -64,7 +68,7 @@ void Gameloop::run()
 	sceneObjects.push_back(enemy);
 	*/
 
-	// sunlight:
+	// create sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
 	sunLight->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
 	sunLight->ambient = glm::vec3(0.05f, 0.05f, 0.05f);
@@ -72,7 +76,7 @@ void Gameloop::run()
 	sunLight->specular = glm::vec3(0.5f, 0.5f, 0.5f);
 	lightSources.push_back(sunLight);
 
-
+	
 	// projection matrix:
 	glm::mat4 projection = glm::perspective(45.0f, (float)display->width / (float)display->height, 0.1f, 100.0f);
 
@@ -116,10 +120,7 @@ void Gameloop::run()
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		unsigned char data[4];
 		glReadPixels(display->width / 2, display->height / 2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		int pickedID =
-			data[0] +
-			data[1] * 256 +
-			data[2] * 256 * 256;
+		int pickedID = data[0] + data[1] * 256 + data[2] * 256 * 256;
 		if (pickedID == 16777215) {
 			cout << "background" << endl;
 		}
@@ -157,6 +158,8 @@ void Gameloop::run()
 
 		//should draw HUD, doesn't work
 		drawHUD();
+
+		gui->healthPoints->draw();
 
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
@@ -269,6 +272,12 @@ void Gameloop::mouseButtonCallback(GLFWwindow * window, int button, int action, 
 			mouseButtons[button] = true;
 		else if (action == GLFW_RELEASE)
 			mouseButtons[button] = false;
+	}
+
+	// For testing purposes (decreases the players health points):
+	if (mouseButtons[GLFW_MOUSE_BUTTON_RIGHT]) {
+		player->decreaseHealthPoints(20.0f);
+		mouseButtons[GLFW_MOUSE_BUTTON_RIGHT] = false;
 	}
 }
 
