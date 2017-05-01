@@ -1,8 +1,8 @@
-#include "HealthBar.h"
+#include "Crosshair.h"
 
 
 
-HealthBar::HealthBar(GLfloat displayRatio)
+Crosshair::Crosshair(GLfloat displayRatio)
 {
 	this->displayRatio = displayRatio;
 
@@ -20,27 +20,13 @@ HealthBar::HealthBar(GLfloat displayRatio)
 	glGenBuffers(1, &EBO);
 
 	// use this method if you want to display a texture on the gui element:
-	//useTexture("Resources/Textures/container.jpg");
+	useTexture("Resources/Textures/crosshair.png");
+	this->color = glm::vec3(0.7f, 0.7f, 0.05f);
 
-	setHealthPointsInPercent(1.0f);
 	updateVertexData();
 }
 
-HealthBar::~HealthBar()
+
+Crosshair::~Crosshair()
 {
-}
-
-void HealthBar::setHealthPointsInPercent(GLfloat percent)
-{
-	this->height = HEIGHT * percent;
-
-
-	if (percent > 0.3f) {
-		this->color = glm::vec3(0.0f, 1.0f, 0.0f);
-	}
-	else {
-		this->color = glm::vec3(1.0f, 0.0f, 0.0f);
-	}
-
-	updateVertexData();
 }

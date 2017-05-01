@@ -103,6 +103,9 @@
     <ClInclude Include="Scene\GUIElements\HealthBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\GUIElements\Crosshair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -163,6 +166,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene\GUIElements\HealthBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GUIElements\Crosshair.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

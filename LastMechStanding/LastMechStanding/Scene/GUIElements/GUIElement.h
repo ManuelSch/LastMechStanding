@@ -13,9 +13,17 @@ public:
 	virtual void draw();
 
 protected:
+	enum Origin {
+		MIDDLE,
+		BOTTOM_LEFT
+	};
+
 	unique_ptr<Shader> shader;
 	GLuint VBO, VAO, EBO;
 	GLuint texture;
+
+	Origin origin;
+	GLfloat displayRatio;
 
 	// vertex data:
 	glm::vec3 position;

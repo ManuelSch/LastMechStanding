@@ -15,5 +15,7 @@ public:
 	int width, height;
 	bool fullscreen;
 	GLFWwindow* window;
+
+	GLfloat getDisplayRatio();
 };
 

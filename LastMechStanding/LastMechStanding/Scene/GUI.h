@@ -6,12 +6,18 @@
 
 #include "../../commonHeader.h"
 #include "./GUIElements/HealthBar.h"
+#include "./GUIElements/Crosshair.h"
 
 class GUI
 {
 public:
-	GUI();
+	GUI(GLfloat displayRatio);
 	~GUI();
 
 	shared_ptr<HealthBar> healthBar;
+	shared_ptr<Crosshair> crossHair;
+
+	void draw();
+
+private:
 };

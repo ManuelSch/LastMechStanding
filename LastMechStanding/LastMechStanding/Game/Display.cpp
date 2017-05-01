@@ -15,7 +15,7 @@ Display::Display(int _width, int _height, bool _fullscreen) : width(_width), hei
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// create new window:
-	this->window = glfwCreateWindow(width, height, "Last Mech Standing", nullptr, nullptr);
+	this->window = glfwCreateWindow(width, height, "Last Mech Standing", monitor, nullptr);
 	if (this->window == nullptr)
 	{
 		glfwTerminate();
@@ -34,4 +34,9 @@ Display::Display(int _width, int _height, bool _fullscreen) : width(_width), hei
 
 Display::~Display()
 {
+}
+
+GLfloat Display::getDisplayRatio()
+{
+	return (GLfloat) width / (GLfloat)height;
 }

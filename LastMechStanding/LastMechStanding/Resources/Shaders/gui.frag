@@ -13,6 +13,6 @@ void main()
 		color = texture(texture, TexCoords) * vec4(Color, 1.0f);
 	}
 	else {
-		color = vec4(Color, 1.0f);
+		color = vec4(Color, 0.5f);
 	}
 }

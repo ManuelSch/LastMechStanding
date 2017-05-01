@@ -32,7 +32,7 @@ Gameloop::~Gameloop()
 void Gameloop::run()
 {
 	// create GUI:
-	shared_ptr<GUI> gui = make_shared<GUI>();
+	shared_ptr<GUI> gui = make_shared<GUI>(display->getDisplayRatio());
 
 	// create player and enemy objects:
 	shared_ptr<Enemy> enemy;
@@ -78,7 +78,7 @@ void Gameloop::run()
 
 	
 	// projection matrix:
-	glm::mat4 projection = glm::perspective(45.0f, (float)display->width / (float)display->height, 0.1f, 100.0f);
+	glm::mat4 projection = glm::perspective(45.0f, display->getDisplayRatio(), 0.1f, 100.0f);
 
 
 	// frame independency:
@@ -159,7 +159,7 @@ void Gameloop::run()
 		//should draw HUD, doesn't work
 		drawHUD();
 
-		gui->healthBar->draw();
+		gui->draw();
 
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
