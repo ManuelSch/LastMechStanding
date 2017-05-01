@@ -15,13 +15,15 @@ public:
 
 	void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources);
 	void drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID);
-	virtual void update(float timeDelta) = 0;
+	virtual void update(GLfloat timeDelta) = 0;
 
 	virtual void onClick();
 
 	void translate(glm::vec3 transformation);
 	void rotate(GLfloat angle, glm::vec3 transformation);
 	void scale(glm::vec3 transformation);
+
+	void moveTowards(glm::vec3 target, GLfloat distance);
 
 protected:
 	unique_ptr<Shader> shader;
@@ -32,6 +34,7 @@ protected:
 
 	glm::mat4 getModelMatrix();
 
+	GLfloat calculateAngle(GLfloat x, GLfloat y, GLfloat xDest, GLfloat yDest);
 };
 
 #define SCENE_OBJECT

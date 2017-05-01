@@ -14,6 +14,6 @@ Arena::~Arena()
 {
 }
 
-void Arena::update(float deltaTime)
+void Arena::update(GLfloat deltaTime)
 {
 }

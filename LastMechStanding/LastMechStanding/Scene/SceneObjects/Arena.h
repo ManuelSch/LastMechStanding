@@ -11,7 +11,7 @@ public:
 	Arena();
 	~Arena();
 
-	virtual void update(float deltaTime);
+	virtual void update(GLfloat deltaTime);
 };
 
 #endif

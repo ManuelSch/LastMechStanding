@@ -1,5 +1,7 @@
 #pragma once
 
+#define _USE_MATH_DEFINES
+
 // C++ libraries:
 #include <iostream>
 #include <memory>
@@ -9,6 +11,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <cstring>
+#include <math.h>
 
 // OpenGL libraries
 #include <GL\glew.h>
@@ -19,6 +22,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/vector_angle.hpp>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>

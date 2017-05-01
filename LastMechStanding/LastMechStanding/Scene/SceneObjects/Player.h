@@ -17,7 +17,7 @@ public:
 	Player(Camera* camera, shared_ptr<GUI> gui);
 	virtual ~Player();
 
-	virtual void update(float deltaTime);
+	virtual void update(GLfloat deltaTime);
 
 	void movePosition(Movement direction, GLfloat deltaTime);
 	void moveView(GLfloat xOffset, GLfloat yOffset);

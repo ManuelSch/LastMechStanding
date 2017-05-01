@@ -79,6 +79,17 @@ void SceneObject::scale(glm::vec3 transformation)
 	this->scaling *= transformation;
 }
 
+void SceneObject::moveTowards(glm::vec3 target, GLfloat distance)
+{
+	GLfloat direction = calculateAngle(position.x, position.z, target.x, target.z);
+
+	GLfloat moveX = (GLfloat)cos(glm::radians(direction)) * distance;
+	GLfloat moveZ = -(GLfloat)sin(glm::radians(direction)) * distance;
+
+	translate(glm::vec3(moveX, 0.0f, moveZ));
+	this->angle.y = direction;
+}
+
 void SceneObject::onClick()
 {
 }
@@ -92,5 +103,28 @@ glm::mat4 SceneObject::getModelMatrix()
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(angle.z), glm::vec3(0.0f, 0.0f, 1.0f));
 	return modelMatrix;
+}
+
+GLfloat SceneObject::calculateAngle(GLfloat x, GLfloat z, GLfloat xDest, GLfloat zDest)
+{
+	GLfloat deltaZ = abs(zDest - z);
+	GLfloat deltaX = abs(xDest - x);
+
+	if (xDest >= x) {
+		if (zDest >= z) {
+			return (float)glm::degrees(2 * M_PI - atan(deltaZ / deltaX));
+		}
+		else {
+			return (float)glm::degrees(atan(deltaZ / deltaX));
+		}
+	}
+	else {
+		if (zDest >= z) {
+			return (float)glm::degrees(M_PI + atan(deltaZ / deltaX));
+		}
+		else {
+			return (float)glm::degrees(M_PI - atan(deltaZ / deltaX));
+		}
+	}
 }
 

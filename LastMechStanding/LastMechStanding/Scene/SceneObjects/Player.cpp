@@ -19,7 +19,7 @@ Player::~Player()
 {
 }
 
-void Player::update(float deltaTime)
+void Player::update(GLfloat deltaTime)
 {
 }
 

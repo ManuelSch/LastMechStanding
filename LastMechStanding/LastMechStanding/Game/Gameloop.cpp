@@ -45,10 +45,18 @@ void Gameloop::run()
 	sceneObjects.push_back(arena);
 
 	enemy = make_shared<Enemy>();
-	enemy->translate(glm::vec3(2.0f, 0.0f, 0.0f));
 	sceneObjects.push_back(enemy);
 
 	/*
+	enemy = make_shared<Enemy>();
+	sceneObjects.push_back(enemy);
+
+	enemy = make_shared<Enemy>();
+	sceneObjects.push_back(enemy);
+
+	enemy = make_shared<Enemy>();
+	sceneObjects.push_back(enemy);
+
 	enemy = make_shared<Enemy>();
 	enemy->translate(glm::vec3(5.0f, -1.75f, 0.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
@@ -71,9 +79,9 @@ void Gameloop::run()
 	// create sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
 	sunLight->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
-	sunLight->ambient = glm::vec3(0.05f, 0.05f, 0.05f);
-	sunLight->diffuse = glm::vec3(0.4f, 0.4f, 0.4f);
-	sunLight->specular = glm::vec3(0.5f, 0.5f, 0.5f);
+	sunLight->ambient = glm::vec3(0.3f, 0.3f, 0.3f);
+	sunLight->diffuse = glm::vec3(0.7f, 0.7f, 0.7f);
+	sunLight->specular = glm::vec3(0.7f, 0.7f, 0.7f);
 	lightSources.push_back(sunLight);
 
 	
@@ -121,10 +129,10 @@ void Gameloop::run()
 		glReadPixels(display->width / 2, display->height / 2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		int pickedID = data[0] + data[1] * 256 + data[2] * 256 * 256;
 		if (pickedID == 16777215) {
-			cout << "background" << endl;
+			//cout << "background" << endl;
 		}
 		else {
-			cout << "mesh " << pickedID << endl;
+			//cout << "mesh " << pickedID << endl;
 			processMouseButtonInput(sceneObjects[pickedID]);
 		}
 
