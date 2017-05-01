@@ -11,7 +11,7 @@ HealthBar::HealthBar(GLfloat displayRatio)
 	this->position = glm::vec3(POS_X, POS_Y, POS_Z);
 	this->width = WIDTH;
 	this->height = HEIGHT;
-	this->color = glm::vec3(1.0f, 1.0f, 1.0f);
+	this->color = glm::vec4(1.0f);
 
 	this->shader = make_unique<Shader>("Resources/Shaders/gui.vert", "Resources/Shaders/gui.frag");
 
@@ -36,10 +36,10 @@ void HealthBar::setHealthPointsInPercent(GLfloat percent)
 
 
 	if (percent > 0.3f) {
-		this->color = glm::vec3(0.0f, 1.0f, 0.0f);
+		this->color = glm::vec4(0.0f, 1.0f, 0.0f, 0.7f);
 	}
 	else {
-		this->color = glm::vec3(1.0f, 0.0f, 0.0f);
+		this->color = glm::vec4(1.0f, 0.0f, 0.0f, 0.7f);
 	}
 
 	updateVertexData();

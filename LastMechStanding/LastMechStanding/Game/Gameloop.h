@@ -27,8 +27,10 @@ public:
 	void mouseCallback(GLFWwindow * window, double xpos, double ypos);
 	void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
+	/*
 	void drawHUD();
 	void drawHUDelements();
+	*/
 private:
 	shared_ptr<Player> player;
 

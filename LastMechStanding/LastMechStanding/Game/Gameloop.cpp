@@ -97,7 +97,7 @@ void Gameloop::run()
 		glfwPollEvents();
 		processKeyboardInput();
 
-		// transformation matrices:
+		// view matrix:
 		glm::mat4 view = camera.getViewMatrix();
 
 		/*
@@ -106,7 +106,6 @@ void Gameloop::run()
 		// clear color and depth buffers:
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
@@ -157,7 +156,7 @@ void Gameloop::run()
 		}
 
 		//should draw HUD, doesn't work
-		drawHUD();
+		//drawHUD();
 
 		gui->draw();
 
@@ -166,7 +165,7 @@ void Gameloop::run()
 	}
 }
 
-
+/*
 void Gameloop::drawHUD() {
 
 	//switch to projection matrix
@@ -220,6 +219,7 @@ void Gameloop::drawHUDelements() {
 	glVertex3f(15, 0, 0);
 	glEnd(); // Render now
 }
+*/
 
 
 void Gameloop::processKeyboardInput()

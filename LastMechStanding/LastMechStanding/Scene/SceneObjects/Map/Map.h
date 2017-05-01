@@ -1,3 +1,4 @@
+/*
 #pragma once
 
 #include "..\..\commonHeader.h"
@@ -29,3 +30,4 @@ public:
 };
 
 #define MAP
+*/

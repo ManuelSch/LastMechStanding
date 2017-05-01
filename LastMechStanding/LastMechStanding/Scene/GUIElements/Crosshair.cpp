@@ -11,7 +11,7 @@ Crosshair::Crosshair(GLfloat displayRatio)
 	this->position = glm::vec3(POS_X, POS_Y, POS_Z);
 	this->width = WIDTH;
 	this->height = HEIGHT;
-	this->color = glm::vec3(1.0f, 1.0f, 1.0f);
+	this->color = glm::vec4(1.0f);
 
 	this->shader = make_unique<Shader>("Resources/Shaders/gui.vert", "Resources/Shaders/gui.frag");
 
@@ -21,7 +21,7 @@ Crosshair::Crosshair(GLfloat displayRatio)
 
 	// use this method if you want to display a texture on the gui element:
 	useTexture("Resources/Textures/crosshair.png");
-	this->color = glm::vec3(0.7f, 0.7f, 0.05f);
+	this->color = glm::vec4(0.7f, 0.6f, 0.05f, 1.0f);
 
 	updateVertexData();
 }

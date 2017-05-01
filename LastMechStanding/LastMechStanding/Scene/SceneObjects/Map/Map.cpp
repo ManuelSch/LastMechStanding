@@ -1,3 +1,4 @@
+/*
 #include "Map.h"
 
 
@@ -25,4 +26,4 @@ void Map::scale(glm::vec3 transformation)
 {
 	this->modelMatrix = glm::scale(this->modelMatrix, transformation);
 }
-
+*/

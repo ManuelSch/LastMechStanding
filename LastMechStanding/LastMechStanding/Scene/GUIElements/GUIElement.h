@@ -28,7 +28,7 @@ protected:
 	// vertex data:
 	glm::vec3 position;
 	GLfloat width, height;
-	glm::vec3 color;
+	glm::vec4 color;
 
 	void useTexture(string filePath);
 	void updateVertexData();

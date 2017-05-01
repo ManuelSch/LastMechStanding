@@ -57,7 +57,7 @@ void GUIElement::useTexture(string filePath)
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
 
 	// set color to white so it doesn't interfere with the texture (default behaviour; color can be added by setting this->color afterwards)
-	this->color = glm::vec3(1.0f);
+	this->color = glm::vec4(1.0f);
 	updateVertexData();
 
 	// tell shader to render the texture:
@@ -73,12 +73,12 @@ void GUIElement::updateVertexData()
 	switch (this->origin) {
 		case MIDDLE: 
 		{
-			GLfloat vertices[32] = {
-				// Positions																	// Colors						// Texture Coords
-				position.x + (width / 2) / displayRatio, position.y + height / 2, position.z,	color.x, color.y, color.z,		1.0f, 1.0f, // Top Right
-				position.x + (width / 2) / displayRatio, position.y - height / 2, position.z,	color.x, color.y, color.z,		1.0f, 0.0f, // Bottom Right
-				position.x - (width / 2) / displayRatio, position.y - height / 2, position.z,	color.x, color.y, color.z,		0.0f, 0.0f, // Bottom Left
-				position.x - (width / 2) / displayRatio, position.y + height / 2, position.z,	color.x, color.y, color.z,		0.0f, 1.0f  // Top Left 
+			GLfloat vertices[36] = {
+				// Positions																	// Colors								// Texture Coords
+				position.x + (width / 2) / displayRatio, position.y + height / 2, position.z,	color.x, color.y, color.z, color.w,		1.0f, 1.0f, // Top Right
+				position.x + (width / 2) / displayRatio, position.y - height / 2, position.z,	color.x, color.y, color.z, color.w,		1.0f, 0.0f, // Bottom Right
+				position.x - (width / 2) / displayRatio, position.y - height / 2, position.z,	color.x, color.y, color.z, color.w,		0.0f, 0.0f, // Bottom Left
+				position.x - (width / 2) / displayRatio, position.y + height / 2, position.z,	color.x, color.y, color.z, color.w,		0.0f, 1.0f  // Top Left 
 			};
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -86,12 +86,12 @@ void GUIElement::updateVertexData()
 		}
 		case BOTTOM_LEFT:
 		{
-			GLfloat vertices[32] = {
-				// Positions																		// Colors				// Texture Coords
-				position.x + width / displayRatio, position.y + height, position.z,			color.x, color.y, color.z,		1.0f, 1.0f, // Top Right
-				position.x + width / displayRatio, position.y,			position.z,			color.x, color.y, color.z,		1.0f, 0.0f, // Bottom Right
-				position.x,						   position.y,			position.z,			color.x, color.y, color.z,		0.0f, 0.0f, // Bottom Left
-				position.x,						   position.y + height, position.z,			color.x, color.y, color.z,		0.0f, 1.0f  // Top Left 
+			GLfloat vertices[36] = {		
+				// Positions																		// Colors						// Texture Coords
+				position.x + width / displayRatio, position.y + height, position.z,			color.x, color.y, color.z, color.w,		1.0f, 1.0f, // Top Right
+				position.x + width / displayRatio, position.y,			position.z,			color.x, color.y, color.z, color.w,		1.0f, 0.0f, // Bottom Right
+				position.x,						   position.y,			position.z,			color.x, color.y, color.z, color.w,		0.0f, 0.0f, // Bottom Left
+				position.x,						   position.y + height, position.z,			color.x, color.y, color.z, color.w,		0.0f, 1.0f  // Top Left 
 			};
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -109,13 +109,13 @@ void GUIElement::updateVertexData()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 	// Color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 	// TexCoord attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(7 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0); // Unbind VAO
