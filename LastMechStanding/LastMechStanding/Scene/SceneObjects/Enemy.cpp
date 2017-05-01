@@ -1,7 +1,8 @@
 #include "Enemy.h"
 
-Enemy::Enemy()
+Enemy::Enemy(shared_ptr<GUI> gui) : gui(gui)
 {
+
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	this->pickingShader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->model = Model("Resources/Models/CubeEnemy/cubeEnemy.dae");
@@ -33,13 +34,13 @@ void Enemy::update(GLfloat deltaTime)
 void Enemy::onClick()
 {
 	this->healthPoints -= 25;
+
+	this->gui->enemyHealthBar->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
 }
 
 
 void Enemy::setNewDestination()
 {
-	//goToTarget.x = position.x - 5 + rand() * 10;
-	//goToTarget.z = position.z - 5 + rand() * 10;
 	destination.x = -20 + rand() / double(RAND_MAX) * 40;
 	destination.z = -20 + rand() / double(RAND_MAX) * 40;
 }

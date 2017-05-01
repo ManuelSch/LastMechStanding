@@ -29,6 +29,10 @@ void GUIElement::draw()
 	glBindVertexArray(0);
 }
 
+void GUIElement::update(GLfloat deltaTime)
+{
+}
+
 void GUIElement::useTexture(string filePath)
 {
 	// enable alpha (transparency):

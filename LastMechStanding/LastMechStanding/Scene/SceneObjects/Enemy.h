@@ -2,6 +2,7 @@
 
 #include "..\..\commonHeader.h"
 #include "SceneObject.h"
+#include "..\GUI.h"
 
 #ifdef SCENE_OBJECT
 
@@ -11,7 +12,7 @@
 class Enemy : public SceneObject
 {
 public:
-	Enemy();
+	Enemy(shared_ptr<GUI> gui);
 	virtual ~Enemy();
 
 	virtual void update(GLfloat deltaTime);
@@ -23,6 +24,8 @@ public:
 private:
 	GLfloat movementSpeed;
 	glm::vec3 destination;
+	shared_ptr<GUI> gui;
+
 	void setNewDestination();
 };
 

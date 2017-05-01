@@ -11,6 +11,7 @@ public:
 	~GUIElement();
 
 	virtual void draw();
+	virtual void update(GLfloat deltaTime);
 
 protected:
 	enum Origin {
@@ -25,7 +26,7 @@ protected:
 	Origin origin;
 	GLfloat displayRatio;
 
-	// vertex data:
+	// vertex data (call updateVertexData() when changing these!):
 	glm::vec3 position;
 	GLfloat width, height;
 	glm::vec4 color;

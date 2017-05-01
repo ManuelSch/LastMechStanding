@@ -44,32 +44,32 @@ void Gameloop::run()
 	arena = make_shared<Arena>();
 	sceneObjects.push_back(arena);
 
-	enemy = make_shared<Enemy>();
+	enemy = make_shared<Enemy>(gui);
 	sceneObjects.push_back(enemy);
 
 	/*
-	enemy = make_shared<Enemy>();
+	enemy = make_shared<Enemy>(gui);
 	sceneObjects.push_back(enemy);
 
-	enemy = make_shared<Enemy>();
+	enemy = make_shared<Enemy>(gui);
 	sceneObjects.push_back(enemy);
 
-	enemy = make_shared<Enemy>();
+	enemy = make_shared<Enemy>(gui);
 	sceneObjects.push_back(enemy);
 
-	enemy = make_shared<Enemy>();
+	enemy = make_shared<Enemy>(gui);
 	enemy->translate(glm::vec3(5.0f, -1.75f, 0.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(enemy);
 
-	enemy = make_shared<Enemy>();
+	enemy = make_shared<Enemy>(gui);
 	enemy->translate(glm::vec3(5.0f, -1.75f, 3.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
 	sceneObjects.push_back(enemy);
 
-	enemy = make_shared<Enemy>();
+	enemy = make_shared<Enemy>(gui);
 	enemy->translate(glm::vec3(-5.0f, -1.75f, 3.0f));
 	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -166,6 +166,7 @@ void Gameloop::run()
 		//should draw HUD, doesn't work
 		//drawHUD();
 
+		gui->update(deltaTime);
 		gui->draw();
 
 		// swap window and color buffer:
