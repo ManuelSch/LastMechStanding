@@ -10,6 +10,8 @@
 class SceneObject
 {
 public:
+	GLboolean dead = false;
+
 	SceneObject();
 	virtual ~SceneObject();
 

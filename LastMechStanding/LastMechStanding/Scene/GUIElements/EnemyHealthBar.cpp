@@ -43,7 +43,6 @@ void EnemyHealthBar::update(GLfloat deltaTime)
 
 void EnemyHealthBar::setHealthPointsInPercent(GLfloat percent)
 {
-	cout << "setHealthPointsInPercent " << opacity << endl;
 	this->opacity = 1.5f;
 
 	this->width = WIDTH * percent;

@@ -44,43 +44,17 @@ void Gameloop::run()
 	arena = make_shared<Arena>();
 	sceneObjects.push_back(arena);
 
-	enemy = make_shared<Enemy>(gui);
-	sceneObjects.push_back(enemy);
-
-	/*
-	enemy = make_shared<Enemy>(gui);
-	sceneObjects.push_back(enemy);
-
-	enemy = make_shared<Enemy>(gui);
-	sceneObjects.push_back(enemy);
-
-	enemy = make_shared<Enemy>(gui);
-	sceneObjects.push_back(enemy);
-
-	enemy = make_shared<Enemy>(gui);
-	enemy->translate(glm::vec3(5.0f, -1.75f, 0.0f));
-	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
-	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
-	sceneObjects.push_back(enemy);
-
-	enemy = make_shared<Enemy>(gui);
-	enemy->translate(glm::vec3(5.0f, -1.75f, 3.0f));
-	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
-	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
-	sceneObjects.push_back(enemy);
-
-	enemy = make_shared<Enemy>(gui);
-	enemy->translate(glm::vec3(-5.0f, -1.75f, 3.0f));
-	enemy->scale(glm::vec3(0.2f, 0.2f, 0.2f));
-	enemy->rotate(-90, glm::vec3(0.0f, 1.0f, 0.0f));
-	sceneObjects.push_back(enemy);
-	*/
+	for (GLuint i = 0; i < 5; i++) {
+		enemy = make_shared<Enemy>(gui);
+		enemy->translate(glm::vec3(0.0f, -1.0f, 0.0f));
+		sceneObjects.push_back(enemy);
+	}
 
 	// create sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
 	sunLight->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
 	sunLight->ambient = glm::vec3(0.3f, 0.3f, 0.3f);
-	sunLight->diffuse = glm::vec3(0.7f, 0.7f, 0.7f);
+	sunLight->diffuse = glm::vec3(0.9f, 0.9f, 0.7f);
 	sunLight->specular = glm::vec3(0.7f, 0.7f, 0.7f);
 	lightSources.push_back(sunLight);
 
@@ -107,6 +81,18 @@ void Gameloop::run()
 
 		// view matrix:
 		glm::mat4 view = camera.getViewMatrix();
+
+
+		/*
+		* Delete dead objects:
+		*/
+		for (GLuint i = 0; i < sceneObjects.size(); i++) {
+			if (sceneObjects[i] != nullptr && sceneObjects[i]->dead == true) {
+				sceneObjects.erase(sceneObjects.begin() + i);
+			}
+		}
+
+
 
 		/*
 		* Draw picking colors:
@@ -153,7 +139,7 @@ void Gameloop::run()
 		* Draw objects:
 		*/
 		// clear color and depth buffers:
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.45f, 0.78f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 

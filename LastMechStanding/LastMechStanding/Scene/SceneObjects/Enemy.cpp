@@ -19,11 +19,11 @@ Enemy::~Enemy()
 
 void Enemy::update(GLfloat deltaTime)
 {
-	GLfloat size = this->healthPoints / 100.0f;
-	size = max(size, 0.0f);
-	this->scaling = glm::vec3(1.0f) * size;
+	if (this->healthPoints <= 0) {
+		this->dead = true;
+	}
 
-	if (distance(position, destination) < 1.0f) {
+	if (distance(glm::vec2(position.x, position.z), glm::vec2(destination.x, destination.z)) < 1.0f) {
 		setNewDestination();
 	}
 	else {
@@ -41,6 +41,7 @@ void Enemy::onClick()
 
 void Enemy::setNewDestination()
 {
-	destination.x = -20 + rand() / double(RAND_MAX) * 40;
-	destination.z = -20 + rand() / double(RAND_MAX) * 40;
+	destination.x = -40 + rand() / double(RAND_MAX) * 80;
+	destination.y = position.y;
+	destination.z = -40 + rand() / double(RAND_MAX) * 80;
 }
