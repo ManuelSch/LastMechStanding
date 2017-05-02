@@ -124,3 +124,31 @@ void GUIElement::updateVertexData()
 
 	glBindVertexArray(0); // Unbind VAO
 }
+
+glm::vec3 GUIElement::hsvToRgb(GLfloat h, GLfloat s, GLfloat v) {
+	h = max(0.0f, h);
+	s = max(0.0f, s);
+	v = max(0.0f, v);
+
+	h /= 255.0f;
+	s /= 255.0f;
+	v /= 255.0f;
+	GLfloat r, g, b;
+
+	GLint i = floor(h * 6);
+	GLfloat f = h * 6 - i;
+	GLfloat p = v * (1 - s);
+	GLfloat q = v * (1 - f * s);
+	GLfloat t = v * (1 - (1 - f) * s);
+
+	switch (i % 6) {
+		case 0: r = v, g = t, b = p; break;
+		case 1: r = q, g = v, b = p; break;
+		case 2: r = p, g = v, b = t; break;
+		case 3: r = p, g = q, b = v; break;
+		case 4: r = t, g = p, b = v; break;
+		case 5: r = v, g = p, b = q; break;
+	}
+
+	return glm::vec3(r, g, b);
+}

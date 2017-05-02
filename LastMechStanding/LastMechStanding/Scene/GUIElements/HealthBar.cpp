@@ -34,13 +34,8 @@ void HealthBar::setHealthPointsInPercent(GLfloat percent)
 {
 	this->height = HEIGHT * percent;
 
-
-	if (percent > 0.3f) {
-		this->color = glm::vec4(0.0f, 1.0f, 0.0f, 0.7f);
-	}
-	else {
-		this->color = glm::vec4(1.0f, 0.0f, 0.0f, 0.7f);
-	}
+	// gradually turn color from green to red:
+	this->color = glm::vec4(this->hsvToRgb(percent * 110.0f - 20.0f, 255, 255), 0.7f);
 
 	updateVertexData();
 }

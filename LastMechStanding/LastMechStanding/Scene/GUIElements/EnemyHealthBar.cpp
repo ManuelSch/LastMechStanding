@@ -47,12 +47,8 @@ void EnemyHealthBar::setHealthPointsInPercent(GLfloat percent)
 
 	this->width = WIDTH * percent;
 
-	if (percent > 0.3f) {
-		this->color = glm::vec4(0.0f, 1.0f, 0.0f, min(0.5f, opacity));
-	}
-	else {
-		this->color = glm::vec4(1.0f, 0.0f, 0.0f, min(0.5f, opacity));
-	}
+	// gradually turn color from green to red:
+	this->color = glm::vec4(this->hsvToRgb(percent * 110.0f - 20.0f, 255, 255), 0.7f);
 
 	updateVertexData();
 }

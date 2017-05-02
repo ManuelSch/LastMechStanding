@@ -33,4 +33,5 @@ protected:
 
 	void useTexture(string filePath);
 	void updateVertexData();
+	glm::vec3 hsvToRgb(GLfloat h, GLfloat s, GLfloat v);
 };
