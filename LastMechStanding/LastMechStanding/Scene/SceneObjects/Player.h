@@ -14,7 +14,7 @@ class Player : public SceneObject
 {
 public:
 
-	Player(Camera* camera, shared_ptr<GUI> gui);
+	Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio);
 	virtual ~Player();
 
 	virtual void update(GLfloat deltaTime);

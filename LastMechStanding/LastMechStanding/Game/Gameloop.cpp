@@ -38,7 +38,7 @@ void Gameloop::run()
 	shared_ptr<Enemy> enemy;
 	shared_ptr<Arena> arena;
 
-	player = make_shared<Player>(&camera, gui);
+	player = make_shared<Player>(&camera, gui, display->getDisplayRatio());
 	sceneObjects.push_back(player);
 
 	arena = make_shared<Arena>();

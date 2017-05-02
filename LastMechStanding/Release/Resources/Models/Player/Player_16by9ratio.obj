@@ -1,6 +1,6 @@
 # Blender v2.70 (sub 0) OBJ File: 'Player.blend'
 # www.blender.org
-mtllib Player.mtl
+mtllib Player_43ratio.mtl
 o Cylinder.001_Cylinder.002
 v -0.471673 0.000000 0.921162
 v 1.028494 -0.000000 0.933140

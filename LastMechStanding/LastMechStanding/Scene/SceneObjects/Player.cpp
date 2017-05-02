@@ -1,10 +1,19 @@
 #include "Player.h"
 
-Player::Player(Camera* camera, shared_ptr<GUI> gui) : camera(camera), gui(gui)
+Player::Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio) : camera(camera), gui(gui)
 {
 	this->shader = make_unique<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	this->pickingShader = make_unique<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
-	this->model = Model("Resources/Models/Player/Player.obj");
+
+	// decide which model to load depending on the display aspect ratio:
+	if (displayRatio < (4.0f / 3.0f + 16.0f / 9.0f) / 2.0f) {
+		cout << "4:3" << endl;
+		this->model = Model("Resources/Models/Player/Player_4by3ratio.obj");
+	}
+	else {
+		cout << "16:9" << endl;
+		this->model = Model("Resources/Models/Player/Player_16by9ratio.obj");
+	}
 
 	movementSpeed = MOVEMENT_SPEED;
 	mouseSensitivity = MOUSE_SENSITIVITY;
@@ -68,6 +77,7 @@ void Player::moveView(GLfloat xOffset, GLfloat yOffset)
 void Player::decreaseHealthPoints(GLfloat damage)
 {
 	this->healthPoints -= damage;
+	this->healthPoints = max(0.0f, healthPoints);
 
 	this->gui->healthBar->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
 }
