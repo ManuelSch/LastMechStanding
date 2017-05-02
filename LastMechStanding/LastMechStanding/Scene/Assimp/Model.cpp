@@ -1,5 +1,9 @@
 #include "Model.h"
 
+Model::Model()
+{
+}
+
 Model::Model(GLchar * path)
 {
 	this->loadModel(path);
@@ -146,6 +150,7 @@ GLint Model::textureFromFile(const char * path, string directory)
 {
 	// generate the texture ID and load the texture data:
 	string filename = string(path);
+
 	filename = directory + '/' + filename;
 	GLuint textureID;
 	glGenTextures(1, &textureID);

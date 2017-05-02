@@ -2,7 +2,7 @@
 
 
 
-SceneObject::SceneObject() : model("Resources/Models/Nanosuit/nanosuit.obj"), position(0.0f), angle(0.0f), scaling(1.0f)
+SceneObject::SceneObject() : model(), position(0.0f), angle(0.0f), scaling(1.0f)
 {
 }
 

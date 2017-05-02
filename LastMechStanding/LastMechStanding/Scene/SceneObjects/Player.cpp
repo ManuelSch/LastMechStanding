@@ -7,11 +7,9 @@ Player::Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio) : came
 
 	// decide which model to load depending on the display aspect ratio:
 	if (displayRatio < (4.0f / 3.0f + 16.0f / 9.0f) / 2.0f) {
-		cout << "4:3" << endl;
 		this->model = Model("Resources/Models/Player/Player_4by3ratio.obj");
 	}
 	else {
-		cout << "16:9" << endl;
 		this->model = Model("Resources/Models/Player/Player_16by9ratio.obj");
 	}
 

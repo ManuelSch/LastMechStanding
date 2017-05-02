@@ -6,6 +6,7 @@
 class Model
 {
 public:
+	Model();
 	Model(GLchar* path);
 	void draw(Shader* shader);
 	~Model();
