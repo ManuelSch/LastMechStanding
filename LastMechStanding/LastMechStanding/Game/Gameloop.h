@@ -33,6 +33,7 @@ public:
 	*/
 private:
 	shared_ptr<Player> player;
+	shared_ptr<GUI> gui;
 
 	Display* display;
 

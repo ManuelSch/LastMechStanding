@@ -14,5 +14,11 @@ class Crosshair : public GUIElement
 public:
 	Crosshair(GLfloat displayRatio);
 	~Crosshair();
+	virtual void update(GLfloat deltaTime);
+
+	void spread();
+
+private:
+	GLfloat size;
 };
 

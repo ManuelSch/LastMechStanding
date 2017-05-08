@@ -32,7 +32,7 @@ Gameloop::~Gameloop()
 void Gameloop::run()
 {
 	// create GUI:
-	shared_ptr<GUI> gui = make_shared<GUI>(display->getDisplayRatio());
+	this->gui = make_shared<GUI>(display->getDisplayRatio());
 
 	// create player and enemy objects:
 	shared_ptr<Enemy> enemy;
@@ -152,8 +152,11 @@ void Gameloop::run()
 		//should draw HUD, doesn't work
 		//drawHUD();
 
-		gui->update(deltaTime);
-		gui->draw();
+		/*
+		* Draw and update GUI:
+		*/
+		this->gui->update(deltaTime);
+		this->gui->draw();
 
 		// swap window and color buffer:
 		glfwSwapBuffers(display->window);
@@ -239,6 +242,7 @@ void Gameloop::processMouseButtonInput(shared_ptr<SceneObject> pickedObject)
 	if (mouseButtons[GLFW_MOUSE_BUTTON_LEFT]) {
 		pickedObject->onClick();
 		mouseButtons[GLFW_MOUSE_BUTTON_LEFT] = false;
+		this->gui->crossHair->spread();
 	}
 }
 

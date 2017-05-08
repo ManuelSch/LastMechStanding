@@ -30,3 +30,21 @@ Crosshair::Crosshair(GLfloat displayRatio)
 Crosshair::~Crosshair()
 {
 }
+
+void Crosshair::update(GLfloat deltaTime)
+{
+	this->width -= deltaTime*.1;
+	this->width = max((float)WIDTH, width);
+	this->height = this->width;
+
+	updateVertexData();
+}
+
+void Crosshair::spread()
+{
+	this->width = WIDTH * 1.8f;
+	this->height = this->width;
+
+	updateVertexData();
+}
+

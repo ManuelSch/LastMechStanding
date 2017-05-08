@@ -14,12 +14,13 @@ GUI::~GUI()
 void GUI::update(GLfloat deltaTime)
 {
 	this->enemyHealthBar->update(deltaTime);
+	this->crossHair->update(deltaTime);
 }
 
 
 void GUI::draw()
 {
-	this->healthBar->draw();
 	this->crossHair->draw();
+	this->healthBar->draw();
 	this->enemyHealthBar->draw();
 }
