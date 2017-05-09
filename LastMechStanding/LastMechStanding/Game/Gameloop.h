@@ -6,6 +6,7 @@
 
 #include "..\commonHeader.h"
 #include "..\Game\Display.h"
+#include "..\Game\ShortKeys.h"
 #include "..\Scene\Camera.h"
 #include "..\Scene\SceneObjects\Player.h"
 #include "..\Scene\SceneObjects\Enemy.h"
@@ -34,6 +35,7 @@ public:
 private:
 	shared_ptr<Player> player;
 	shared_ptr<GUI> gui;
+	shared_ptr<ShortKeys> shortKeys;
 
 	Display* display;
 

@@ -35,11 +35,6 @@ void GUIElement::update(GLfloat deltaTime)
 
 void GUIElement::useTexture(string filePath)
 {
-	// enable alpha (transparency):
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	// Load and create a texture:
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object

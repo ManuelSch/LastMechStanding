@@ -21,6 +21,14 @@ Gameloop::Gameloop(Display* _display) : display(_display), camera(glm::vec3(0.0f
 
 	// enable z-buffer:
 	glEnable(GL_DEPTH_TEST);
+
+	// enable blending (alpha transparency):
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// create short keys controller (F1-F9, Esc)
+	this->shortKeys = make_shared<ShortKeys>(display->window);
 }
 
 
@@ -248,9 +256,9 @@ void Gameloop::processMouseButtonInput(shared_ptr<SceneObject> pickedObject)
 
 void Gameloop::keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-	// esc key -> close window:
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-		glfwSetWindowShouldClose(window, GL_TRUE);
+	// check if any shortkeys (F1-F9, Esc) have been pressed:
+	if (action == GLFW_PRESS) {
+		this->shortKeys->pressShortKey(key);
 	}
 
 	if (key >= 0 && key < 1024)
@@ -264,7 +272,6 @@ void Gameloop::keyboardCallback(GLFWwindow* window, int key, int scancode, int a
 
 void Gameloop::mouseButtonCallback(GLFWwindow * window, int button, int action, int mods)
 {
-
 	if (button >= 0 && button < 8)
 	{
 		if (action == GLFW_PRESS)

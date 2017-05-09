@@ -109,6 +109,9 @@
     <ClInclude Include="Scene\GUIElements\EnemyHealthBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game\ShortKeys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -175,6 +178,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene\GUIElements\EnemyHealthBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\ShortKeys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
