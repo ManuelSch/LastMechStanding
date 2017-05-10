@@ -12,7 +12,7 @@ EnemyHealthBar::EnemyHealthBar(GLfloat displayRatio)
 	this->height = HEIGHT;
 	this->color = glm::vec4(1.0f);
 
-	this->shader = make_unique<Shader>("Resources/Shaders/gui.vert", "Resources/Shaders/gui.frag");
+	this->shader = make_shared<Shader>("Resources/Shaders/gui.vert", "Resources/Shaders/gui.frag");
 
 	this->opacity = 0.0f;
 

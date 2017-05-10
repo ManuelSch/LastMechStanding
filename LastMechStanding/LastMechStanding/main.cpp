@@ -4,11 +4,13 @@
 #include ".\Game\Display.h"
 #include ".\Game\Gameloop.h"
 #include ".\Util\Shader.h"
+#include ".\Util\Font.h"
 
 
 
-unique_ptr<Display> display;
-unique_ptr<Gameloop> gameloop;
+shared_ptr<Display> display;
+shared_ptr<Gameloop> gameloop;
+shared_ptr<Font> font;
 
 
 /*
@@ -64,7 +66,7 @@ int main(int argc, char** argv)
 
 
 	// initialize display:
-	display = make_unique<Display>(width, height, fullscreen);
+	display = make_shared<Display>(width, height, fullscreen);
 
 
 	// initialize glew:
@@ -74,8 +76,11 @@ int main(int argc, char** argv)
 		showFatalErrorMessage("Could not initialize glew");
 	}
 
+	// initiliaze freetype:
+	font = make_shared<Font>();
+
 	// create gameloop object:
-	gameloop = make_unique<Gameloop>(display.get());
+	gameloop = make_shared<Gameloop>(display, font);
 
 	// set key and cursor callbacks:
 	glfwSetKeyCallback(display->window, key_callback);

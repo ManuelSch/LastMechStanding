@@ -30,6 +30,8 @@
     <None Include="Resources\Shaders\color_picking.frag" />
     <None Include="Resources\Shaders\gui.frag" />
     <None Include="Resources\Shaders\gui.vert" />
+    <None Include="Resources\Shaders\freetype_glyph.vert" />
+    <None Include="Resources\Shaders\freetype_glyph.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg">
@@ -112,6 +114,12 @@
     <ClInclude Include="Game\ShortKeys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Util\Font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GUIElements\FPSScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -181,6 +189,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\ShortKeys.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GUIElements\FPSScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

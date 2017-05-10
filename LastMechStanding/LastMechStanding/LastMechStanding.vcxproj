@@ -96,7 +96,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)External\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;freetype240MT_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMTD</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -130,7 +130,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)External\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;freetype240MT_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMTD</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -156,6 +156,8 @@
     <None Include="Resources\Shaders\basic.vert" />
     <None Include="Resources\Shaders\color_picking.frag" />
     <None Include="Resources\Shaders\color_picking.vert" />
+    <None Include="Resources\Shaders\freetype_glyph.frag" />
+    <None Include="Resources\Shaders\freetype_glyph.vert" />
     <None Include="Resources\Shaders\gui.frag" />
     <None Include="Resources\Shaders\gui.vert" />
     <None Include="Resources\Shaders\lighting.frag" />
@@ -173,6 +175,8 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\GUIElements\FPSScreen.h" />
+    <ClInclude Include="Util\Font.h" />
     <ClInclude Include="Scene\GUIElements\EnemyHealthBar.h" />
     <ClInclude Include="Scene\GUIElements\Crosshair.h" />
     <ClInclude Include="Scene\GUIElements\HealthBar.h" />
@@ -199,6 +203,8 @@
     <ClInclude Include="Util\Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Scene\GUIElements\FPSScreen.cpp" />
+    <ClCompile Include="Util\Font.cpp" />
     <ClCompile Include="Scene\GUIElements\EnemyHealthBar.cpp" />
     <ClCompile Include="Scene\GUIElements\Crosshair.cpp" />
     <ClCompile Include="Scene\GUIElements\HealthBar.cpp" />

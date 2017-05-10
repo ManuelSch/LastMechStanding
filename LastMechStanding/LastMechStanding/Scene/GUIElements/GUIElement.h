@@ -19,7 +19,7 @@ protected:
 		BOTTOM_LEFT
 	};
 
-	unique_ptr<Shader> shader;
+	shared_ptr<Shader> shader;
 	GLuint VBO, VAO, EBO;
 	GLuint texture;
 

@@ -17,7 +17,7 @@
 class Gameloop
 {
 public:
-	Gameloop(Display* _display);
+	Gameloop(shared_ptr<Display> _display, shared_ptr<Font> _font);
 	~Gameloop();
 
 	// starts the game loop:
@@ -33,11 +33,12 @@ public:
 	void drawHUDelements();
 	*/
 private:
+	shared_ptr<Display> display;
 	shared_ptr<Player> player;
 	shared_ptr<GUI> gui;
 	shared_ptr<ShortKeys> shortKeys;
+	shared_ptr<Font> font;
 
-	Display* display;
 
 	// frame independency:
 	GLfloat deltaTime;		// time between current frame and last frame

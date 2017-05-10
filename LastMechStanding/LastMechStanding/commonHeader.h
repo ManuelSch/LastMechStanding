@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <cstring>
 #include <math.h>
+#include <map>
 
 // OpenGL libraries
 #include <GL\glew.h>
@@ -26,6 +27,8 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 
 using namespace std;

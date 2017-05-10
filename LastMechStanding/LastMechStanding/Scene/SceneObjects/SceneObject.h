@@ -28,8 +28,8 @@ public:
 	void moveTowards(glm::vec3 target, GLfloat distance);
 
 protected:
-	unique_ptr<Shader> shader;
-	unique_ptr<Shader> pickingShader;
+	shared_ptr<Shader> shader;
+	shared_ptr<Shader> pickingShader;
 	Model model;
 
 	glm::vec3 position, angle, scaling;

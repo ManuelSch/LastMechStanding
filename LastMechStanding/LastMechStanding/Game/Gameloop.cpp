@@ -2,7 +2,7 @@
 
 
 
-Gameloop::Gameloop(Display* _display) : display(_display), camera(glm::vec3(0.0f, 0.0f, 3.0f))
+Gameloop::Gameloop(shared_ptr<Display> _display, shared_ptr<Font> _font) : display(_display), font(_font), camera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
 	// initialize member variables:
 	for (GLuint i = 0; i < 1024; i++) {
@@ -40,7 +40,7 @@ Gameloop::~Gameloop()
 void Gameloop::run()
 {
 	// create GUI:
-	this->gui = make_shared<GUI>(display->getDisplayRatio());
+	this->gui = make_shared<GUI>(display->getDisplayRatio(), this->shortKeys, this->font);
 
 	// create player and enemy objects:
 	shared_ptr<Enemy> enemy;
