@@ -2,12 +2,6 @@
 
 #include "GUIElement.h"
 
-#define ORIGIN MIDDLE
-#define POS_X 0
-#define POS_Y 0
-#define POS_Z -1.0
-#define WIDTH 0.1
-#define HEIGHT 0.1
 
 class Crosshair : public GUIElement
 {
@@ -19,6 +13,12 @@ public:
 	void spread();
 
 private:
+	const Quad::Origin ORIGIN = Quad::MIDDLE;
+	const glm::vec3 POSITION = glm::vec3(0, 0, -1.0);
+	const GLfloat WIDTH = 0.1;
+	const GLfloat HEIGHT = 0.1;
+	const glm::vec4 COLOR = glm::vec4(1.0f);
+
 	GLfloat size;
 };
 

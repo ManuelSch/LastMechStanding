@@ -2,6 +2,7 @@
 
 #include "../../commonHeader.h"
 #include "../../Util/Shader.h"
+#include "../../Util/Quad.h"
 
 
 class GUIElement
@@ -13,25 +14,12 @@ public:
 	virtual void draw();
 	virtual void update(GLfloat deltaTime);
 
-protected:
-	enum Origin {
-		MIDDLE,
-		BOTTOM_LEFT
-	};
 
+protected:
 	shared_ptr<Shader> shader;
-	GLuint VBO, VAO, EBO;
+	shared_ptr<Quad> quad;
 	GLuint texture;
 
-	Origin origin;
-	GLfloat displayRatio;
-
-	// vertex data (call updateVertexData() when changing these!):
-	glm::vec3 position;
-	GLfloat width, height;
-	glm::vec4 color;
-
 	void useTexture(string filePath);
-	void updateVertexData();
 	glm::vec3 hsvToRgb(GLfloat h, GLfloat s, GLfloat v);
 };

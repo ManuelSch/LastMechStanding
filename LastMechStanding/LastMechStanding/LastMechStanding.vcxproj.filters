@@ -28,10 +28,10 @@
     <None Include="Resources\Shaders\model_loading.frag" />
     <None Include="Resources\Shaders\color_picking.vert" />
     <None Include="Resources\Shaders\color_picking.frag" />
-    <None Include="Resources\Shaders\gui.frag" />
-    <None Include="Resources\Shaders\gui.vert" />
     <None Include="Resources\Shaders\freetype_glyph.vert" />
     <None Include="Resources\Shaders\freetype_glyph.frag" />
+    <None Include="Resources\Shaders\quad.frag" />
+    <None Include="Resources\Shaders\quad.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg">
@@ -120,6 +120,12 @@
     <ClInclude Include="Scene\GUIElements\FPSScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Util\Framebuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Quad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -195,6 +201,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene\GUIElements\FPSScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -29,6 +29,9 @@ Gameloop::Gameloop(shared_ptr<Display> _display, shared_ptr<Font> _font) : displ
 
 	// create short keys controller (F1-F9, Esc)
 	this->shortKeys = make_shared<ShortKeys>(display->window);
+
+	// initialize framebuffer:
+	this->framebuffer = make_shared<Framebuffer>(display);
 }
 
 
@@ -92,6 +95,15 @@ void Gameloop::run()
 
 
 		/*
+		* Bind to framebuffer and draw to color texture:
+		*/
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+
+
+		/*
 		* Delete dead objects:
 		*/
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
@@ -99,7 +111,6 @@ void Gameloop::run()
 				sceneObjects.erase(sceneObjects.begin() + i);
 			}
 		}
-
 
 
 		/*
@@ -131,8 +142,6 @@ void Gameloop::run()
 		}
 
 
-
-
 		/*
 		* Update objects:
 		*/
@@ -157,75 +166,26 @@ void Gameloop::run()
 			}
 		}
 
-		//should draw HUD, doesn't work
-		//drawHUD();
-
 		/*
 		* Draw and update GUI:
 		*/
 		this->gui->update(deltaTime);
 		this->gui->draw();
 
-		// swap window and color buffer:
+		/*
+		* Bind to default framebuffer and draw the quad to the screen:
+		*/
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glDisable(GL_DEPTH_TEST);
+		framebuffer->draw();
+
+
+		// swap window and frame buffer:
 		glfwSwapBuffers(display->window);
 	}
 }
-
-/*
-void Gameloop::drawHUD() {
-
-	//switch to projection matrix
-	glMatrixMode(GL_PROJECTION);
-	//push on new Matrix
-	glPushMatrix();
-	//reset current matrix
-	glLoadIdentity();
-	//pass in 2D Ortho screen coordinates
-	glOrtho(0, display->width, display->height, 0, -1, 10);
-	//switch to model view
-	glMatrixMode(GL_MODELVIEW);
-	//initialize current model view matrix
-	glLoadIdentity();
-
-	//disable depth testing
-	glDisable(GL_DEPTH_TEST);
-
-	glColor3f(1.0, 1.0, 1.0); //white
-	glLineWidth(2.0);
-	glBegin(GL_LINES);
-	//horizontal line
-	glVertex2i(display->width / 2 - 7, display->height / 2);
-	glVertex2i(display->width / 2 + 7, display->height / 2);
-	glEnd();
-	//vertical line
-	glBegin(GL_LINES);
-	glVertex2i(display->width / 2, display->height / 2 + 7);
-	glVertex2i(display->width / 2, display->height / 2 - 7);
-	glEnd();
-
-	//Enable depth-testing
-	glEnable(GL_DEPTH_TEST);
-
-	//enter into projection matrix mode
-	glMatrixMode(GL_PROJECTION);
-
-	//pop off last matrix
-	glPopMatrix();
-
-	//back to model view matrix in 3D
-	glMatrixMode(GL_MODELVIEW);
-
-}
-
-void Gameloop::drawHUDelements() {
-	glLineWidth(2.5);
-	glColor3f(1.0, 0.0, 0.0);
-	glBegin(GL_LINES);
-	glVertex3f(0.0, 0.0, 0.0);
-	glVertex3f(15, 0, 0);
-	glEnd(); // Render now
-}
-*/
 
 
 void Gameloop::processKeyboardInput()

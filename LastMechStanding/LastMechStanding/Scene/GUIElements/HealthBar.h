@@ -3,13 +3,6 @@
 #include "GUIElement.h"
 
 
-#define ORIGIN BOTTOM_LEFT
-#define POS_X -0.95
-#define POS_Y -0.9
-#define POS_Z -1.0
-#define WIDTH 0.03
-#define HEIGHT 0.6
-
 class HealthBar : public GUIElement
 {
 public:
@@ -18,5 +11,12 @@ public:
 	~HealthBar();
 
 	void setHealthPointsInPercent(GLfloat percent);
+
+private:
+	const Quad::Origin ORIGIN = Quad::BOTTOM_LEFT;
+	const glm::vec3 POSITION = glm::vec3(-0.95, -0.9, -1.0);
+	const GLfloat WIDTH = 0.03;
+	const GLfloat HEIGHT = 0.6;
+	const glm::vec4 COLOR = glm::vec4(1.0f);
 };
 

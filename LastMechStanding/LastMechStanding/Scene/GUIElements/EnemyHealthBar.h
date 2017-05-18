@@ -3,12 +3,6 @@
 #include "GUIElement.h"
 
 
-#define ORIGIN MIDDLE
-#define POS_X 0
-#define POS_Y -0.12
-#define POS_Z -1.0
-#define WIDTH 0.15
-#define HEIGHT 0.025
 
 class EnemyHealthBar : public GUIElement
 {
@@ -22,6 +16,12 @@ public:
 	void setHealthPointsInPercent(GLfloat percent);
 
 private:
+	const Quad::Origin ORIGIN = Quad::MIDDLE;
+	const glm::vec3 POSITION = glm::vec3(0, -0.12, -1.0);
+	const GLfloat WIDTH = 0.15;
+	const GLfloat HEIGHT = 0.025;
+	const glm::vec4 COLOR = glm::vec4(1.0f);
+
 	GLfloat opacity;
 };
 

@@ -158,8 +158,8 @@
     <None Include="Resources\Shaders\color_picking.vert" />
     <None Include="Resources\Shaders\freetype_glyph.frag" />
     <None Include="Resources\Shaders\freetype_glyph.vert" />
-    <None Include="Resources\Shaders\gui.frag" />
-    <None Include="Resources\Shaders\gui.vert" />
+    <None Include="Resources\Shaders\quad.frag" />
+    <None Include="Resources\Shaders\quad.vert" />
     <None Include="Resources\Shaders\lighting.frag" />
     <None Include="Resources\Shaders\lighting.vert" />
     <None Include="Resources\Shaders\lamp.frag" />
@@ -175,6 +175,8 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Util\Quad.h" />
+    <ClInclude Include="Util\Framebuffer.h" />
     <ClInclude Include="Scene\GUIElements\FPSScreen.h" />
     <ClInclude Include="Util\Font.h" />
     <ClInclude Include="Scene\GUIElements\EnemyHealthBar.h" />
@@ -203,6 +205,8 @@
     <ClInclude Include="Util\Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Util\Quad.cpp" />
+    <ClCompile Include="Util\Framebuffer.cpp" />
     <ClCompile Include="Scene\GUIElements\FPSScreen.cpp" />
     <ClCompile Include="Util\Font.cpp" />
     <ClCompile Include="Scene\GUIElements\EnemyHealthBar.cpp" />
