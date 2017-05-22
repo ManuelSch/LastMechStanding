@@ -13,7 +13,6 @@
 #include "..\Scene\SceneObjects\Arena.h"
 #include "..\Scene\GUI.h"
 #include "..\Scene\LightSource.h"
-#include "..\Util\Framebuffer.h"
 
 class Gameloop
 {
@@ -29,13 +28,13 @@ public:
 	void mouseCallback(GLFWwindow * window, double xpos, double ypos);
 	void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
+
 private:
 	shared_ptr<Display> display;
 	shared_ptr<Player> player;
 	shared_ptr<GUI> gui;
 	shared_ptr<ShortKeys> shortKeys;
 	shared_ptr<Font> font;
-	shared_ptr<Framebuffer> framebuffer;
 
 
 	// frame independency:

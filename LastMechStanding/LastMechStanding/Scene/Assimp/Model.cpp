@@ -6,6 +6,8 @@ Model::Model()
 
 Model::Model(GLchar * path)
 {
+	Model::minBB = glm::vec3(0, 0, 0);
+	Model::maxBB = glm::vec3(0, 0, 0);
 	this->loadModel(path);
 }
 
@@ -56,6 +58,10 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	vector<GLuint> indices;
 	vector<Texture> textures;
 
+	//Mesh BB
+	glm::vec3 meshMinBB = glm::vec3(1000, 1000, -1000);
+	glm::vec3 meshMaxBB = glm::vec3(-1000, -1000, 1000);
+
 	// process vertices:
 	for (GLuint i = 0; i < mesh->mNumVertices; i++) {
 		Vertex vertex;
@@ -66,6 +72,50 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
 		vertex.position = vector;
+
+
+		// adjust bounding box of model
+		if (vertex.position.x < minBB.x) {
+			minBB.x = vertex.position.x;
+		}
+		if (vertex.position.y < minBB.y) {
+			minBB.y = vertex.position.y;
+		}
+		if (vertex.position.z > minBB.z) {
+			minBB.z = vertex.position.z;
+		}
+
+		if (vertex.position.x > maxBB.x) {
+			maxBB.x = vertex.position.x;
+		}
+		if (vertex.position.y > maxBB.y) {
+			maxBB.y = vertex.position.y;
+		}
+		if (vertex.position.z < maxBB.z) {
+			maxBB.z = vertex.position.z;
+		}
+
+		// calculate bounding box of mesh
+		if (vertex.position.x < meshMinBB.x) {
+			meshMinBB.x = vertex.position.x;
+		}
+		if (vertex.position.y < meshMinBB.y) {
+			meshMinBB.y = vertex.position.y;
+		}
+		if (vertex.position.z > meshMinBB.z) {
+			meshMinBB.z = vertex.position.z;
+		}
+
+		if (vertex.position.x > meshMaxBB.x) {
+			meshMaxBB.x = vertex.position.x;
+		}
+		if (vertex.position.y > meshMaxBB.y) {
+			meshMaxBB.y = vertex.position.y;
+		}
+		if (vertex.position.z < meshMaxBB.z) {
+			meshMaxBB.z = vertex.position.z;
+		}
+
 
 		// process vertex normals:
 		vector.x = mesh->mNormals[i].x;
@@ -110,7 +160,10 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
 
-	return Mesh(vertices, indices, textures);
+	Mesh m = Mesh(vertices, indices, textures);
+	m.minimumBB = meshMinBB;
+	m.maximumBB = meshMaxBB;
+	return m;
 }
 
 vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType aiType, string typeName)
