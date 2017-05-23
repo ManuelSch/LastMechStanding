@@ -32,6 +32,8 @@
     <None Include="Resources\Shaders\freetype_glyph.frag" />
     <None Include="Resources\Shaders\quad.frag" />
     <None Include="Resources\Shaders\quad.vert" />
+    <None Include="Resources\Shaders\simple_depth_shader.frag" />
+    <None Include="Resources\Shaders\simple_depth_shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg">
@@ -85,9 +87,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene\SceneObjects\Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneObjects\Map\Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene\SceneObjects\Enemy.h">
@@ -168,9 +167,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene\SceneObjects\Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SceneObjects\Map\Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene\SceneObjects\Enemy.cpp">

@@ -31,7 +31,9 @@ Gameloop::Gameloop(shared_ptr<Display> _display, shared_ptr<Font> _font) : displ
 	this->shortKeys = make_shared<ShortKeys>(display->window);
 
 	// initialize framebuffer:
+	/*
 	this->framebuffer = make_shared<Framebuffer>(display);
+	*/
 }
 
 
@@ -57,7 +59,7 @@ void Gameloop::run()
 
 	for (GLuint i = 0; i < 5; i++) {
 		enemy = make_shared<Enemy>(gui);
-		enemy->translate(glm::vec3(0.0f, -1.0f, 0.0f));
+		enemy->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 		sceneObjects.push_back(enemy);
 	}
 
@@ -67,11 +69,39 @@ void Gameloop::run()
 	sunLight->ambient = glm::vec3(0.3f, 0.3f, 0.3f);
 	sunLight->diffuse = glm::vec3(0.9f, 0.9f, 0.7f);
 	sunLight->specular = glm::vec3(0.7f, 0.7f, 0.7f);
+	sunLight->position = glm::vec3(-2.0f, 4.0f, -1.0f);		// for the shadow map
 	lightSources.push_back(sunLight);
 
 	
 	// projection matrix:
 	glm::mat4 projection = glm::perspective(45.0f, display->getDisplayRatio(), 0.1f, 100.0f);
+
+	/*
+	* SHADOW MAPPING:
+	*/
+	// framebuffer for rendering the depth map:
+	GLuint depthMapFBO;
+	glGenFramebuffers(1, &depthMapFBO);
+
+	// framebuffer's depth buffer texture:
+	const GLuint SHADOW_WIDTH = 10240, SHADOW_HEIGHT = 10240;
+	GLuint depthMap;
+	glGenTextures(1, &depthMap);
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	// attach it as the framebuffer's depth buffer:
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	// tell OpenGL explicitly that there is not color buffer:
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 
 
 	// frame independency:
@@ -96,11 +126,12 @@ void Gameloop::run()
 
 		/*
 		* Bind to framebuffer and draw to color texture:
-		*/
+		*//*
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
+		*/
 
 
 		/*
@@ -151,20 +182,43 @@ void Gameloop::run()
 			}
 		}
 
-		
 		/*
-		* Draw objects:
+		* render to depth map:
 		*/
+		// ortho projection matrix for the sunlight:
+		//ConfigureShaderAndMatrices();
+		GLfloat near_plane = 1.0f, far_plane = 100.0f;
+		glm::mat4 lightProjection = glm::ortho(-1000.0f, 1000.0f, -1000.0f, 1000.0f, near_plane, far_plane);
+		// view matrix for the sunlight:
+		glm::mat4 lightView = glm::lookAt(sunLight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		// light space matrix for the sunlight:
+		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+		// draw objects:
+		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		for (GLuint i = 0; i < sceneObjects.size(); i++) {
+			if (sceneObjects[i] != nullptr) {
+				sceneObjects[i]->drawDepthMap(&lightSpaceMatrix);
+			}
+		}
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		/*
+		* render scene as normal with shadow mapping (using depth map):
+		*/
+		glViewport(0, 0, display->width, display->height);
 		// clear color and depth buffers:
 		glClearColor(0.45f, 0.78f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
-
+		// draw objects:
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
-				sceneObjects[i]->draw(&view, &projection, &camera, &lightSources);
+				sceneObjects[i]->draw(&view, &projection, &lightSpaceMatrix, &camera, &lightSources, depthMap);
 			}
 		}
+		
 
 		/*
 		* Draw and update GUI:
@@ -174,13 +228,13 @@ void Gameloop::run()
 
 		/*
 		* Bind to default framebuffer and draw the quad to the screen:
-		*/
+		*//*
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glDisable(GL_DEPTH_TEST);
 		framebuffer->draw();
-
+		*/
 
 		// swap window and frame buffer:
 		glfwSwapBuffers(display->window);
