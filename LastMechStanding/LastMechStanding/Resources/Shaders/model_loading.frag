@@ -48,10 +48,17 @@ float calcShadow(vec4 fragPosLightSpace)
 	float closestDepth = texture(shadowMap, projCoords.xy).r; 
 	float currentDepth = projCoords.z;
 
+	// offset bias for avoiding shadow acne:
+	float bias = max(0.005 * (1.0 - dot(Normal, dirLight.direction)), 0.005); 
+	 
 	// if currentDepth is higher than closestDepth -> fragment is in shadow:
-	float bias = max(0.05 * (1.0 - dot(Normal, dirLight.direction)), 0.005);  
-	return (currentDepth - bias > closestDepth  ? 1.0 : 0.0);
+	float shadow = (currentDepth - bias > closestDepth  ? 1.0 : 0.0);
 	
+	// if fragment is outside of far plane:
+    if(projCoords.z > 1.0)
+        shadow = 0.0;
+	
+    return shadow;
 }
 
 vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir)

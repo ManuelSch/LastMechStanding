@@ -108,8 +108,11 @@ void Gameloop::run()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	// prevent the areas outside the depth map projection to be dark:
+	GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
 	// attach it as the framebuffer's depth buffer:
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
@@ -203,20 +206,25 @@ void Gameloop::run()
 		* render to depth map:
 		*/
 		// view matrix for the sunlight:
-		//glm::mat4 lightView = glm::lookAt(glm::vec3(player->position.x, player->position.y + asdf, player->position.z), glm::vec3(player->position.x, player->position.y + asdf, player->position.z) + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
+		//glm::mat4 lightView = glm::lookAt(glm::vec3(player->position.x, player->position.y + 3.0f, player->position.z), glm::vec3(player->position.x, player->position.y + 3.0f, player->position.z) + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
 		glm::mat4 lightView = glm::lookAt(sunLight->position, sunLight->position + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
 		// light space matrix for the sunlight:
 		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+		// prevent "peter panning" by culling the front faces:
+		//glCullFace(GL_FRONT);
 		// draw objects:
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		glClear(GL_DEPTH_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);	
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
 				sceneObjects[i]->drawDepthMap(&lightSpaceMatrix);
 			}
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		// set culling back to default:
+		//glCullFace(GL_BACK);
+
 
 		/*
 		* render scene as normal with shadow mapping (using depth map):
