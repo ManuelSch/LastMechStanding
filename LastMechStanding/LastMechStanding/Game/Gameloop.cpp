@@ -66,7 +66,7 @@ void Gameloop::run()
 
 	// create sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
-	sunLight->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
+	sunLight->direction = glm::normalize(glm::vec3(-0.2f, -1.0f, -0.3f));
 	sunLight->ambient = glm::vec3(0.3f, 0.3f, 0.3f);
 	sunLight->diffuse = glm::vec3(0.9f, 0.9f, 0.7f);
 	sunLight->specular = glm::vec3(0.7f, 0.7f, 0.7f);
@@ -96,8 +96,8 @@ void Gameloop::run()
 	GLuint depthMapFBO;
 	glGenFramebuffers(1, &depthMapFBO);
 
-	GLfloat near_plane = 1.0f, far_plane = 7.5f;
-	//GLfloat asdf = 3.0f;
+	GLfloat near_plane = 0.1f, far_plane = 50.0f;
+	GLfloat yOffset = 17.0f;
 	// ortho projection matrix for the sunlight:
 	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, near_plane, far_plane);
 	// framebuffer's depth buffer texture:
@@ -206,8 +206,8 @@ void Gameloop::run()
 		* render to depth map:
 		*/
 		// view matrix for the sunlight:
-		//glm::mat4 lightView = glm::lookAt(glm::vec3(player->position.x, player->position.y + 3.0f, player->position.z), glm::vec3(player->position.x, player->position.y + 3.0f, player->position.z) + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
-		glm::mat4 lightView = glm::lookAt(sunLight->position, sunLight->position + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
+		glm::mat4 lightView = glm::lookAt(glm::vec3(player->position.x, player->position.y + yOffset, player->position.z), glm::vec3(player->position.x, player->position.y + yOffset, player->position.z) + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
+		//glm::mat4 lightView = glm::lookAt(sunLight->position, sunLight->position + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
 		// light space matrix for the sunlight:
 		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 		// prevent "peter panning" by culling the front faces:
