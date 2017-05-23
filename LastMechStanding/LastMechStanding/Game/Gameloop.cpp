@@ -71,10 +71,11 @@ void Gameloop::run()
 	sunLight->diffuse = glm::vec3(0.9f, 0.9f, 0.7f);
 	sunLight->specular = glm::vec3(0.7f, 0.7f, 0.7f);
 	//sunLight->position = glm::vec3(-2.0f, 4.0f, -1.0f);		// for the shadow map
-	sunLight->position = glm::vec3(-2.0f, 4.0f, -1.0f);		// for the shadow map
+	sunLight->position = player->position;
 	lightSources.push_back(sunLight);
 
-
+	// create lamps (for testing purposes):
+	/*
 	shared_ptr<Lamp> lamp = make_shared<Lamp>();
 	lamp->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 	lamp->position = sunLight->position;
@@ -84,45 +85,16 @@ void Gameloop::run()
 	sceneCenter->scale(glm::vec3(0.1f, 0.1f, 0.1f));
 	sceneCenter->position = sunLight->position + sunLight->direction;
 	sceneObjects.push_back(sceneCenter);
+	*/
+
+	// initialize shadow map:
+	this->shadowMap = make_shared<ShadowMap>(sunLight);
 
 	
 	// projection matrix:
 	glm::mat4 projection = glm::perspective(45.0f, display->getDisplayRatio(), 0.1f, 100.0f);
 
-	/*
-	* SHADOW MAPPING:
-	*/
-	// framebuffer for rendering the depth map:
-	GLuint depthMapFBO;
-	glGenFramebuffers(1, &depthMapFBO);
-
-	GLfloat near_plane = 0.1f, far_plane = 50.0f;
-	GLfloat yOffset = 17.0f;
-	// ortho projection matrix for the sunlight:
-	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, near_plane, far_plane);
-	// framebuffer's depth buffer texture:
-	const GLuint SHADOW_WIDTH = 1024*10, SHADOW_HEIGHT = SHADOW_WIDTH;
-	GLuint depthMap;
-	glGenTextures(1, &depthMap);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	// prevent the areas outside the depth map projection to be dark:
-	GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-	// attach it as the framebuffer's depth buffer:
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-	// tell OpenGL explicitly that there is not color buffer:
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-
+	
 
 	// frame independency:
 	deltaTime = 0.0f;
@@ -205,25 +177,10 @@ void Gameloop::run()
 		/*
 		* render to depth map:
 		*/
-		// view matrix for the sunlight:
-		glm::mat4 lightView = glm::lookAt(glm::vec3(player->position.x, player->position.y + yOffset, player->position.z), glm::vec3(player->position.x, player->position.y + yOffset, player->position.z) + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
-		//glm::mat4 lightView = glm::lookAt(sunLight->position, sunLight->position + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
-		// light space matrix for the sunlight:
-		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-		// prevent "peter panning" by culling the front faces:
-		//glCullFace(GL_FRONT);
-		// draw objects:
-		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		glClear(GL_DEPTH_BUFFER_BIT);	
-		for (GLuint i = 0; i < sceneObjects.size(); i++) {
-			if (sceneObjects[i] != nullptr) {
-				sceneObjects[i]->drawDepthMap(&lightSpaceMatrix);
-			}
+		if (this->shortKeys->shadowMappinOn) {
+			sunLight->position = player->position;
+			shadowMap->renderToDepthMap(&sceneObjects);
 		}
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		// set culling back to default:
-		//glCullFace(GL_BACK);
 
 
 		/*
@@ -237,7 +194,12 @@ void Gameloop::run()
 		// draw objects:
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
-				sceneObjects[i]->draw(&view, &projection, &lightSpaceMatrix, &camera, &lightSources, depthMap);
+				if (this->shortKeys->shadowMappinOn) {
+					sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, &(shadowMap->lightSpaceMatrix), &(shadowMap->depthMap));
+				}
+				else {
+					sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, nullptr, nullptr);
+				}
 			}
 		}
 		

@@ -12,6 +12,7 @@ ShortKeys::ShortKeys(GLFWwindow* window)
 	this->wireFrameOn = false;
 	this->textureSamplingQuality = TextureSamplingQuality::BILINEAR;
 	this->mipMappingQuality = MipMappingQuality::OFF;
+	this->shadowMappinOn = true;
 	this->viewFrustumCullingOn = true;
 	this->blendingOn = true;
 }
@@ -39,7 +40,6 @@ void ShortKeys::pressShortKey(int key)
 		// f2 -> frame time on/off:
 		case GLFW_KEY_F2:
 			frameTimeOn = !frameTimeOn;
-			// TODO
 			cout << "Frame time = " << (frameTimeOn ? "ON" : "OFF") << endl;
 			break;
 
@@ -64,9 +64,10 @@ void ShortKeys::pressShortKey(int key)
 			cout << "Mip mapping quality = " << (mipMappingQuality == MipMappingQuality::OFF ? "NEAREST_NEIGHBOR" : (mipMappingQuality == MipMappingQuality::NEAREST_NEIGHBOR ? "LINEAR" : "OFF")) << endl;
 			break;
 
-		// f6 -> enable/disable effect:
+		// f6 -> enable/disable shadow mapping:
 		case GLFW_KEY_F6:
-			// TODO
+			shadowMappinOn = !shadowMappinOn;
+			cout << "Shadow Mapping = " << (shadowMappinOn ? "ON" : "OFF") << endl;
 			break;
 
 		// f7 -> enable/disable effect:
@@ -94,7 +95,6 @@ void ShortKeys::pressShortKey(int key)
 				glDisable(GL_BLEND);
 				glDisable(GL_SRC_ALPHA);
 			}
-			// TODO
 			cout << "Blending = " << (blendingOn ? "ON" : "OFF") << endl;
 			break;
 	}

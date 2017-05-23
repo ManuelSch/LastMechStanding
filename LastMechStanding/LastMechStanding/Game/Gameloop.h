@@ -15,6 +15,7 @@
 #include "..\Scene\GUI.h"
 #include "..\Scene\LightSource.h"
 #include "..\Util\Framebuffer.h"
+#include "..\Util\ShadowMap.h"
 
 class Gameloop
 {
@@ -37,6 +38,7 @@ private:
 	shared_ptr<ShortKeys> shortKeys;
 	shared_ptr<Font> font;
 	shared_ptr<Framebuffer> framebuffer;
+	shared_ptr<ShadowMap> shadowMap;
 
 
 	// frame independency:

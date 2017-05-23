@@ -30,6 +30,7 @@ public:
 	bool wireFrameOn;
 	TextureSamplingQuality textureSamplingQuality;
 	MipMappingQuality mipMappingQuality;
+	bool shadowMappinOn;
 	bool viewFrustumCullingOn;
 	bool blendingOn;
 

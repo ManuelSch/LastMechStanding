@@ -178,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\SceneObjects\Lamp.h" />
+    <ClInclude Include="Util\ShadowMap.h" />
     <ClInclude Include="Util\Quad.h" />
     <ClInclude Include="Util\Framebuffer.h" />
     <ClInclude Include="Scene\GUIElements\FPSScreen.h" />
@@ -208,6 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene\SceneObjects\Lamp.cpp" />
+    <ClCompile Include="Util\ShadowMap.cpp" />
     <ClCompile Include="Util\Quad.cpp" />
     <ClCompile Include="Util\Framebuffer.cpp" />
     <ClCompile Include="Scene\GUIElements\FPSScreen.cpp" />

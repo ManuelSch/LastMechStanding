@@ -11,7 +11,7 @@ SceneObject::~SceneObject()
 {
 }
 
-void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, glm::mat4* lightSpaceMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources, GLuint depthMap)
+void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources, glm::mat4* lightSpaceMatrix, GLuint* depthMap)
 {
 	shader->useShader();
 
@@ -29,7 +29,18 @@ void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, glm::
 		}
 	}
 
-	glUniformMatrix4fv(shader->getUniformLocation("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(*lightSpaceMatrix));
+	if (lightSpaceMatrix != nullptr && depthMap != nullptr) {
+		cout << "asdf" << endl;
+		glUniformMatrix4fv(shader->getUniformLocation("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(*lightSpaceMatrix));
+		glUniform1i(shader->getUniformLocation("shadowMap"), 10);
+		glActiveTexture(GL_TEXTURE10);
+		glBindTexture(GL_TEXTURE_2D, *depthMap);
+	}
+	else {
+		glUniform1i(shader->getUniformLocation("shadowMap"), 10);
+		glActiveTexture(GL_TEXTURE10);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 
 	// send viewer position to the shader:
 	glUniform3f(shader->getUniformLocation("viewPos"), camera->position.x, camera->position.y, camera->position.z);
@@ -41,9 +52,6 @@ void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, glm::
 	// draw the loaded model:
 	glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
 
-	glUniform1i(shader->getUniformLocation("shadowMap"), 10);
-	glActiveTexture(GL_TEXTURE10);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
 	this->model.draw(shader.get());
 }
 
