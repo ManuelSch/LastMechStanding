@@ -177,6 +177,7 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\SceneObjects\Lamp.h" />
     <ClInclude Include="Util\Quad.h" />
     <ClInclude Include="Util\Framebuffer.h" />
     <ClInclude Include="Scene\GUIElements\FPSScreen.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Util\Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Scene\SceneObjects\Lamp.cpp" />
     <ClCompile Include="Util\Quad.cpp" />
     <ClCompile Include="Util\Framebuffer.cpp" />
     <ClCompile Include="Scene\GUIElements\FPSScreen.cpp" />

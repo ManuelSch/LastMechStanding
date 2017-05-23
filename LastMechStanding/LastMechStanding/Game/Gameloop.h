@@ -11,6 +11,7 @@
 #include "..\Scene\SceneObjects\Player.h"
 #include "..\Scene\SceneObjects\Enemy.h"
 #include "..\Scene\SceneObjects\Arena.h"
+#include "..\Scene\SceneObjects\Lamp.h"
 #include "..\Scene\GUI.h"
 #include "..\Scene\LightSource.h"
 #include "..\Util\Framebuffer.h"

@@ -63,14 +63,27 @@ void Gameloop::run()
 		sceneObjects.push_back(enemy);
 	}
 
+
 	// create sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
 	sunLight->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
 	sunLight->ambient = glm::vec3(0.3f, 0.3f, 0.3f);
 	sunLight->diffuse = glm::vec3(0.9f, 0.9f, 0.7f);
 	sunLight->specular = glm::vec3(0.7f, 0.7f, 0.7f);
+	//sunLight->position = glm::vec3(-2.0f, 4.0f, -1.0f);		// for the shadow map
 	sunLight->position = glm::vec3(-2.0f, 4.0f, -1.0f);		// for the shadow map
 	lightSources.push_back(sunLight);
+
+
+	shared_ptr<Lamp> lamp = make_shared<Lamp>();
+	lamp->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	lamp->position = sunLight->position;
+	sceneObjects.push_back(lamp);
+
+	shared_ptr<Lamp> sceneCenter = make_shared<Lamp>();
+	sceneCenter->scale(glm::vec3(0.1f, 0.1f, 0.1f));
+	sceneCenter->position = sunLight->position + sunLight->direction;
+	sceneObjects.push_back(sceneCenter);
 
 	
 	// projection matrix:
@@ -83,8 +96,12 @@ void Gameloop::run()
 	GLuint depthMapFBO;
 	glGenFramebuffers(1, &depthMapFBO);
 
+	GLfloat near_plane = 1.0f, far_plane = 7.5f;
+	//GLfloat asdf = 3.0f;
+	// ortho projection matrix for the sunlight:
+	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, near_plane, far_plane);
 	// framebuffer's depth buffer texture:
-	const GLuint SHADOW_WIDTH = 10240, SHADOW_HEIGHT = 10240;
+	const GLuint SHADOW_WIDTH = 1024*10, SHADOW_HEIGHT = SHADOW_WIDTH;
 	GLuint depthMap;
 	glGenTextures(1, &depthMap);
 	glBindTexture(GL_TEXTURE_2D, depthMap);
@@ -185,12 +202,9 @@ void Gameloop::run()
 		/*
 		* render to depth map:
 		*/
-		// ortho projection matrix for the sunlight:
-		//ConfigureShaderAndMatrices();
-		GLfloat near_plane = 1.0f, far_plane = 100.0f;
-		glm::mat4 lightProjection = glm::ortho(-1000.0f, 1000.0f, -1000.0f, 1000.0f, near_plane, far_plane);
 		// view matrix for the sunlight:
-		glm::mat4 lightView = glm::lookAt(sunLight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		//glm::mat4 lightView = glm::lookAt(glm::vec3(player->position.x, player->position.y + asdf, player->position.z), glm::vec3(player->position.x, player->position.y + asdf, player->position.z) + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
+		glm::mat4 lightView = glm::lookAt(sunLight->position, sunLight->position + sunLight->direction, glm::vec3(0.0, 1.0, 0.0));
 		// light space matrix for the sunlight:
 		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 		// draw objects:

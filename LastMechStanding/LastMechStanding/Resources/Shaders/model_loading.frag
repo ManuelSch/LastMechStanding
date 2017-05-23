@@ -49,7 +49,8 @@ float calcShadow(vec4 fragPosLightSpace)
 	float currentDepth = projCoords.z;
 
 	// if currentDepth is higher than closestDepth -> fragment is in shadow:
-	return (currentDepth > closestDepth  ? 1.0 : 0.0);
+	float bias = max(0.05 * (1.0 - dot(Normal, dirLight.direction)), 0.005);  
+	return (currentDepth - bias > closestDepth  ? 1.0 : 0.0);
 	
 }
 
