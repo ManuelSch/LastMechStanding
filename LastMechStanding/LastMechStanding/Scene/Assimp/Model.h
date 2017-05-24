@@ -10,9 +10,6 @@ public:
 	Model(GLchar* path);
 	void draw(Shader* shader);
 	~Model();
-
-	glm::vec3 minBB;
-	glm::vec3 maxBB;
 	
 private:
 	// model data:

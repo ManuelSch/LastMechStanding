@@ -24,12 +24,6 @@ public:
 
 	void decreaseHealthPoints(GLfloat damage);
 
-	glm::vec3 maxBBspawn;
-	glm::vec3 minBBspawn;
-	glm::vec3 maxBB;
-	glm::vec3 minBB;
-
-
 private:
 	GLfloat movementSpeed, mouseSensitivity;
 	GLfloat healthPoints;

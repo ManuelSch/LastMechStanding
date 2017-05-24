@@ -30,7 +30,8 @@ Gameloop::Gameloop(shared_ptr<Display> _display, shared_ptr<Font> _font) : displ
 	// create short keys controller (F1-F9, Esc)
 	this->shortKeys = make_shared<ShortKeys>(display->window);
 
-
+	// initialize framebuffer:
+	this->framebuffer = make_shared<Framebuffer>(display);
 }
 
 
@@ -80,9 +81,6 @@ void Gameloop::run()
 	// game loop:
 	while (!glfwWindowShouldClose(display->window))
 	{
-
-
-
 		// calculate delta time for frame independency:
 		GLfloat currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -97,6 +95,15 @@ void Gameloop::run()
 
 
 		/*
+		* Bind to framebuffer and draw to color texture:
+		*/
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+
+
+		/*
 		* Delete dead objects:
 		*/
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
@@ -104,7 +111,6 @@ void Gameloop::run()
 				sceneObjects.erase(sceneObjects.begin() + i);
 			}
 		}
-
 
 
 		/*
@@ -136,20 +142,15 @@ void Gameloop::run()
 		}
 
 
-
-
 		/*
 		* Update objects:
 		*/
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
 				sceneObjects[i]->update(deltaTime);
-				
-
 			}
 		}
 
-		
 		
 		/*
 		* Draw objects:
@@ -165,15 +166,23 @@ void Gameloop::run()
 			}
 		}
 
-		
-
 		/*
 		* Draw and update GUI:
 		*/
 		this->gui->update(deltaTime);
 		this->gui->draw();
 
-		// swap window and color buffer:
+		/*
+		* Bind to default framebuffer and draw the quad to the screen:
+		*/
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glDisable(GL_DEPTH_TEST);
+		framebuffer->draw();
+
+
+		// swap window and frame buffer:
 		glfwSwapBuffers(display->window);
 	}
 }

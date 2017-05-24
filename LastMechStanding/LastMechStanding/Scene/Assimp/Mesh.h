@@ -23,9 +23,6 @@ public:
 	vector<Vertex> vertices;
 	vector<GLuint> indices;
 	vector<Texture> textures;
-
-	glm::vec3 minimumBB;
-	glm::vec3 maximumBB;
 	
 	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures);
 	void draw(Shader* shader);

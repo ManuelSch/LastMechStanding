@@ -13,17 +13,13 @@ Player::Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio) : came
 		this->model = Model("Resources/Models/Player/Player_16by9ratio.obj");
 	}
 
-
-
 	movementSpeed = MOVEMENT_SPEED;
 	mouseSensitivity = MOUSE_SENSITIVITY;
 	healthPoints = HEALTH_POINTS_MAX;
 
-
 	this->scale(glm::vec3(0.2f, 0.2f, 0.2f));
 
 	camera->updateCameraVectors(position, angle);
-	
 }
 
 Player::~Player()
@@ -83,5 +79,3 @@ void Player::decreaseHealthPoints(GLfloat damage)
 
 	this->gui->healthBar->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
 }
-
-
