@@ -2,9 +2,10 @@
 
 Enemy::Enemy(shared_ptr<GUI> gui) : gui(gui)
 {
-
 	this->shader = make_shared<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	this->pickingShader = make_shared<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
+	this->simpleDepthShader = make_shared<Shader>("Resources/Shaders/simple_depth_shader.vert", "Resources/Shaders/simple_depth_shader.frag");
+
 	this->model = Model("Resources/Models/CubeEnemy/cubeEnemy.dae");
 
 	movementSpeed = MOVEMENT_SPEED;

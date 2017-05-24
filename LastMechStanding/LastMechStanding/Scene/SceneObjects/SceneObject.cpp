@@ -11,7 +11,7 @@ SceneObject::~SceneObject()
 {
 }
 
-void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources)
+void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources, glm::mat4* lightSpaceMatrix, GLuint* depthMap)
 {
 	shader->useShader();
 
@@ -29,6 +29,19 @@ void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camer
 		}
 	}
 
+	if (lightSpaceMatrix != nullptr && depthMap != nullptr) {
+		cout << "asdf" << endl;
+		glUniformMatrix4fv(shader->getUniformLocation("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(*lightSpaceMatrix));
+		glUniform1i(shader->getUniformLocation("shadowMap"), 10);
+		glActiveTexture(GL_TEXTURE10);
+		glBindTexture(GL_TEXTURE_2D, *depthMap);
+	}
+	else {
+		glUniform1i(shader->getUniformLocation("shadowMap"), 10);
+		glActiveTexture(GL_TEXTURE10);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
 	// send viewer position to the shader:
 	glUniform3f(shader->getUniformLocation("viewPos"), camera->position.x, camera->position.y, camera->position.z);
 
@@ -38,6 +51,7 @@ void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camer
 
 	// draw the loaded model:
 	glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
+
 	this->model.draw(shader.get());
 }
 
@@ -62,6 +76,17 @@ void SceneObject::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix
 	// draw the loaded model:
 	glUniformMatrix4fv(pickingShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
 	this->model.draw(pickingShader.get());
+}
+
+void SceneObject::drawDepthMap(glm::mat4* lightSpaceMatrix)
+{
+	simpleDepthShader->useShader();
+
+	glUniformMatrix4fv(simpleDepthShader->getUniformLocation("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(*lightSpaceMatrix));
+
+	// draw the loaded model:
+	glUniformMatrix4fv(simpleDepthShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
+	this->model.draw(simpleDepthShader.get());
 }
 
 void SceneObject::translate(glm::vec3 transformation)

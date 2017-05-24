@@ -32,6 +32,8 @@
     <None Include="Resources\Shaders\freetype_glyph.frag" />
     <None Include="Resources\Shaders\quad.frag" />
     <None Include="Resources\Shaders\quad.vert" />
+    <None Include="Resources\Shaders\simple_depth_shader.frag" />
+    <None Include="Resources\Shaders\simple_depth_shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Obj\Mech\camouflage_texture781.jpg">
@@ -87,9 +89,6 @@
     <ClInclude Include="Scene\SceneObjects\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\SceneObjects\Map\Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\SceneObjects\Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -124,6 +123,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Util\Quad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneObjects\Lamp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\ShadowMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -170,9 +175,6 @@
     <ClCompile Include="Scene\SceneObjects\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\SceneObjects\Map\Map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\SceneObjects\Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -207,6 +209,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Util\Quad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneObjects\Lamp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\ShadowMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -15,8 +15,9 @@ public:
 	SceneObject();
 	virtual ~SceneObject();
 
-	void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources);
+	void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources, glm::mat4* lightSpaceMatrix, GLuint* depthMap);
 	void drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID);
+	void drawDepthMap(glm::mat4* lightSpaceMatrix);
 	virtual void update(GLfloat timeDelta) = 0;
 
 	virtual void onClick();
@@ -27,12 +28,13 @@ public:
 
 	void moveTowards(glm::vec3 target, GLfloat distance);
 
+	glm::vec3 position, angle, scaling;
 protected:
 	shared_ptr<Shader> shader;
 	shared_ptr<Shader> pickingShader;
+	shared_ptr<Shader> simpleDepthShader;
 	Model model;
 
-	glm::vec3 position, angle, scaling;
 
 	glm::mat4 getModelMatrix();
 

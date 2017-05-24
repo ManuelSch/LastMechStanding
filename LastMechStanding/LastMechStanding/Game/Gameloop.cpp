@@ -31,7 +31,9 @@ Gameloop::Gameloop(shared_ptr<Display> _display, shared_ptr<Font> _font) : displ
 	this->shortKeys = make_shared<ShortKeys>(display->window);
 
 	// initialize framebuffer:
+	/*
 	this->framebuffer = make_shared<Framebuffer>(display);
+	*/
 }
 
 
@@ -57,22 +59,42 @@ void Gameloop::run()
 
 	for (GLuint i = 0; i < 5; i++) {
 		enemy = make_shared<Enemy>(gui);
-		enemy->translate(glm::vec3(0.0f, -1.0f, 0.0f));
+		enemy->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 		sceneObjects.push_back(enemy);
 	}
 
+
 	// create sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
-	sunLight->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
+	sunLight->direction = glm::normalize(glm::vec3(-0.2f, -1.0f, -0.3f));
 	sunLight->ambient = glm::vec3(0.3f, 0.3f, 0.3f);
 	sunLight->diffuse = glm::vec3(0.9f, 0.9f, 0.7f);
 	sunLight->specular = glm::vec3(0.7f, 0.7f, 0.7f);
+	//sunLight->position = glm::vec3(-2.0f, 4.0f, -1.0f);		// for the shadow map
+	sunLight->position = player->position;
 	lightSources.push_back(sunLight);
+
+	// create lamps (for testing purposes):
+	/*
+	shared_ptr<Lamp> lamp = make_shared<Lamp>();
+	lamp->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	lamp->position = sunLight->position;
+	sceneObjects.push_back(lamp);
+
+	shared_ptr<Lamp> sceneCenter = make_shared<Lamp>();
+	sceneCenter->scale(glm::vec3(0.1f, 0.1f, 0.1f));
+	sceneCenter->position = sunLight->position + sunLight->direction;
+	sceneObjects.push_back(sceneCenter);
+	*/
+
+	// initialize shadow map:
+	this->shadowMap = make_shared<ShadowMap>(sunLight);
 
 	
 	// projection matrix:
 	glm::mat4 projection = glm::perspective(45.0f, display->getDisplayRatio(), 0.1f, 100.0f);
 
+	
 
 	// frame independency:
 	deltaTime = 0.0f;
@@ -96,11 +118,12 @@ void Gameloop::run()
 
 		/*
 		* Bind to framebuffer and draw to color texture:
-		*/
+		*//*
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
+		*/
 
 
 		/*
@@ -151,20 +174,35 @@ void Gameloop::run()
 			}
 		}
 
-		
 		/*
-		* Draw objects:
+		* render to depth map:
 		*/
+		if (this->shortKeys->shadowMappinOn) {
+			sunLight->position = player->position;
+			shadowMap->renderToDepthMap(&sceneObjects);
+		}
+
+
+		/*
+		* render scene as normal with shadow mapping (using depth map):
+		*/
+		glViewport(0, 0, display->width, display->height);
 		// clear color and depth buffers:
 		glClearColor(0.45f, 0.78f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
-
+		// draw objects:
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
-				sceneObjects[i]->draw(&view, &projection, &camera, &lightSources);
+				if (this->shortKeys->shadowMappinOn) {
+					sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, &(shadowMap->lightSpaceMatrix), &(shadowMap->depthMap));
+				}
+				else {
+					sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, nullptr, nullptr);
+				}
 			}
 		}
+		
 
 		/*
 		* Draw and update GUI:
@@ -174,13 +212,13 @@ void Gameloop::run()
 
 		/*
 		* Bind to default framebuffer and draw the quad to the screen:
-		*/
+		*//*
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glDisable(GL_DEPTH_TEST);
 		framebuffer->draw();
-
+		*/
 
 		// swap window and frame buffer:
 		glfwSwapBuffers(display->window);
