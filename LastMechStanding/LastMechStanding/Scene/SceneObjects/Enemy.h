@@ -15,7 +15,7 @@ public:
 	Enemy(shared_ptr<GUI> gui);
 	virtual ~Enemy();
 
-	virtual void update(GLfloat deltaTime);
+	virtual void update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects);
 
 	virtual void onClick();
 

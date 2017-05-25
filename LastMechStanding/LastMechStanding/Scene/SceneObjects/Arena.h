@@ -11,7 +11,7 @@ public:
 	Arena();
 	~Arena();
 
-	virtual void update(GLfloat deltaTime);
+	virtual void update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects);
 };
 
 #endif

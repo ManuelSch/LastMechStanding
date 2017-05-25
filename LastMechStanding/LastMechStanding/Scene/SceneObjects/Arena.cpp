@@ -17,6 +17,6 @@ Arena::~Arena()
 {
 }
 
-void Arena::update(GLfloat deltaTime)
+void Arena::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
 }

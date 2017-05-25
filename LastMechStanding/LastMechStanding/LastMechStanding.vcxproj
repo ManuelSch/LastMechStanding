@@ -152,8 +152,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\Desktop\modern-tutorials-master-fcac904a6303ad5e575cb0541f9a5a33bae6f6ad\modern-tutorials-master-fcac904a6303ad5e575cb0541f9a5a33bae6f6ad\textures_in_3d\cube.f.glsl" />
-    <None Include="..\..\..\..\..\Desktop\modern-tutorials-master-fcac904a6303ad5e575cb0541f9a5a33bae6f6ad\modern-tutorials-master-fcac904a6303ad5e575cb0541f9a5a33bae6f6ad\textures_in_3d\cube.v.glsl" />
     <None Include="Resources\Shaders\basic.frag" />
     <None Include="Resources\Shaders\basic.vert" />
     <None Include="Resources\Shaders\color_picking.frag" />

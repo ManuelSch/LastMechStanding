@@ -17,12 +17,16 @@ public:
 	Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio);
 	virtual ~Player();
 
-	virtual void update(GLfloat deltaTime);
+	virtual void update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects);
 
-	void movePosition(Movement direction, GLfloat deltaTime);
+	void movePosition(Movement direction, GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects);
 	void moveView(GLfloat xOffset, GLfloat yOffset);
 
 	void decreaseHealthPoints(GLfloat damage);
+
+	void jump();
+
+	GLfloat jumpHeight;
 
 private:
 	GLfloat movementSpeed, mouseSensitivity;

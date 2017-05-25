@@ -19,7 +19,7 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::update(GLfloat deltaTime)
+void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
 	if (this->healthPoints <= 0) {
 		this->dead = true;
@@ -29,7 +29,7 @@ void Enemy::update(GLfloat deltaTime)
 		setNewDestination();
 	}
 	else {
-		this->moveTowards(this->destination, movementSpeed * deltaTime);
+		this->moveTowards(this->destination, movementSpeed * deltaTime, sceneObjects);
 	}
 }
 

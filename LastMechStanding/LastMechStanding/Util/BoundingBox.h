@@ -11,9 +11,5 @@ public:
 	~BoundingBox();
 
 	glm::vec3 minVertexPos, maxVertexPos;
-
-	glm::mat4 getMatrix();
-
-	glm::mat4 transformMatrix;
 };
 

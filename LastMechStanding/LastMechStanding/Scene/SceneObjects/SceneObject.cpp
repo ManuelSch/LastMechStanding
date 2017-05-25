@@ -1,7 +1,6 @@
 #include "SceneObject.h"
 
 
-
 SceneObject::SceneObject() : model(), position(0.0f), angle(0.0f), scaling(1.0f)
 {
 }
@@ -88,9 +87,42 @@ void SceneObject::drawDepthMap(glm::mat4* lightSpaceMatrix)
 	this->model.draw(simpleDepthShader.get());
 }
 
-void SceneObject::translate(glm::vec3 transformation)
+void SceneObject::translate(glm::vec3 transformation, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
-	this->position += transformation;
+	glm::vec3 tempPos = glm::vec3(this->position.x, this->position.y, this->position.z);
+	GLboolean intersects;
+
+	this->position.y += transformation.y;
+
+	this->position.x += transformation.x;
+	intersects = false;
+	for (GLuint i = 0; i < sceneObjects->size(); i++) {
+		if ((*sceneObjects)[i]->objectID != this->objectID) {
+			if (this->intersectsWith((*sceneObjects)[i])) {
+				intersects = true;
+				break;
+			}
+		}
+	}
+	if (intersects) {
+		this->position.x = tempPos.x;
+		this->position.y = tempPos.y;
+	}
+
+	this->position.z += transformation.z;
+	intersects = false;
+	for (GLuint i = 0; i < sceneObjects->size(); i++) {
+		if ((*sceneObjects)[i]->objectID != this->objectID) {
+			if (this->intersectsWith((*sceneObjects)[i])) {
+				intersects = true;
+				break;
+			}
+		}
+	}
+	if (intersects) {
+		this->position.z = tempPos.z;
+		this->position.y = tempPos.y;
+	}
 }
 
 void SceneObject::rotate(GLfloat angle, glm::vec3 transformation)
@@ -103,20 +135,15 @@ void SceneObject::scale(glm::vec3 transformation)
 	this->scaling *= transformation;
 }
 
-void SceneObject::moveTowards(glm::vec3 target, GLfloat distance)
+void SceneObject::moveTowards(glm::vec3 target, GLfloat distance, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
 	GLfloat direction = calculateAngle(position.x, position.z, target.x, target.z);
 
 	GLfloat moveX = (GLfloat)cos(glm::radians(direction)) * distance;
 	GLfloat moveZ = -(GLfloat)sin(glm::radians(direction)) * distance;
 
-	translate(glm::vec3(moveX, 0.0f, moveZ));
+	translate(glm::vec3(moveX, 0.0f, moveZ), sceneObjects);
 	this->angle.y = direction;
-}
-
-void SceneObject::asdf()
-{
-	this->model.boundingBox->transformMatrix = this->getModelMatrix() * this->model.boundingBox->getMatrix();
 }
 
 void SceneObject::onClick()
@@ -155,4 +182,21 @@ GLfloat SceneObject::calculateAngle(GLfloat x, GLfloat z, GLfloat xDest, GLfloat
 			return (float)glm::degrees(M_PI - atan(deltaZ / deltaX));
 		}
 	}
+}
+
+GLboolean SceneObject::intersectsWith(shared_ptr<SceneObject> other)
+{
+	glm::vec3 bbSelfMin = this->model.boundingBox->minVertexPos /* * this->scaling*/ + this->position;
+	glm::vec3 bbSelfMax = this->model.boundingBox->maxVertexPos /* * this->scaling*/ + this->position;
+
+	glm::vec3 bbOtherMin = other->model.boundingBox->minVertexPos /* * other->scaling*/ + other->position;
+	glm::vec3 bbOtherMax = other->model.boundingBox->maxVertexPos /* * other->scaling*/ + other->position;
+
+	if (bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) {
+		this->canJump = true;
+	}
+
+	return ((bbSelfMin.x <= bbOtherMax.x && bbSelfMax.x >= bbOtherMin.x) &&
+			(bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) &&
+			(bbSelfMin.z <= bbOtherMax.z && bbSelfMax.z >= bbOtherMin.z));
 }

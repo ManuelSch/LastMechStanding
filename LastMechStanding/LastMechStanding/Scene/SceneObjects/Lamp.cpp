@@ -16,6 +16,6 @@ Lamp::~Lamp()
 {
 }
 
-void Lamp::update(GLfloat deltaTime)
+void Lamp::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
 }

@@ -9,10 +9,6 @@ Model::Model(GLchar * path)
 	this->boundingBox = make_shared<BoundingBox>(glm::vec3(100.0f, 100.0f, 100.f), glm::vec3(-100.0f, -100.0f, -100.f));
 
 	this->loadModel(path);
-
-	cout << "Bounding Box:" << endl;
-	cout << boundingBox->minVertexPos.x << "," << boundingBox->minVertexPos.y << "," << boundingBox->minVertexPos.z << endl;
-	cout << boundingBox->maxVertexPos.x << "," << boundingBox->maxVertexPos.y << "," << boundingBox->maxVertexPos.z << endl << endl;
 }
 
 void Model::draw(Shader* shader)

@@ -57,7 +57,7 @@ private:
 	vector<shared_ptr<LightSource>> lightSources;
 
 	// moves the player position based on the user input
-	void processKeyboardInput();
+	void processKeyboardInput(vector<shared_ptr<SceneObject>>* sceneObjects);
 	void processMouseButtonInput(shared_ptr<SceneObject> pickedObject);
 };
 
