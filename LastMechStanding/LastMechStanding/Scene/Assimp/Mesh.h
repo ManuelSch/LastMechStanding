@@ -2,6 +2,7 @@
 
 #include "..\..\commonHeader.h"
 #include "..\..\Util\Shader.h"
+#include "..\..\Util\BoundingBox.h"
 
 struct Vertex {
 	glm::vec3 position;
@@ -24,7 +25,7 @@ public:
 	vector<GLuint> indices;
 	vector<Texture> textures;
 	
-	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures);
+	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures, shared_ptr<BoundingBox> boundingBox);
 	void draw(Shader* shader);
 	~Mesh();
 

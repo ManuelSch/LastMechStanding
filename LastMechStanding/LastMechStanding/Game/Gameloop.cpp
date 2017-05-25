@@ -54,12 +54,12 @@ void Gameloop::run()
 	player = make_shared<Player>(&camera, gui, display->getDisplayRatio());
 	sceneObjects.push_back(player);
 
-	arena = make_shared<Arena>();
-	sceneObjects.push_back(arena);
+	//arena = make_shared<Arena>();
+	//sceneObjects.push_back(arena);
 
-	for (GLuint i = 0; i < 5; i++) {
+	for (GLuint i = 0; i < 1; i++) {
 		enemy = make_shared<Enemy>(gui);
-		enemy->translate(glm::vec3(0.0f, 0.0f, 0.0f));
+		enemy->translate(glm::vec3(0.0f, 0.0f, 3.0f));
 		sceneObjects.push_back(enemy);
 	}
 
@@ -173,6 +173,102 @@ void Gameloop::run()
 				sceneObjects[i]->update(deltaTime);
 			}
 		}
+
+		//cout << bbPlayerMin.x << ", " << bbPlayerMin.y << ", " << bbPlayerMin.z << endl;
+		//cout << bbPlayerMax.x << ", " << bbPlayerMax.y << ", " << bbPlayerMax.z << endl;
+		//cout << player->position.x << ", " << player->position.y << ", " << player->position.z << endl;
+		//cout << bbEnemyMin.x << ", " << bbEnemyMin.y << ", " << bbEnemyMin.z << endl;
+		//cout << bbEnemyMax.x << ", " << bbEnemyMax.y << ", " << bbEnemyMax.z << endl << endl;
+
+		/*if (!((bbPlayerMin.x < bbEnemyMin.x && bbPlayerMax.x < bbEnemyMin.x) || (bbPlayerMin.x > bbEnemyMax.x && bbPlayerMax.x > bbEnemyMax.x)) &&
+			!((bbPlayerMin.y < bbEnemyMin.y && bbPlayerMax.y < bbEnemyMin.y) || (bbPlayerMin.y > bbEnemyMax.y && bbPlayerMax.y > bbEnemyMax.y)) &&
+			!((bbPlayerMin.z > bbEnemyMin.z && bbPlayerMax.z > bbEnemyMin.z) || (bbPlayerMin.z < bbEnemyMax.z && bbPlayerMax.z < bbEnemyMax.z))) {
+			cout << "c" << endl;
+		}*/
+		/*if ((player->position.x >= bbEnemyMin.x && player->position.x <= bbEnemyMax.x) &&
+			(player->position.y+2 >= bbEnemyMin.y && player->position.y+2 <= bbEnemyMax.y) &&
+			(player->position.z >= bbEnemyMin.z && player->position.z <= bbEnemyMax.z)) {
+			if(rand() >= 0.9)
+			cout << "cccccccccccccccccc" << endl;
+		}*/
+		//cout << bbEnemyMin.x << endl;
+		//cout << player->position.x << endl;
+		//cout << bbEnemyMax.x << endl << endl;
+
+		/*if (((bbPlayerMin.z >= bbEnemyMin.z && bbPlayerMin.z <= bbEnemyMax.z) ||
+			(bbPlayerMax.z >= bbEnemyMin.z && bbPlayerMax.z <= bbEnemyMax.z)) &&
+			((bbPlayerMin.x >= bbEnemyMin.x && bbPlayerMin.x <= bbEnemyMax.x) ||
+			(bbPlayerMax.x >= bbEnemyMin.x && bbPlayerMax.x <= bbEnemyMax.x)) &&
+			((bbPlayerMin.y >= bbEnemyMin.y && bbPlayerMin.y <= bbEnemyMax.y) ||
+			(bbPlayerMax.y >= bbEnemyMin.y && bbPlayerMax.y <= bbEnemyMax.y))
+			){
+			cout << "cccccccccccccccccc" << endl;
+			cout << "cccccccccccccccccc" << endl;
+			cout << "cccccccccccccccccc" << endl;
+			cout << "cccccccccccccccccc" << endl;
+			cout << "cccccccccccccccccc" << endl;
+			cout << "cccccccccccccccccc" << endl;
+		}*/
+		/*if (player->position.x > bbEnemyMin.x || player->position.x < bbEnemyMin.x) {
+			cout << "yes" << endl;
+			cout << "yes" << endl;
+			cout << "---" << endl;
+			if (player->position.y > bbEnemyMin.y || player->position.y < bbEnemyMin.y)
+			{
+				cout << "yes" << endl;
+				cout << "yes" << endl;
+				cout << "---" << endl;
+				if (player->position.z > bbEnemyMin.z || player->position.z < bbEnemyMin.z)
+				{
+					cout << "yes" << endl;
+					cout << "yes" << endl;
+					cout << "---" << endl << endl;
+					cout << "cccccccccccccccccc" << endl;
+					cout << "cccccccccccccccccc" << endl;
+					cout << "cccccccccccccccccc" << endl;
+					cout << "cccccccccccccccccc" << endl;
+					cout << "cccccccccccccccccc" << endl;
+					cout << "cccccccccccccccccc" << endl;
+				}
+				else {
+					cout << "no" << endl;
+					cout << "no" << endl;
+					cout << "---" << endl;
+				}
+			}
+			else {
+				cout << "no" << endl;
+				cout << "no" << endl;
+				cout << "---" << endl;
+			}
+		}
+		else {
+			cout << "no" << endl;
+			cout << "no" << endl;
+			cout << "---" << endl;
+		}*/
+
+		glm::vec3 bbPlayerMin = /*(player->getModelMatrix() * player->model.boundingBox->getMatrix()) * */player->model.boundingBox->minVertexPos + player->position;
+		glm::vec3 bbPlayerMax = /*(player->getModelMatrix() * player->model.boundingBox->getMatrix()) * */player->model.boundingBox->maxVertexPos + player->position;
+		glm::vec3 bbEnemyMin = /*(enemy->getModelMatrix() * enemy->model.boundingBox->getMatrix()) * */ enemy->model.boundingBox->minVertexPos + enemy->position;
+		glm::vec3 bbEnemyMax = /*(enemy->getModelMatrix() * enemy->model.boundingBox->getMatrix()) * */ enemy->model.boundingBox->maxVertexPos + enemy->position;
+
+		printf("% 03.1f, \t% 03.1f, \t% 03.1f\n", bbPlayerMin.x, bbPlayerMin.y, bbPlayerMin.z);
+		printf("% 03.1f, \t% 03.1f, \t% 03.1f\n", player->position.x, player->position.y, player->position.z);
+		printf("% 03.1f, \t% 03.1f, \t% 03.1f\n\n", bbPlayerMax.x, bbPlayerMax.y, bbPlayerMax.z);
+
+		if ((bbPlayerMin.x <= bbEnemyMax.x && bbPlayerMax.x >= bbEnemyMin.x) &&
+			(bbPlayerMin.y <= bbEnemyMax.y && bbPlayerMax.y >= bbEnemyMin.y) &&
+			(bbPlayerMin.z <= bbEnemyMax.z && bbPlayerMax.z >= bbEnemyMin.z)) {
+			cout << "cccccccccccccccccc" << endl;
+			cout << "cccccccccccccccccc" << endl;
+			cout << "cccccccccccccccccc" << endl;
+			cout << "cccccccccccccccccc" << endl;
+			cout << "cccccccccccccccccc" << endl;
+			cout << "cccccccccccccccccc" << endl;
+
+		}
+
 
 		/*
 		* render to depth map:

@@ -1,9 +1,24 @@
 #include "Mesh.h"
 
 
-Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures)
+Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures, shared_ptr<BoundingBox> boundingBox)
 	: vertices(vertices), indices(indices), textures(textures)
 {
+	glm::vec3 minVertexPos = boundingBox->minVertexPos;
+	glm::vec3 maxVertexPos = boundingBox->maxVertexPos;
+
+	for (GLuint i = 0; i < this->vertices.size(); i++)
+	{
+		boundingBox->minVertexPos.x = min(this->vertices[i].position.x, boundingBox->minVertexPos.x);
+		boundingBox->minVertexPos.y = min(this->vertices[i].position.y, boundingBox->minVertexPos.y);
+		boundingBox->minVertexPos.z = min(this->vertices[i].position.z, boundingBox->minVertexPos.z);
+
+		boundingBox->maxVertexPos.x = max(this->vertices[i].position.x, boundingBox->maxVertexPos.x);
+		boundingBox->maxVertexPos.y = max(this->vertices[i].position.y, boundingBox->maxVertexPos.y);
+		boundingBox->maxVertexPos.z = max(this->vertices[i].position.z, boundingBox->maxVertexPos.z);
+	}
+
+
 	this->setupMesh();
 }
 

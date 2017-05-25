@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef SCENE_OBJECT
+#define SCENE_OBJECT
+
 #include "..\..\commonHeader.h"
 #include "..\..\Util\Shader.h"
 #include "..\Camera.h"
@@ -29,16 +32,18 @@ public:
 	void moveTowards(glm::vec3 target, GLfloat distance);
 
 	glm::vec3 position, angle, scaling;
+	Model model;
+	void asdf();
+	glm::mat4 getModelMatrix();
 protected:
 	shared_ptr<Shader> shader;
 	shared_ptr<Shader> pickingShader;
 	shared_ptr<Shader> simpleDepthShader;
-	Model model;
 
 
-	glm::mat4 getModelMatrix();
 
 	GLfloat calculateAngle(GLfloat x, GLfloat y, GLfloat xDest, GLfloat yDest);
 };
 
-#define SCENE_OBJECT
+
+#endif

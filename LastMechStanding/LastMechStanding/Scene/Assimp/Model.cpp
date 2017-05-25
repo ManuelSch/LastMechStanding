@@ -6,7 +6,13 @@ Model::Model()
 
 Model::Model(GLchar * path)
 {
+	this->boundingBox = make_shared<BoundingBox>(glm::vec3(100.0f, 100.0f, 100.f), glm::vec3(-100.0f, -100.0f, -100.f));
+
 	this->loadModel(path);
+
+	cout << "Bounding Box:" << endl;
+	cout << boundingBox->minVertexPos.x << "," << boundingBox->minVertexPos.y << "," << boundingBox->minVertexPos.z << endl;
+	cout << boundingBox->maxVertexPos.x << "," << boundingBox->maxVertexPos.y << "," << boundingBox->maxVertexPos.z << endl << endl;
 }
 
 void Model::draw(Shader* shader)
@@ -48,6 +54,7 @@ void Model::processNode(aiNode * node, const aiScene * scene)
 	for (GLuint i = 0; i < node->mNumChildren; i++) {
 		this->processNode(node->mChildren[i], scene);
 	}
+
 }
 
 Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
@@ -110,7 +117,7 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
 
-	return Mesh(vertices, indices, textures);
+	return Mesh(vertices, indices, textures, this->boundingBox);
 }
 
 vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType aiType, string typeName)

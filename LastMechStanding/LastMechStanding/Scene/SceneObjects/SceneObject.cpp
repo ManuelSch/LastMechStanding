@@ -30,7 +30,6 @@ void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camer
 	}
 
 	if (lightSpaceMatrix != nullptr && depthMap != nullptr) {
-		cout << "asdf" << endl;
 		glUniformMatrix4fv(shader->getUniformLocation("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(*lightSpaceMatrix));
 		glUniform1i(shader->getUniformLocation("shadowMap"), 10);
 		glActiveTexture(GL_TEXTURE10);
@@ -115,6 +114,11 @@ void SceneObject::moveTowards(glm::vec3 target, GLfloat distance)
 	this->angle.y = direction;
 }
 
+void SceneObject::asdf()
+{
+	this->model.boundingBox->transformMatrix = this->getModelMatrix() * this->model.boundingBox->getMatrix();
+}
+
 void SceneObject::onClick()
 {
 }
@@ -152,4 +156,3 @@ GLfloat SceneObject::calculateAngle(GLfloat x, GLfloat z, GLfloat xDest, GLfloat
 		}
 	}
 }
-
