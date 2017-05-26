@@ -32,6 +32,7 @@
 
 // constants:
 #define GRAVITY 10.0f
+#define GROUND_LEVEL_Y -10.0f
 
 using namespace std;
 

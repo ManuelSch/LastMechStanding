@@ -21,7 +21,6 @@ Player::Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio) : came
 	healthPoints = HEALTH_POINTS_MAX;
 
 	this->scale(glm::vec3(0.2f, 0.2f, 0.2f));
-	this->position = glm::vec3(0.0f, 50.0f, 0.0f);
 
 	camera->updateCameraVectors(position, angle);
 }

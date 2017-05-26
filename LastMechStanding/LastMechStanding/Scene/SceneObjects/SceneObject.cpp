@@ -197,11 +197,13 @@ GLboolean SceneObject::intersectsWith(shared_ptr<SceneObject> other)
 						(bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) &&
 						(bbSelfMin.z <= bbOtherMax.z && bbSelfMax.z >= bbOtherMin.z));
 
-	if (result) {
-		if (bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) {
+	GLboolean hitGroundLevel = (bbSelfMin.y < GROUND_LEVEL_Y);
+
+	if ((result && (bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y)) || hitGroundLevel) {
+		if (!this->isJumping) {
 			this->canJump = true;
 		}
 	}
 
-	return result;
+	return result || hitGroundLevel;
 }

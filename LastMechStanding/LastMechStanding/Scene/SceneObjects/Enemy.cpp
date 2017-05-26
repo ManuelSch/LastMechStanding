@@ -21,6 +21,10 @@ Enemy::~Enemy()
 
 void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
+	// gravity:
+	this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY, 0.0f), sceneObjects);
+
+
 	if (this->healthPoints <= 0) {
 		this->dead = true;
 	}
