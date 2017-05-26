@@ -30,6 +30,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+// constants:
+#define GRAVITY 10.0f
 
 using namespace std;
 

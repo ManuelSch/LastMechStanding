@@ -158,6 +158,7 @@ void Gameloop::run()
 		int pickedID = data[0] + data[1] * 256 + data[2] * 256 * 256;
 		if (pickedID == 16777215) {
 			//cout << "background" << endl;
+			processMouseButtonInput(nullptr);
 		}
 		else {
 			//cout << "mesh " << pickedID << endl;
@@ -253,7 +254,9 @@ void Gameloop::processKeyboardInput(vector<shared_ptr<SceneObject>>* sceneObject
 void Gameloop::processMouseButtonInput(shared_ptr<SceneObject> pickedObject)
 {
 	if (mouseButtons[GLFW_MOUSE_BUTTON_LEFT]) {
-		pickedObject->onClick();
+		if (pickedObject != nullptr) {
+			pickedObject->onClick();
+		}
 		mouseButtons[GLFW_MOUSE_BUTTON_LEFT] = false;
 		this->gui->crossHair->spread();
 	}

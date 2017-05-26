@@ -192,11 +192,16 @@ GLboolean SceneObject::intersectsWith(shared_ptr<SceneObject> other)
 	glm::vec3 bbOtherMin = other->model.boundingBox->minVertexPos /* * other->scaling*/ + other->position;
 	glm::vec3 bbOtherMax = other->model.boundingBox->maxVertexPos /* * other->scaling*/ + other->position;
 
-	if (bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) {
-		this->canJump = true;
+
+	GLboolean result = ((bbSelfMin.x <= bbOtherMax.x && bbSelfMax.x >= bbOtherMin.x) &&
+						(bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) &&
+						(bbSelfMin.z <= bbOtherMax.z && bbSelfMax.z >= bbOtherMin.z));
+
+	if (result) {
+		if (bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) {
+			this->canJump = true;
+		}
 	}
 
-	return ((bbSelfMin.x <= bbOtherMax.x && bbSelfMax.x >= bbOtherMin.x) &&
-			(bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) &&
-			(bbSelfMin.z <= bbOtherMax.z && bbSelfMax.z >= bbOtherMin.z));
+	return result;
 }
