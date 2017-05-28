@@ -177,6 +177,8 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\SceneObjects\Arena\Container1.h" />
+    <ClInclude Include="Scene\SceneObjects\Arena\ArenaWall.h" />
     <ClInclude Include="Util\BoundingBox.h" />
     <ClInclude Include="Scene\SceneObjects\Lamp.h" />
     <ClInclude Include="Util\ShadowMap.h" />
@@ -189,7 +191,7 @@
     <ClInclude Include="Scene\GUIElements\HealthBar.h" />
     <ClInclude Include="Scene\GUIElements\GUIElement.h" />
     <ClInclude Include="Scene\GUI.h" />
-    <ClInclude Include="Scene\SceneObjects\Arena.h" />
+    <ClInclude Include="Scene\SceneObjects\Arena\Arena.h" />
     <ClInclude Include="Scene\SceneObjects\Enemy.h" />
     <ClInclude Include="Scene\LightSource.h" />
     <ClInclude Include="Scene\SceneObjects\Player.h" />
@@ -209,6 +211,8 @@
     <ClInclude Include="Util\Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Scene\SceneObjects\Arena\Container1.cpp" />
+    <ClCompile Include="Scene\SceneObjects\Arena\ArenaWall.cpp" />
     <ClCompile Include="Util\BoundingBox.cpp" />
     <ClCompile Include="Scene\SceneObjects\Lamp.cpp" />
     <ClCompile Include="Util\ShadowMap.cpp" />
@@ -221,7 +225,7 @@
     <ClCompile Include="Scene\GUIElements\HealthBar.cpp" />
     <ClCompile Include="Scene\GUIElements\GUIElement.cpp" />
     <ClCompile Include="Scene\GUI.cpp" />
-    <ClCompile Include="Scene\SceneObjects\Arena.cpp" />
+    <ClCompile Include="Scene\SceneObjects\Arena\Arena.cpp" />
     <ClCompile Include="Scene\SceneObjects\Enemy.cpp" />
     <ClCompile Include="Scene\LightSource.cpp" />
     <ClCompile Include="Scene\SceneObjects\Player.cpp" />

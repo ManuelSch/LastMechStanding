@@ -10,6 +10,8 @@ Arena::Arena()
 	this->simpleDepthShader = make_shared<Shader>("Resources/Shaders/simple_depth_shader.vert", "Resources/Shaders/simple_depth_shader.frag");
 
 	this->model = Model("Resources/Models/Arena/arena.obj");
+
+	this->position.y = GROUND_LEVEL_Y;
 }
 
 

@@ -186,12 +186,79 @@ GLfloat SceneObject::calculateAngle(GLfloat x, GLfloat z, GLfloat xDest, GLfloat
 
 GLboolean SceneObject::intersectsWith(shared_ptr<SceneObject> other)
 {
-	glm::vec3 bbSelfMin = this->model.boundingBox->minVertexPos /* * this->scaling*/ + this->position;
-	glm::vec3 bbSelfMax = this->model.boundingBox->maxVertexPos /* * this->scaling*/ + this->position;
+	if (distance(this->position, other->position) > 500.0f) {
+		return false;
+	}
+	glm::vec3 bbSelfMin = this->model.boundingBox->minVertexPos;
+	glm::vec3 bbSelfMax = this->model.boundingBox->maxVertexPos;
+	glm::vec3 bbOtherMin = other->model.boundingBox->minVertexPos;
+	glm::vec3 bbOtherMax = other->model.boundingBox->maxVertexPos;
 
-	glm::vec3 bbOtherMin = other->model.boundingBox->minVertexPos /* * other->scaling*/ + other->position;
-	glm::vec3 bbOtherMax = other->model.boundingBox->maxVertexPos /* * other->scaling*/ + other->position;
+	//Rotate the bounding box in 90° steps:
+	/*
+	GLint bbAngleYSelf = (GLint)(this->angle.y) % 360;
+	if (bbAngleYSelf >= 45) {
+		bbSelfMin.z = bbSelfMax.z;
+		bbSelfMax.z = bbSelfMin.z;
+	}
 
+	if (bbAngleYSelf >= 135) {
+		bbSelfMin.x = bbSelfMax.x;
+		bbSelfMax.x = bbSelfMin.x;
+	}
+
+	if (bbAngleYSelf >= 225) {
+		bbSelfMin.z = bbSelfMax.z;
+		bbSelfMax.z = bbSelfMin.z;
+	}
+
+	GLint bbAngleYOther = (GLint)(other->angle.y) % 360;
+	if (bbAngleYOther >= 45) {
+		bbOtherMin.z = bbOtherMax.z;
+		bbOtherMax.z = bbOtherMin.z;
+	}
+
+	if (bbAngleYOther >= 135) {
+		bbOtherMin.x = bbOtherMax.x;
+		bbOtherMax.x = bbOtherMin.x;
+	}
+
+	if (bbAngleYOther >= 225) {
+		bbOtherMin.z = bbOtherMax.z;
+		bbOtherMax.z = bbOtherMin.z;
+	}*/
+
+	
+	bbSelfMin *= this->scaling;
+	bbSelfMax *= this->scaling;
+	bbOtherMin *= other->scaling;
+	bbOtherMax *= other->scaling;
+	/**/
+	
+	bbSelfMin += this->position;
+	bbSelfMax += this->position;
+	bbOtherMin += other->position;
+	bbOtherMax += other->position;
+
+
+	/*
+	glm::vec4 bbSelfMin = glm::vec4(this->model.boundingBox->minVertexPos, 1.0f);
+	glm::vec4 bbSelfMax = glm::vec4(this->model.boundingBox->maxVertexPos, 1.0f);
+	glm::vec4 bbOtherMin = glm::vec4(other->model.boundingBox->minVertexPos, 1.0f);
+	glm::vec4 bbOtherMax = glm::vec4(other->model.boundingBox->maxVertexPos, 1.0f);
+
+	glm::mat4 bbModelMatrixSelf;
+	bbModelMatrixSelf = glm::translate(bbModelMatrixSelf, position);
+	bbModelMatrixSelf = glm::scale(bbModelMatrixSelf, scaling);
+	bbSelfMin = bbModelMatrixSelf * bbSelfMin;
+	bbSelfMax = bbModelMatrixSelf * bbSelfMax;
+
+	glm::mat4 bbModelMatrixOther;
+	bbModelMatrixOther = glm::translate(bbModelMatrixOther, other->position);
+	bbModelMatrixOther = glm::scale(bbModelMatrixOther, other->scaling);
+	bbOtherMin = bbModelMatrixOther * bbOtherMin;
+	bbOtherMax = bbModelMatrixOther * bbOtherMin;
+	/**/
 
 	GLboolean result = ((bbSelfMin.x <= bbOtherMax.x && bbSelfMax.x >= bbOtherMin.x) &&
 						(bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) &&
@@ -200,8 +267,10 @@ GLboolean SceneObject::intersectsWith(shared_ptr<SceneObject> other)
 	GLboolean hitGroundLevel = (bbSelfMin.y < GROUND_LEVEL_Y);
 
 	if ((result && (bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y)) || hitGroundLevel) {
-		if (!this->isJumping) {
-			this->canJump = true;
+		if (this->position.y > bbOtherMax.y) {
+			if (!this->isJumping) {
+				this->canJump = true;
+			}
 		}
 	}
 

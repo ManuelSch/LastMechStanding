@@ -92,9 +92,6 @@
     <ClInclude Include="Scene\SceneObjects\Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\SceneObjects\Arena.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\GUIElements\GUIElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -132,6 +129,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Util\BoundingBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneObjects\Arena\Arena.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneObjects\Arena\ArenaWall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneObjects\Arena\Container1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -181,9 +187,6 @@
     <ClCompile Include="Scene\SceneObjects\Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\SceneObjects\Arena.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\GUIElements\GUIElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -221,6 +224,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Util\BoundingBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneObjects\Arena\Arena.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneObjects\Arena\ArenaWall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneObjects\Arena\Container1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

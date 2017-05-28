@@ -14,13 +14,13 @@ Player::Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio) : came
 	else {
 		this->model = Model("Resources/Models/Player/Player_16by9ratio.obj");
 	}
-	this->model.boundingBox->minVertexPos.y -= 1.75f;
 
 	movementSpeed = MOVEMENT_SPEED;
 	mouseSensitivity = MOUSE_SENSITIVITY;
 	healthPoints = HEALTH_POINTS_MAX;
 
 	this->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	this->model.boundingBox->minVertexPos.y -= 1.75f * (1 / this->scaling.y);
 
 	camera->updateCameraVectors(position, angle);
 }

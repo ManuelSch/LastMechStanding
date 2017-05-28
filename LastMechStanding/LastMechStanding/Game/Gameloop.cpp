@@ -47,15 +47,40 @@ void Gameloop::run()
 	// create GUI:
 	this->gui = make_shared<GUI>(display->getDisplayRatio(), this->shortKeys, this->font);
 
+	// arena:
+	shared_ptr<SceneObject> arena;
+	arena = make_shared<Arena>();
+	sceneObjects.push_back(arena);
+
+	// arena walls:
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, 49.0f)));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, -49.0f)));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(49.0f, 0.0f, 0.0f), true));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-49.0f, 0.0f, 0.0f), true));
+
+	// arena containers:
+	srand(glfwGetTime());
+	for (GLuint i = 0; i < 20; i++) {
+		glm::vec3 newPosition = glm::vec3(0.0f);
+		newPosition.x = (GLfloat)(i / 20.0f) * 90.f -45.0f;
+		newPosition.z = (GLfloat)(rand() / double(RAND_MAX)) * 90.0f - 45.0f;
+		for (GLuint i = 0; i < sceneObjects.size(); i++) {
+			if (sceneObjects[i] != nullptr) {
+				if (distance(sceneObjects[i]->position, newPosition) < 5.0f) {
+					glm::vec3 newPosition = glm::vec3((rand() / double(RAND_MAX)) * 90.0f - 45.0f, 0.0f, (rand() / double(RAND_MAX)) * 90.0f - 45.0f);
+				}
+			}
+		}
+		sceneObjects.push_back(make_shared<Container1>(newPosition));
+	}
+
+
+
 	// create player and enemy objects:
 	shared_ptr<Enemy> enemy;
-	shared_ptr<Arena> arena;
 
 	player = make_shared<Player>(&camera, gui, display->getDisplayRatio());
 	sceneObjects.push_back(player);
-
-	arena = make_shared<Arena>();
-	sceneObjects.push_back(arena);
 
 	for (GLuint i = 0; i < 1; i++) {
 		enemy = make_shared<Enemy>(gui);
@@ -67,7 +92,7 @@ void Gameloop::run()
 	// create sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
 	sunLight->direction = glm::normalize(glm::vec3(-0.2f, -1.0f, -0.3f));
-	sunLight->ambient = glm::vec3(0.3f, 0.3f, 0.3f);
+	sunLight->ambient = glm::vec3(0.4f, 0.4f, 0.4f);
 	sunLight->diffuse = glm::vec3(0.9f, 0.9f, 0.7f);
 	sunLight->specular = glm::vec3(0.7f, 0.7f, 0.7f);
 	//sunLight->position = glm::vec3(-2.0f, 4.0f, -1.0f);		// for the shadow map

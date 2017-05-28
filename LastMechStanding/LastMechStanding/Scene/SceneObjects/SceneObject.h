@@ -32,7 +32,7 @@ public:
 
 	void moveTowards(glm::vec3 target, GLfloat distance, vector<shared_ptr<SceneObject>>* sceneObjects);
 
-	glm::vec3 position, angle, scaling;
+	glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), angle = glm::vec3(0.0f, 0.0f, 0.0f), scaling = glm::vec3(1.0f, 1.0f, 1.0f);
 	Model model;
 	glm::mat4 getModelMatrix();
 	GLboolean isJumping = false;
