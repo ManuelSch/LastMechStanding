@@ -37,6 +37,10 @@ public:
 	glm::mat4 getModelMatrix();
 	GLboolean isJumping = false;
 	GLboolean canJump = true;
+
+	void printPosition();
+	static glm::vec3 getRandomPosition(GLfloat yDefault = 0.0f);
+
 protected:
 	shared_ptr<Shader> shader;
 	shared_ptr<Shader> pickingShader;

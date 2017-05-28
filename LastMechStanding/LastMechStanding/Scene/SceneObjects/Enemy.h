@@ -26,6 +26,9 @@ private:
 	glm::vec3 destination;
 	shared_ptr<GUI> gui;
 
+	glm::vec3 lastPosition;
+	GLfloat timeStandingStill;
+
 	void setNewDestination();
 };
 

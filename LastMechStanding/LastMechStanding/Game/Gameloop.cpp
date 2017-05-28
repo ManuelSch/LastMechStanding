@@ -30,6 +30,9 @@ Gameloop::Gameloop(shared_ptr<Display> _display, shared_ptr<Font> _font) : displ
 	// create short keys controller (F1-F9, Esc)
 	this->shortKeys = make_shared<ShortKeys>(display->window);
 
+
+	srand(time(NULL));
+
 	// initialize framebuffer:
 	/*
 	this->framebuffer = make_shared<Framebuffer>(display);
@@ -59,15 +62,14 @@ void Gameloop::run()
 	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-49.0f, 0.0f, 0.0f), true));
 
 	// arena containers:
-	srand(glfwGetTime());
 	for (GLuint i = 0; i < 20; i++) {
 		glm::vec3 newPosition = glm::vec3(0.0f);
 		newPosition.x = (GLfloat)(i / 20.0f) * 90.f -45.0f;
-		newPosition.z = (GLfloat)(rand() / double(RAND_MAX)) * 90.0f - 45.0f;
+		newPosition.z = (GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f;
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
 				if (distance(sceneObjects[i]->position, newPosition) < 5.0f) {
-					glm::vec3 newPosition = glm::vec3((rand() / double(RAND_MAX)) * 90.0f - 45.0f, 0.0f, (rand() / double(RAND_MAX)) * 90.0f - 45.0f);
+					glm::vec3 newPosition = glm::vec3((GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f, 0.0f, (GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f);
 				}
 			}
 		}
@@ -77,21 +79,24 @@ void Gameloop::run()
 
 
 	// create player and enemy objects:
-	shared_ptr<Enemy> enemy;
 
 	player = make_shared<Player>(&camera, gui, display->getDisplayRatio());
+	player->position.x = 46.5f;
+	player->position.z = -46.5f;
+	player->angle.y = 225;
 	sceneObjects.push_back(player);
 
-	for (GLuint i = 0; i < 1; i++) {
+	shared_ptr<Enemy> enemy;
+	for (GLuint i = 0; i < 5; i++) {
 		enemy = make_shared<Enemy>(gui);
-		enemy->translate(glm::vec3(0.0f, 0.0f, 3.0f), &sceneObjects);
+		enemy->position = SceneObject::getRandomPosition(0.0f);
 		sceneObjects.push_back(enemy);
 	}
 
 
 	// create sunlight:
 	shared_ptr<LightSource> sunLight = make_shared<LightSource>(LightSource::DIRECTIONAL);
-	sunLight->direction = glm::normalize(glm::vec3(-0.2f, -1.0f, -0.3f));
+	sunLight->direction = glm::normalize(glm::vec3(-0.25f, -1.0f, -0.35f));
 	sunLight->ambient = glm::vec3(0.4f, 0.4f, 0.4f);
 	sunLight->diffuse = glm::vec3(0.9f, 0.9f, 0.7f);
 	sunLight->specular = glm::vec3(0.7f, 0.7f, 0.7f);
@@ -117,7 +122,7 @@ void Gameloop::run()
 
 	
 	// projection matrix:
-	glm::mat4 projection = glm::perspective(45.0f, display->getDisplayRatio(), 0.1f, 100.0f);
+	glm::mat4 projection = glm::perspective(45.0f, display->getDisplayRatio(), 0.1f, 145.0f);
 
 	
 
@@ -249,6 +254,9 @@ void Gameloop::run()
 
 		// swap window and frame buffer:
 		glfwSwapBuffers(display->window);
+
+
+		//cout << distance(enemy->position, player->position) << endl;
 	}
 }
 

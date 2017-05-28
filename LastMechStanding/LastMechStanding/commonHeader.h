@@ -13,6 +13,7 @@
 #include <cstring>
 #include <math.h>
 #include <map>
+#include <time.h>
 
 // OpenGL libraries
 #include <GL\glew.h>

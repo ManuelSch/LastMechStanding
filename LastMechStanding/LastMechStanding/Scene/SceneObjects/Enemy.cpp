@@ -12,6 +12,9 @@ Enemy::Enemy(shared_ptr<GUI> gui) : gui(gui)
 	movementSpeed = MOVEMENT_SPEED;
 	healthPoints = HEALTH_POINTS_MAX;
 
+	this->lastPosition = position;
+	this->timeStandingStill = 0.0f;
+
 	setNewDestination();
 }
 
@@ -35,6 +38,20 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 	else {
 		this->moveTowards(this->destination, movementSpeed * deltaTime, sceneObjects);
 	}
+
+
+	if (distance(this->lastPosition, this->position) > 0.05f) {
+		this->timeStandingStill = 0;
+	}
+	else {
+		this->timeStandingStill += deltaTime;
+	}
+	this->lastPosition = position;
+
+	if (timeStandingStill > 1.0f) {
+		setNewDestination();
+		this->timeStandingStill = 0;
+	}
 }
 
 void Enemy::onClick()
@@ -47,9 +64,5 @@ void Enemy::onClick()
 
 void Enemy::setNewDestination()
 {
-	return;
-
-	destination.x = -40 + rand() / double(RAND_MAX) * 80;
-	destination.y = position.y;
-	destination.z = -40 + rand() / double(RAND_MAX) * 80;
+	destination = SceneObject::getRandomPosition(position.y);
 }

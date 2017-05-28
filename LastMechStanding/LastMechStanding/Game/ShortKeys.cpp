@@ -54,14 +54,26 @@ void ShortKeys::pressShortKey(int key)
 		case GLFW_KEY_F4:
 			textureSamplingQuality = (textureSamplingQuality == TextureSamplingQuality::BILINEAR ? TextureSamplingQuality::NEAREST_NEIGHBOR : TextureSamplingQuality::BILINEAR);
 			// TODO
-			cout << "Texture sampling quality = " << (textureSamplingQuality == TextureSamplingQuality::BILINEAR ? "NEAREST_NEIGHBOR" : "BILINEAR") << endl;
+			cout << "Texture sampling quality = " << (textureSamplingQuality == TextureSamplingQuality::BILINEAR ? "BILINEAR" : "NEAREST_NEIGHBOR") << endl;
 			break;
 
 		// f5 -> mip mapping quality (off/nearest neighbor/linear):
 		case GLFW_KEY_F5:
 			mipMappingQuality = (mipMappingQuality == MipMappingQuality::OFF ? MipMappingQuality::NEAREST_NEIGHBOR : (mipMappingQuality == MipMappingQuality::NEAREST_NEIGHBOR ? MipMappingQuality::LINEAR : MipMappingQuality::OFF));
-			// TODO
-			cout << "Mip mapping quality = " << (mipMappingQuality == MipMappingQuality::OFF ? "NEAREST_NEIGHBOR" : (mipMappingQuality == MipMappingQuality::NEAREST_NEIGHBOR ? "LINEAR" : "OFF")) << endl;
+			switch (mipMappingQuality) {
+				case MipMappingQuality::OFF:
+					//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+					cout << "Mip mapping quality = OFF" << endl;
+					break;
+				case MipMappingQuality::NEAREST_NEIGHBOR:
+					//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+					cout << "Mip mapping quality = NEAREST_NEIGHBOR" << endl;
+					break;
+				case MipMappingQuality::LINEAR:
+					//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+					cout << "Mip mapping quality = LINEAR" << endl;
+					break;
+			}
 			break;
 
 		// f6 -> enable/disable shadow mapping:

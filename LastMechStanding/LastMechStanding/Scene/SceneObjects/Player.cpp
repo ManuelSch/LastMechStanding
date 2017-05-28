@@ -32,7 +32,7 @@ Player::~Player()
 void Player::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
 	// gravity:
-	this->movePosition(DOWN, deltaTime * GRAVITY, sceneObjects);
+	this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY, 0.0f), sceneObjects);
 
 	// jumping:
 	if (this->isJumping) {

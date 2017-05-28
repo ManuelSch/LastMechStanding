@@ -161,6 +161,16 @@ glm::mat4 SceneObject::getModelMatrix()
 	return modelMatrix;
 }
 
+void SceneObject::printPosition()
+{
+	printf("%0.2f, %0.2f, %0.2f\n", position.x, position.y, position.z);
+}
+
+glm::vec3 SceneObject::getRandomPosition(GLfloat yDefault)
+{
+	return glm::vec3((GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f, yDefault, (GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f);
+}
+
 GLfloat SceneObject::calculateAngle(GLfloat x, GLfloat z, GLfloat xDest, GLfloat zDest)
 {
 	GLfloat deltaZ = abs(zDest - z);
@@ -276,3 +286,4 @@ GLboolean SceneObject::intersectsWith(shared_ptr<SceneObject> other)
 
 	return result || hitGroundLevel;
 }
+
