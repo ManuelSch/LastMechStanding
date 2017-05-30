@@ -2,6 +2,7 @@
 
 Player::Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio) : camera(camera), gui(gui)
 {
+	cout << "Player()" << endl;
 	this->shader = make_shared<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	this->pickingShader = make_shared<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->simpleDepthShader = make_shared<Shader>("Resources/Shaders/simple_depth_shader.vert", "Resources/Shaders/simple_depth_shader.frag");
@@ -19,6 +20,7 @@ Player::Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio) : came
 	healthPoints = HEALTH_POINTS_MAX;
 
 	this->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	this->model.boundingBox->minVertexPos.y -= 1.75f * (1 / this->scaling.y);
 
 	camera->updateCameraVectors(position, angle);
 }
@@ -27,25 +29,46 @@ Player::~Player()
 {
 }
 
-void Player::update(GLfloat deltaTime)
+void Player::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
+	// gravity:
+	this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY, 0.0f), sceneObjects);
+
+	// jumping:
+	if (this->isJumping) {
+		glm::vec3 jumpDest = glm::vec3(position.x, position.y + jumpHeight, position.z);
+		this->movePosition(UP, deltaTime * distance(this->position, jumpDest) * JUMP_SPEED, sceneObjects);
+
+		if (distance(this->position, jumpDest) < 0.1f) {
+			this->isJumping = false;
+		}
+		jumpHeight -= deltaTime * GRAVITY*0.3f;
+	}
+
+	camera->updateCameraVectors(position, angle);
 }
 
-void Player::movePosition(Movement direction, GLfloat deltaTime)
+void Player::movePosition(Movement direction, GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
 	GLfloat velocity = this->movementSpeed * deltaTime;
 	switch (direction) {
 	case FORWARD:
-		this->translate(glm::rotate(glm::vec3(velocity, 0.0f, 0.0f), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
+		this->translate(glm::rotate(glm::vec3(velocity, 0.0f, 0.0f), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)), sceneObjects);
 		break;
 	case BACKWARD:
-		this->translate(glm::rotate(glm::vec3(-velocity, 0.0f, 0.0f), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
+		this->translate(glm::rotate(glm::vec3(-velocity, 0.0f, 0.0f), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)), sceneObjects);
 		break;
 	case LEFT:
-		this->translate(glm::rotate(glm::vec3(0.0f, 0.0f, -velocity), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
+		this->translate(glm::rotate(glm::vec3(0.0f, 0.0f, -velocity), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)), sceneObjects);
 		break;
 	case RIGHT:
-		this->translate(glm::rotate(glm::vec3(0.0f, 0.0f, velocity), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)));
+		this->translate(glm::rotate(glm::vec3(0.0f, 0.0f, velocity), glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f)), sceneObjects);
+		break;
+	case UP:
+		this->translate(glm::vec3(0.0f, deltaTime, 0.0f), sceneObjects);
+		break;
+	case DOWN:
+		this->translate(glm::vec3(0.0f, -deltaTime, 0.0f), sceneObjects);
 		break;
 	}
 
@@ -80,3 +103,5 @@ void Player::decreaseHealthPoints(GLfloat damage)
 
 	this->gui->healthBar->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
 }
+
+

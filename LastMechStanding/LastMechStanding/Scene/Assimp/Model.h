@@ -2,6 +2,7 @@
 
 #include "..\..\commonHeader.h"
 #include "Mesh.h"
+#include "..\..\Util\BoundingBox.h"
 
 class Model
 {
@@ -10,6 +11,8 @@ public:
 	Model(GLchar* path);
 	void draw(Shader* shader);
 	~Model();
+
+	shared_ptr<BoundingBox> boundingBox;
 	
 private:
 	// model data:

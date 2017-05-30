@@ -10,7 +10,7 @@ ShadowMap::ShadowMap(shared_ptr<LightSource> lightSource)
 	yOffset = 17.0f;
 	SHADOW_WIDTH = 1024 * 10;
 	SHADOW_HEIGHT = SHADOW_WIDTH;
-	lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, near_plane, far_plane);
+	lightProjection = glm::ortho(-170.0f, 170.0f, -170.0f, 170.0f, near_plane, far_plane);
 
 	this->lightSource = lightSource;
 

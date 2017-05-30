@@ -13,6 +13,7 @@
 #include <cstring>
 #include <math.h>
 #include <map>
+#include <time.h>
 
 // OpenGL libraries
 #include <GL\glew.h>
@@ -30,6 +31,10 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+// constants:
+#define GRAVITY 10.0f
+#define GROUND_LEVEL_Y -10.0f
+#define BACKGROUND_COLOR glm::vec3(0.45f, 0.78f, 1.0f)
 
 using namespace std;
 
@@ -37,5 +42,7 @@ enum Movement {
 	FORWARD,
 	BACKWARD,
 	LEFT,
-	RIGHT
+	RIGHT,
+	UP,
+	DOWN
 };

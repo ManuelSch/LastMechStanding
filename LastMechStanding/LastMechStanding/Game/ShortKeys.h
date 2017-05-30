@@ -31,6 +31,7 @@ public:
 	TextureSamplingQuality textureSamplingQuality;
 	MipMappingQuality mipMappingQuality;
 	bool shadowMappinOn;
+	bool bloomOn;
 	bool viewFrustumCullingOn;
 	bool blendingOn;
 

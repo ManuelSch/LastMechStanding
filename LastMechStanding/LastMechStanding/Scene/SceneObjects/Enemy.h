@@ -15,7 +15,7 @@ public:
 	Enemy(shared_ptr<GUI> gui);
 	virtual ~Enemy();
 
-	virtual void update(GLfloat deltaTime);
+	virtual void update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects);
 
 	virtual void onClick();
 
@@ -25,6 +25,9 @@ private:
 	GLfloat movementSpeed;
 	glm::vec3 destination;
 	shared_ptr<GUI> gui;
+
+	glm::vec3 lastPosition;
+	GLfloat timeStandingStill;
 
 	void setNewDestination();
 };

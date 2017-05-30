@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\..\commonHeader.h"
-#include ".\SceneObject.h"
+#include "..\SceneObject.h"
 
 #ifdef SCENE_OBJECT
 
@@ -11,7 +11,7 @@ public:
 	Arena();
 	~Arena();
 
-	virtual void update(GLfloat deltaTime);
+	virtual void update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects);
 };
 
 #endif

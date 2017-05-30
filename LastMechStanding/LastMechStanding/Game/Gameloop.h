@@ -10,7 +10,9 @@
 #include "..\Scene\Camera.h"
 #include "..\Scene\SceneObjects\Player.h"
 #include "..\Scene\SceneObjects\Enemy.h"
-#include "..\Scene\SceneObjects\Arena.h"
+#include "..\Scene\SceneObjects\Arena\Arena.h"
+#include "..\Scene\SceneObjects\Arena\ArenaWall.h"
+#include "..\Scene\SceneObjects\Arena\Container1.h"
 #include "..\Scene\SceneObjects\Lamp.h"
 #include "..\Scene\GUI.h"
 #include "..\Scene\LightSource.h"
@@ -57,7 +59,7 @@ private:
 	vector<shared_ptr<LightSource>> lightSources;
 
 	// moves the player position based on the user input
-	void processKeyboardInput();
+	void processKeyboardInput(vector<shared_ptr<SceneObject>>* sceneObjects);
 	void processMouseButtonInput(shared_ptr<SceneObject> pickedObject);
 };
 

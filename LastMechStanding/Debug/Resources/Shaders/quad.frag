@@ -10,7 +10,7 @@ uniform bool useTexture;
 void main()
 {
 	if(useTexture) {
-		color = texture(texture, TexCoords) * vec4(Color);
+		color = vec4(texture(texture, TexCoords)) * vec4(Color);
 	}
 	else {
 		color = vec4(Color);
