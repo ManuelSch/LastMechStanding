@@ -161,6 +161,15 @@ glm::mat4 SceneObject::getModelMatrix()
 	return modelMatrix;
 }
 
+void SceneObject::jump()
+{
+	if (canJump) {
+		jumpHeight = JUMP_HEIGHT;
+		canJump = false;
+		isJumping = true;
+	}
+}
+
 void SceneObject::printPosition()
 {
 	printf("%0.2f, %0.2f, %0.2f\n", position.x, position.y, position.z);

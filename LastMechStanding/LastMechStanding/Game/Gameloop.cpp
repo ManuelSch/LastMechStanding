@@ -60,18 +60,11 @@ void Gameloop::run()
 	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-49.0f, 0.0f, 0.0f), true));
 
 	// arena containers:
-	const GLuint numberOfContainers = 1;//20;
+	const GLuint numberOfContainers = 20;
 	for (GLuint i = 0; i < numberOfContainers; i++) {
 		glm::vec3 newPosition = glm::vec3(0.0f);
-		newPosition.x = (GLfloat)(i / numberOfContainers) * 90.f -45.0f;
+		newPosition.x = ((GLfloat)i / (GLfloat)numberOfContainers) * 90.f - 45.0f;
 		newPosition.z = (GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f;
-		for (GLuint i = 0; i < sceneObjects.size(); i++) {
-			if (sceneObjects[i] != nullptr) {
-				if (distance(sceneObjects[i]->position, newPosition) < 5.0f) {
-					glm::vec3 newPosition = glm::vec3((GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f, 0.0f, (GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f);
-				}
-			}
-		}
 		sceneObjects.push_back(make_shared<Container1>(newPosition));
 	}
 
@@ -85,7 +78,7 @@ void Gameloop::run()
 	sceneObjects.push_back(player);
 
 	shared_ptr<Enemy> enemy;
-	const GLuint numberOfEnemies = 1;//5;
+	const GLuint numberOfEnemies = 5;
 	for (GLuint i = 0; i < numberOfEnemies; i++) {
 		enemy = make_shared<Enemy>(gui);
 		enemy->position = SceneObject::getRandomPosition(0.0f);
@@ -232,12 +225,6 @@ void Gameloop::run()
 				}
 			}
 		}
-		
-
-		/*
-		* Bind to default framebuffer and draw the quad to the screen:
-		*/
-		framebuffer->draw(this->shortKeys->bloomOn);
 
 		/*
 		* Draw and update GUI:
@@ -245,11 +232,18 @@ void Gameloop::run()
 		this->gui->update(deltaTime);
 		this->gui->draw();
 
+		/*
+		* Bind to default framebuffer and draw the quad to the screen:
+		*/
+		framebuffer->draw(this->shortKeys->bloomOn);
+
+
 		// swap window and frame buffer:
 		glfwSwapBuffers(display->window);
 
 
 		//cout << distance(enemy->position, player->position) << endl;
+		//player->printPosition();
 	}
 }
 

@@ -104,11 +104,4 @@ void Player::decreaseHealthPoints(GLfloat damage)
 	this->gui->healthBar->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
 }
 
-void Player::jump()
-{
-	if (canJump) {
-		jumpHeight = JUMP_HEIGHT;
-		canJump = false;
-		isJumping = true;
-	}
-}
+

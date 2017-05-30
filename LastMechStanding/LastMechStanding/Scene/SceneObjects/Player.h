@@ -9,8 +9,6 @@
 #define HEALTH_POINTS_MAX 100.0f
 #define MOVEMENT_SPEED 8.0f
 #define MOUSE_SENSITIVITY 0.2f
-#define JUMP_SPEED 20.0f
-#define JUMP_HEIGHT 1.5f
 
 class Player : public SceneObject
 {
@@ -26,9 +24,6 @@ public:
 
 	void decreaseHealthPoints(GLfloat damage);
 
-	void jump();
-
-	GLfloat jumpHeight;
 
 private:
 	GLfloat movementSpeed, mouseSensitivity;

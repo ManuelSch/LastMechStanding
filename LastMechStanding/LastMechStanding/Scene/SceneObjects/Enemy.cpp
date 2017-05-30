@@ -49,9 +49,28 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 	this->lastPosition = position;
 
 	if (timeStandingStill > 1.0f) {
-		setNewDestination();
+		if ((GLfloat)((double)rand() / (double)RAND_MAX) > 0.5) {
+			this->jump();
+		}
+		else {
+			setNewDestination();
+		}
 		this->timeStandingStill = 0;
 	}
+
+
+
+	// jumping:
+	if (this->isJumping) {
+		glm::vec3 jumpDest = glm::vec3(position.x, position.y + jumpHeight, position.z);
+		this->translate(glm::vec3(0.0f, deltaTime * distance(this->position, jumpDest) * JUMP_SPEED, 0.0f), sceneObjects);
+
+		if (distance(this->position, jumpDest) < 0.1f) {
+			this->isJumping = false;
+		}
+		jumpHeight -= deltaTime * GRAVITY*0.3f;
+	}
+
 }
 
 void Enemy::onClick()
