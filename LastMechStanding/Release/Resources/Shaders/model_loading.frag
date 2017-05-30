@@ -113,6 +113,8 @@ void main()
         brightColor = color;
 	}
 	else {
+		brightColor = vec4(0.0, 0.0, 0.0, 0.0);
+
 		// enables "depth testing" but introduces unwanted black pixels:
 		//brightColor = vec4(0.0, 0.0, 0.0, 1.0);
 	}
