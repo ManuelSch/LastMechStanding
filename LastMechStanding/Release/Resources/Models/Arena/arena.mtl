@@ -1,37 +1,12 @@
 # Blender MTL File: 'arena.blend'
-# Material Count: 3
+# Material Count: 1
 
-newmtl Material
+newmtl ground
 Ns 96.078431
 Ka 0.000000 0.000000 0.000000
 Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 2
-map_Kd metal05.jpg
-map_Ks metal05s.jpg
-map_Ns metal05s.jpg
-
-newmtl Material.005
-Ns 96.078431
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
 map_Kd ground08.jpg
-map_Ks ground08s.jpg
-map_Ns ground08s.jpg
-
-newmtl None
-Ns 0
-Ka 0.000000 0.000000 0.000000
-Kd 0.8 0.8 0.8
-Ks 0.0 0.0 0.0
-d 1
-illum 2
-map_Kd metal05.jpg
-map_Ks metal05s.jpg
-map_Ns metal05s.jpg
