@@ -34,9 +34,7 @@ Gameloop::Gameloop(shared_ptr<Display> _display, shared_ptr<Font> _font) : displ
 	srand(time(NULL));
 
 	// initialize framebuffer:
-	/*
 	this->framebuffer = make_shared<Framebuffer>(display);
-	*/
 }
 
 
@@ -62,9 +60,10 @@ void Gameloop::run()
 	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-49.0f, 0.0f, 0.0f), true));
 
 	// arena containers:
-	for (GLuint i = 0; i < 20; i++) {
+	const GLuint numberOfContainers = 1;//20;
+	for (GLuint i = 0; i < numberOfContainers; i++) {
 		glm::vec3 newPosition = glm::vec3(0.0f);
-		newPosition.x = (GLfloat)(i / 20.0f) * 90.f -45.0f;
+		newPosition.x = (GLfloat)(i / numberOfContainers) * 90.f -45.0f;
 		newPosition.z = (GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f;
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
@@ -79,7 +78,6 @@ void Gameloop::run()
 
 
 	// create player and enemy objects:
-
 	player = make_shared<Player>(&camera, gui, display->getDisplayRatio());
 	player->position.x = 46.5f;
 	player->position.z = -46.5f;
@@ -87,7 +85,8 @@ void Gameloop::run()
 	sceneObjects.push_back(player);
 
 	shared_ptr<Enemy> enemy;
-	for (GLuint i = 0; i < 5; i++) {
+	const GLuint numberOfEnemies = 1;//5;
+	for (GLuint i = 0; i < numberOfEnemies; i++) {
 		enemy = make_shared<Enemy>(gui);
 		enemy->position = SceneObject::getRandomPosition(0.0f);
 		sceneObjects.push_back(enemy);
@@ -148,13 +147,11 @@ void Gameloop::run()
 
 		/*
 		* Bind to framebuffer and draw to color texture:
-		*//*
-		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
 		*/
-
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		//glEnable(GL_DEPTH_TEST);
 
 		/*
 		* Delete dead objects:
@@ -165,14 +162,12 @@ void Gameloop::run()
 			}
 		}
 
-
 		/*
 		* Draw picking colors:
 		*/
 		// clear color and depth buffers:
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
 				sceneObjects[i]->drawPicking(&view, &projection, &camera, i);
@@ -195,6 +190,8 @@ void Gameloop::run()
 			processMouseButtonInput(sceneObjects[pickedID]);
 		}
 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 		/*
 		* Update objects:
@@ -213,14 +210,15 @@ void Gameloop::run()
 			sunLight->position = player->position;
 			shadowMap->renderToDepthMap(&sceneObjects);
 		}
-
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
+		
 
 		/*
 		* render scene as normal with shadow mapping (using depth map):
 		*/
 		glViewport(0, 0, display->width, display->height);
 		// clear color and depth buffers:
-		glClearColor(0.45f, 0.78f, 1.0f, 1.0f);
+		glClearColor(BACKGROUND_COLOR.x, BACKGROUND_COLOR.y, BACKGROUND_COLOR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 		// draw objects:
@@ -237,20 +235,15 @@ void Gameloop::run()
 		
 
 		/*
+		* Bind to default framebuffer and draw the quad to the screen:
+		*/
+		framebuffer->draw(this->shortKeys->bloomOn);
+
+		/*
 		* Draw and update GUI:
 		*/
 		this->gui->update(deltaTime);
 		this->gui->draw();
-
-		/*
-		* Bind to default framebuffer and draw the quad to the screen:
-		*//*
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glDisable(GL_DEPTH_TEST);
-		framebuffer->draw();
-		*/
 
 		// swap window and frame buffer:
 		glfwSwapBuffers(display->window);

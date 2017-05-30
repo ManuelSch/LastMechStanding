@@ -154,10 +154,14 @@
   <ItemGroup>
     <None Include="Resources\Shaders\basic.frag" />
     <None Include="Resources\Shaders\basic.vert" />
+    <None Include="Resources\Shaders\bloom.frag" />
+    <None Include="Resources\Shaders\bloom.vert" />
     <None Include="Resources\Shaders\color_picking.frag" />
     <None Include="Resources\Shaders\color_picking.vert" />
     <None Include="Resources\Shaders\freetype_glyph.frag" />
     <None Include="Resources\Shaders\freetype_glyph.vert" />
+    <None Include="Resources\Shaders\gauss_blur.frag" />
+    <None Include="Resources\Shaders\gauss_blur.vert" />
     <None Include="Resources\Shaders\quad.frag" />
     <None Include="Resources\Shaders\quad.vert" />
     <None Include="Resources\Shaders\lighting.frag" />
@@ -169,6 +173,8 @@
     <None Include="Obj\Mech\mech1.mtl" />
     <None Include="Resources\Shaders\model_loading.frag" />
     <None Include="Resources\Shaders\model_loading.vert" />
+    <None Include="Resources\Shaders\quad_bloom.frag" />
+    <None Include="Resources\Shaders\quad_bloom.vert" />
     <None Include="Resources\Shaders\simple_depth_shader.frag" />
     <None Include="Resources\Shaders\simple_depth_shader.vert" />
   </ItemGroup>

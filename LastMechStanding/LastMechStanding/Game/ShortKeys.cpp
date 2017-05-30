@@ -13,6 +13,7 @@ ShortKeys::ShortKeys(GLFWwindow* window)
 	this->textureSamplingQuality = TextureSamplingQuality::BILINEAR;
 	this->mipMappingQuality = MipMappingQuality::OFF;
 	this->shadowMappinOn = true;
+	this->bloomOn = true;
 	this->viewFrustumCullingOn = true;
 	this->blendingOn = true;
 }
@@ -84,7 +85,8 @@ void ShortKeys::pressShortKey(int key)
 
 		// f7 -> enable/disable effect:
 		case GLFW_KEY_F7:
-			// TODO
+			bloomOn = !bloomOn;
+			cout << "Bloom = " << (bloomOn ? "ON" : "OFF") << endl;
 			break;
 
 		// f8 -> view frustum culling on/off

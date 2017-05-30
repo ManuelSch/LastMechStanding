@@ -34,6 +34,7 @@
 // constants:
 #define GRAVITY 10.0f
 #define GROUND_LEVEL_Y -10.0f
+#define BACKGROUND_COLOR glm::vec3(0.45f, 0.78f, 1.0f)
 
 using namespace std;
 

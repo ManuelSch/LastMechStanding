@@ -11,16 +11,19 @@ public:
 	Framebuffer(shared_ptr<Display> _display);
 	~Framebuffer();
 
-	GLuint fbo;					// Frame buffer object
-	GLuint textureColorBuffer;	// texture attachment
-	GLuint rbo;					// renderbuffer object attachment
+	GLuint fbo;						// Frame buffer object
+	GLuint textureColorBuffers[2];	// texture attachment
+	GLuint rbo;						// renderbuffer object attachment
 
 	shared_ptr<Display> display;
-	shared_ptr<Shader> shader;
+	shared_ptr<Shader> shaderFinal;
+	shared_ptr<Shader> shaderBlur;
 	shared_ptr<Quad> quad;
 
-	void draw();
-	GLuint generateAttachmentTexture(GLboolean depth, GLboolean stencil);
+	GLuint pingPongFBO[2];
+	GLuint pingPongColorbuffers[2];
+
+	void draw(GLboolean enableBloom);
 
 private:
 	const Quad::Origin ORIGIN = Quad::FULLSCREEN;
@@ -28,5 +31,8 @@ private:
 	const GLfloat WIDTH = 2;
 	const GLfloat HEIGHT = 2;
 	const glm::vec4 COLOR = glm::vec4(1.0f);
+
+	void generateAttachmentTextures(GLboolean depth, GLboolean stencil);
+	void initPingPongFBO();
 };
 
