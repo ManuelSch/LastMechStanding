@@ -42,9 +42,9 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
 	// result:
-	vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
-    vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));
-    vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
+	vec3 ambient = light.ambient * vec3(texture2D(material.diffuse, TexCoords));
+    vec3 diffuse = light.diffuse * diff * vec3(texture2D(material.diffuse, TexCoords));
+    vec3 specular = light.specular * spec * vec3(texture2D(material.specular, TexCoords));
     return (ambient + diffuse + specular);
 }
 
@@ -64,9 +64,9 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float attenuation = 1.0f / (light.constant + light.linear * dist + light.quadratic * (dist * dist)); 
 
 	// result:
-    vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
-    vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));
-    vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
+    vec3 ambient = light.ambient * vec3(texture2D(material.diffuse, TexCoords));
+    vec3 diffuse = light.diffuse * diff * vec3(texture2D(material.diffuse, TexCoords));
+    vec3 specular = light.specular * spec * vec3(texture2D(material.specular, TexCoords));
     ambient  *= attenuation;
     diffuse  *= attenuation;
     specular *= attenuation;

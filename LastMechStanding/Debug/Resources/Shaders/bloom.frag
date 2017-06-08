@@ -11,7 +11,7 @@ uniform vec3 backgroundColor;
 
 void main()
 {         
-    vec3 result = texture(scene, TexCoords).rgb;      
+    vec3 result = texture2D(scene, TexCoords).rgb;      
 
     vec4 bloomColor = texture2D(bloomBlur, TexCoords).rgba;
 	

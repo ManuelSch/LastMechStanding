@@ -46,7 +46,7 @@ float calcShadow(vec4 fragPosLightSpace)
 	projCoords = projCoords * 0.5 + 0.5; 
 	
 	// calculate closest depth from the light's point of view:
-	float closestDepth = texture(shadowMap, projCoords.xy).r; 
+	float closestDepth = texture2D(shadowMap, projCoords.xy).r; 
 	float currentDepth = projCoords.z;
 
 	// offset bias for avoiding shadow acne:
@@ -64,7 +64,7 @@ float calcShadow(vec4 fragPosLightSpace)
 		{
 			for(int y = -1; y <= 1; ++y)
 			{
-				float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+				float pcfDepth = texture2D(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
 
 				// if currentDepth is higher than closestDepth -> fragment is in shadow:
 				shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
@@ -81,16 +81,16 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 	vec3 lightDir = normalize(-light.direction);
 	
 	// ambient component:
-	vec3 ambient = light.ambient * vec3(texture(material.texture_diffuse1, TexCoords));
+	vec3 ambient = light.ambient * vec3(texture2D(material.texture_diffuse1, TexCoords));
 
 	// diffuse component:
     float diff = max(dot(normal, lightDir), 0.0);
-    vec3 diffuse = light.diffuse * diff * vec3(texture(material.texture_diffuse1, TexCoords));
+    vec3 diffuse = light.diffuse * diff * vec3(texture2D(material.texture_diffuse1, TexCoords));
 
 	// specular component:
 	vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = light.specular * spec * vec3(texture(material.texture_specular1, TexCoords));
+    vec3 specular = light.specular * spec * vec3(texture2D(material.texture_specular1, TexCoords));
 
 	// shadow map:
     float shadow = calcShadow(FragPosLightSpace);
