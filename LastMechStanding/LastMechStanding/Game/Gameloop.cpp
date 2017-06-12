@@ -82,7 +82,7 @@ void Gameloop::run()
 	//!--const GLuint numberOfEnemies = 5;
 	const GLuint numberOfEnemies = 2;
 	for (GLuint i = 0; i < numberOfEnemies; i++) {
-		enemy = make_shared<Enemy>(gui);
+		enemy = make_shared<Enemy>(gui, player);
 		enemy->position = SceneObject::getRandomPosition(0.0f);
 		sceneObjects.push_back(enemy);
 	}

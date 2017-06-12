@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-Enemy::Enemy(shared_ptr<GUI> gui) : gui(gui)
+Enemy::Enemy(shared_ptr<GUI> gui, shared_ptr<Player> player) : gui(gui), player(player)
 {
 	cout << "Enemy()" << endl;
 	this->shader = make_shared<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
@@ -15,7 +15,7 @@ Enemy::Enemy(shared_ptr<GUI> gui) : gui(gui)
 	this->lastPosition = position;
 	this->timeStandingStill = 0.0f;
 
-	this->child = make_shared<EnemyTop>(this);
+	this->child = make_shared<EnemyTop>(this, player);
 
 	setNewDestination();
 }

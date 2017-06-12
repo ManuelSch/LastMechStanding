@@ -2,6 +2,7 @@
 
 #include "..\..\commonHeader.h"
 #include "SceneObject.h"
+#include "Player.h"
 #include "..\GUI.h"
 
 #ifdef SCENE_OBJECT
@@ -12,7 +13,7 @@
 class EnemyTop : public SceneObject
 {
 public:
-	EnemyTop(SceneObject* parent);
+	EnemyTop(SceneObject* parent, shared_ptr<Player> player);
 	virtual ~EnemyTop();
 
 	virtual void update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects);
@@ -21,6 +22,7 @@ public:
 
 private:
 	SceneObject* parent;
+	shared_ptr<Player> player;
 };
 
 #endif

@@ -3,6 +3,7 @@
 #include "..\..\commonHeader.h"
 #include "SceneObject.h"
 #include "EnemyTop.h"
+#include "Player.h"
 #include "..\GUI.h"
 
 #ifdef SCENE_OBJECT
@@ -13,7 +14,7 @@
 class Enemy : public SceneObject
 {
 public:
-	Enemy(shared_ptr<GUI> gui);
+	Enemy(shared_ptr<GUI> gui, shared_ptr<Player> player);
 	virtual ~Enemy();
 
 	virtual void update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects);
@@ -26,6 +27,7 @@ private:
 	GLfloat movementSpeed;
 	glm::vec3 destination;
 	shared_ptr<GUI> gui;
+	shared_ptr<Player> player;
 
 	glm::vec3 lastPosition;
 	GLfloat timeStandingStill;
