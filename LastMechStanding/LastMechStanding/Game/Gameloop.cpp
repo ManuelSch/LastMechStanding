@@ -60,7 +60,8 @@ void Gameloop::run()
 	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-49.0f, 0.0f, 0.0f), true));
 
 	// arena containers:
-	const GLuint numberOfContainers = 20;
+	//!--const GLuint numberOfContainers = 20;
+	const GLuint numberOfContainers = 2;
 	for (GLuint i = 0; i < numberOfContainers; i++) {
 		glm::vec3 newPosition = glm::vec3(0.0f);
 		newPosition.x = ((GLfloat)i / (GLfloat)numberOfContainers) * 90.f - 45.0f;
@@ -78,7 +79,8 @@ void Gameloop::run()
 	sceneObjects.push_back(player);
 
 	shared_ptr<Enemy> enemy;
-	const GLuint numberOfEnemies = 5;
+	//!--const GLuint numberOfEnemies = 5;
+	const GLuint numberOfEnemies = 2;
 	for (GLuint i = 0; i < numberOfEnemies; i++) {
 		enemy = make_shared<Enemy>(gui);
 		enemy->position = SceneObject::getRandomPosition(0.0f);

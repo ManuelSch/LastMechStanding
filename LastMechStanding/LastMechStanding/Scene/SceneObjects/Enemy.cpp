@@ -7,13 +7,15 @@ Enemy::Enemy(shared_ptr<GUI> gui) : gui(gui)
 	this->pickingShader = make_shared<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->simpleDepthShader = make_shared<Shader>("Resources/Shaders/simple_depth_shader.vert", "Resources/Shaders/simple_depth_shader.frag");
 
-	this->model = Model("Resources/Models/CubeEnemy/cubeEnemy.dae");
+	this->model = Model("Resources/Models/Mech/mechbottom.obj");
 
 	movementSpeed = MOVEMENT_SPEED;
 	healthPoints = HEALTH_POINTS_MAX;
 
 	this->lastPosition = position;
 	this->timeStandingStill = 0.0f;
+
+	this->child = make_shared<EnemyTop>(this);
 
 	setNewDestination();
 }
@@ -26,6 +28,9 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 {
 	// gravity:
 	this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY, 0.0f), sceneObjects);
+	if ((GLfloat)((double)rand() / (double)RAND_MAX) > 0.95) {
+		this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY/10.f, 0.0f), sceneObjects);
+	}
 
 
 	if (this->healthPoints <= 0) {
@@ -71,6 +76,11 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 		jumpHeight -= deltaTime * GRAVITY*0.3f;
 	}
 
+
+	// top:
+	if (this->child != nullptr) {
+		this->child->update(deltaTime, sceneObjects);
+	}
 }
 
 void Enemy::onClick()

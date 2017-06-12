@@ -146,6 +146,9 @@
     <ClInclude Include="Scene\SceneObjects\Arena\Container1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\SceneObjects\EnemyTop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -239,6 +242,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene\SceneObjects\Arena\Container1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneObjects\EnemyTop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

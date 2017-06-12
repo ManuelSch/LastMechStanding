@@ -51,6 +51,10 @@ void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camer
 	glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
 
 	this->model.draw(shader.get());
+
+	if (this->child != nullptr) {
+		this->child->draw(viewMatrix, projectionMatrix, camera, lightSources, lightSpaceMatrix, depthMap);
+	}
 }
 
 void SceneObject::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID)
@@ -74,6 +78,10 @@ void SceneObject::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix
 	// draw the loaded model:
 	glUniformMatrix4fv(pickingShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
 	this->model.draw(pickingShader.get());
+
+	if (this->child != nullptr) {
+		this->child->drawPicking(viewMatrix, projectionMatrix, camera, pickingID);
+	}
 }
 
 void SceneObject::drawDepthMap(glm::mat4* lightSpaceMatrix)
@@ -85,6 +93,10 @@ void SceneObject::drawDepthMap(glm::mat4* lightSpaceMatrix)
 	// draw the loaded model:
 	glUniformMatrix4fv(simpleDepthShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
 	this->model.draw(simpleDepthShader.get());
+
+	if (this->child != nullptr) {
+		this->child->drawDepthMap(lightSpaceMatrix);
+	}
 }
 
 void SceneObject::translate(glm::vec3 transformation, vector<shared_ptr<SceneObject>>* sceneObjects)

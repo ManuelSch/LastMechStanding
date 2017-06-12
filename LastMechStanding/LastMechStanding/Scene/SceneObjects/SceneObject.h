@@ -53,6 +53,7 @@ protected:
 	shared_ptr<Shader> pickingShader;
 	shared_ptr<Shader> simpleDepthShader;
 
+	shared_ptr<SceneObject> child;
 
 
 	GLfloat calculateAngle(GLfloat x, GLfloat y, GLfloat xDest, GLfloat yDest);
