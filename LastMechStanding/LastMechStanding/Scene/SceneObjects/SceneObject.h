@@ -45,6 +45,7 @@ public:
 	GLboolean canJump = true;
 
 	vector<shared_ptr<SceneObject>> children;
+	SceneObject* parent;
 
 	void jump();
 

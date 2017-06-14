@@ -18,8 +18,6 @@ public:
 
 	virtual void onClick();
 
-private:
-	SceneObject* parent;
 	shared_ptr<Player> player;
 
 	vector<shared_ptr<Bullet>> bullets;

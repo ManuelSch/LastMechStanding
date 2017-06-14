@@ -10,7 +10,7 @@
 class Bullet : public SceneObject
 {
 public:
-	Bullet(SceneObject* parent);
+	Bullet(SceneObject* parent, shared_ptr<Player> player);
 	virtual ~Bullet();
 
 	virtual void update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects);
@@ -19,11 +19,11 @@ public:
 
 	void shoot(glm::vec3 shootTowards);
 
-	GLfloat movementSpeed = 300.0f;
+	GLfloat movementSpeed = 100.0f;
 
+	shared_ptr<Player> player;
 
 private:
-	SceneObject* parent;
 
 	//GLboolean asdf = true;
 

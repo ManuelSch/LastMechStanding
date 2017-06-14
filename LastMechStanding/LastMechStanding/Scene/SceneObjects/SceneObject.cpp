@@ -195,6 +195,17 @@ glm::mat4 SceneObject::getModelMatrix()
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(angle.x), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f));
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(angle.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+	while (angle.x >= 360.0f) {
+		angle.x -= 360.0f;
+	}
+	while (angle.y >= 360.0f) {
+		angle.y -= 360.0f;
+	}
+	while (angle.z >= 360.0f) {
+		angle.z -= 360.0f;
+	}
+
 	return modelMatrix;
 }
 
