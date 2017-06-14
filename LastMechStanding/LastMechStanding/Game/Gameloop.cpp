@@ -80,7 +80,7 @@ void Gameloop::run()
 
 	shared_ptr<Enemy> enemy;
 	//!--const GLuint numberOfEnemies = 5;
-	const GLuint numberOfEnemies = 2;
+	const GLuint numberOfEnemies = 1;
 	for (GLuint i = 0; i < numberOfEnemies; i++) {
 		enemy = make_shared<Enemy>(gui, player);
 		enemy->position = SceneObject::getRandomPosition(0.0f);
@@ -150,12 +150,12 @@ void Gameloop::run()
 
 		/*
 		* Delete dead objects:
-		*/
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr && sceneObjects[i]->dead == true) {
 				sceneObjects.erase(sceneObjects.begin() + i);
 			}
 		}
+		*/
 
 		/*
 		* Draw picking colors:
@@ -165,7 +165,9 @@ void Gameloop::run()
 		
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
-				sceneObjects[i]->drawPicking(&view, &projection, &camera, i);
+				if (sceneObjects[i]->collide) {
+					sceneObjects[i]->drawPicking(&view, &projection, &camera, i);
+				}
 			}
 		}
 

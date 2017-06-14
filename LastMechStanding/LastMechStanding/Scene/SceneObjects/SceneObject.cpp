@@ -12,6 +12,10 @@ SceneObject::~SceneObject()
 
 void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources, glm::mat4* lightSpaceMatrix, GLuint* depthMap)
 {
+	if (!this->visible) {
+		return;
+	}
+
 	shader->useShader();
 
 	// send light parameters to the shader:
@@ -52,13 +56,22 @@ void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camer
 
 	this->model.draw(shader.get());
 
-	if (this->child != nullptr) {
-		this->child->draw(viewMatrix, projectionMatrix, camera, lightSources, lightSpaceMatrix, depthMap);
+	// children:
+	for (GLuint j = 0; j < this->children.size(); j++) {
+		this->children[j]->draw(viewMatrix, projectionMatrix, camera, lightSources, lightSpaceMatrix, depthMap);
 	}
 }
 
 void SceneObject::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID)
 {
+	if (!this->visible) {
+		return;
+	}
+
+	if (pickingShader == nullptr) {
+		return;
+	}
+
 	pickingShader->useShader();
 
 	// calculate picking ID of the object:
@@ -79,13 +92,24 @@ void SceneObject::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix
 	glUniformMatrix4fv(pickingShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
 	this->model.draw(pickingShader.get());
 
-	if (this->child != nullptr) {
-		this->child->drawPicking(viewMatrix, projectionMatrix, camera, pickingID);
+	// children:
+	for (GLuint j = 0; j < this->children.size(); j++) {
+		if (this->children[j]->collide) {
+			this->children[j]->drawPicking(viewMatrix, projectionMatrix, camera, pickingID);
+		}
 	}
 }
 
 void SceneObject::drawDepthMap(glm::mat4* lightSpaceMatrix)
 {
+	if (!this->visible) {
+		return;
+	}
+
+	if (simpleDepthShader == nullptr) {
+		return;
+	}
+
 	simpleDepthShader->useShader();
 
 	glUniformMatrix4fv(simpleDepthShader->getUniformLocation("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(*lightSpaceMatrix));
@@ -94,8 +118,9 @@ void SceneObject::drawDepthMap(glm::mat4* lightSpaceMatrix)
 	glUniformMatrix4fv(simpleDepthShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
 	this->model.draw(simpleDepthShader.get());
 
-	if (this->child != nullptr) {
-		this->child->drawDepthMap(lightSpaceMatrix);
+	// children:
+	for (GLuint j = 0; j < this->children.size(); j++) {
+		this->children[j]->drawDepthMap(lightSpaceMatrix);
 	}
 }
 
@@ -225,71 +250,16 @@ GLboolean SceneObject::intersectsWith(shared_ptr<SceneObject> other)
 	glm::vec3 bbOtherMin = other->model.boundingBox->minVertexPos;
 	glm::vec3 bbOtherMax = other->model.boundingBox->maxVertexPos;
 
-	//Rotate the bounding box in 90° steps:
-	/*
-	GLint bbAngleYSelf = (GLint)(this->angle.y) % 360;
-	if (bbAngleYSelf >= 45) {
-		bbSelfMin.z = bbSelfMax.z;
-		bbSelfMax.z = bbSelfMin.z;
-	}
-
-	if (bbAngleYSelf >= 135) {
-		bbSelfMin.x = bbSelfMax.x;
-		bbSelfMax.x = bbSelfMin.x;
-	}
-
-	if (bbAngleYSelf >= 225) {
-		bbSelfMin.z = bbSelfMax.z;
-		bbSelfMax.z = bbSelfMin.z;
-	}
-
-	GLint bbAngleYOther = (GLint)(other->angle.y) % 360;
-	if (bbAngleYOther >= 45) {
-		bbOtherMin.z = bbOtherMax.z;
-		bbOtherMax.z = bbOtherMin.z;
-	}
-
-	if (bbAngleYOther >= 135) {
-		bbOtherMin.x = bbOtherMax.x;
-		bbOtherMax.x = bbOtherMin.x;
-	}
-
-	if (bbAngleYOther >= 225) {
-		bbOtherMin.z = bbOtherMax.z;
-		bbOtherMax.z = bbOtherMin.z;
-	}*/
-
-	
 	bbSelfMin *= this->scaling;
 	bbSelfMax *= this->scaling;
 	bbOtherMin *= other->scaling;
 	bbOtherMax *= other->scaling;
-	/**/
 	
 	bbSelfMin += this->position;
 	bbSelfMax += this->position;
 	bbOtherMin += other->position;
 	bbOtherMax += other->position;
 
-
-	/*
-	glm::vec4 bbSelfMin = glm::vec4(this->model.boundingBox->minVertexPos, 1.0f);
-	glm::vec4 bbSelfMax = glm::vec4(this->model.boundingBox->maxVertexPos, 1.0f);
-	glm::vec4 bbOtherMin = glm::vec4(other->model.boundingBox->minVertexPos, 1.0f);
-	glm::vec4 bbOtherMax = glm::vec4(other->model.boundingBox->maxVertexPos, 1.0f);
-
-	glm::mat4 bbModelMatrixSelf;
-	bbModelMatrixSelf = glm::translate(bbModelMatrixSelf, position);
-	bbModelMatrixSelf = glm::scale(bbModelMatrixSelf, scaling);
-	bbSelfMin = bbModelMatrixSelf * bbSelfMin;
-	bbSelfMax = bbModelMatrixSelf * bbSelfMax;
-
-	glm::mat4 bbModelMatrixOther;
-	bbModelMatrixOther = glm::translate(bbModelMatrixOther, other->position);
-	bbModelMatrixOther = glm::scale(bbModelMatrixOther, other->scaling);
-	bbOtherMin = bbModelMatrixOther * bbOtherMin;
-	bbOtherMax = bbModelMatrixOther * bbOtherMin;
-	/**/
 
 	GLboolean result = ((bbSelfMin.x <= bbOtherMax.x && bbSelfMax.x >= bbOtherMin.x) &&
 						(bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) &&

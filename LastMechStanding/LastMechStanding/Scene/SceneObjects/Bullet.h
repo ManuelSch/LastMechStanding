@@ -3,28 +3,32 @@
 #include "..\..\commonHeader.h"
 #include "SceneObject.h"
 #include "Player.h"
-#include "Bullet.h"
 #include "..\GUI.h"
 
 #ifdef SCENE_OBJECT
 
-class EnemyTop : public SceneObject
+class Bullet : public SceneObject
 {
 public:
-	EnemyTop(SceneObject* parent, shared_ptr<Player> player);
-	virtual ~EnemyTop();
+	Bullet(SceneObject* parent);
+	virtual ~Bullet();
 
 	virtual void update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects);
 
 	virtual void onClick();
 
+	void shoot(glm::vec3 shootTowards);
+
+	GLfloat movementSpeed = 300.0f;
+
+
 private:
 	SceneObject* parent;
-	shared_ptr<Player> player;
 
-	vector<shared_ptr<Bullet>> bullets;
+	//GLboolean asdf = true;
 
-	GLfloat shootTimer = 0.0f;
+	glm::vec3 direction;
 };
 
 #endif
+

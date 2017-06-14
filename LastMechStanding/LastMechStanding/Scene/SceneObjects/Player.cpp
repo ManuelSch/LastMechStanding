@@ -39,13 +39,18 @@ void Player::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObj
 		glm::vec3 jumpDest = glm::vec3(position.x, position.y + jumpHeight, position.z);
 		this->movePosition(UP, deltaTime * distance(this->position, jumpDest) * JUMP_SPEED, sceneObjects);
 
-		if (distance(this->position, jumpDest) < 0.1f) {
+		if (distance(this->position, jumpDest) < 0.1f || this->position.y > jumpDest.y) {
 			this->isJumping = false;
 		}
 		jumpHeight -= deltaTime * GRAVITY*0.3f;
 	}
 
 	camera->updateCameraVectors(position, angle);
+
+	// children:
+	for (GLuint j = 0; j < this->children.size(); j++) {
+		this->children[j]->update(deltaTime, sceneObjects);
+	}
 }
 
 void Player::movePosition(Movement direction, GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)

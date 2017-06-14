@@ -15,7 +15,7 @@ Enemy::Enemy(shared_ptr<GUI> gui, shared_ptr<Player> player) : gui(gui), player(
 	this->lastPosition = position;
 	this->timeStandingStill = 0.0f;
 
-	this->child = make_shared<EnemyTop>(this, player);
+	this->children.push_back(make_shared<EnemyTop>(this, player));
 
 	setNewDestination();
 }
@@ -27,21 +27,26 @@ Enemy::~Enemy()
 void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
 	// gravity:
-	this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY, 0.0f), sceneObjects);
+	//this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY, 0.0f), sceneObjects);
 	if ((GLfloat)((double)rand() / (double)RAND_MAX) > 0.95) {
-		this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY/10.f, 0.0f), sceneObjects);
+		//this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY/10.f, 0.0f), sceneObjects);
 	}
 
 
 	if (this->healthPoints <= 0) {
-		this->dead = true;
+		this->visible = false;
+		this->collide = false;
+		for (GLuint i = 0; i < children.size(); i++) {
+			this->children[i]->visible = false;
+			this->children[i]->collide = false;
+		}
 	}
 
 	if (distance(glm::vec2(position.x, position.z), glm::vec2(destination.x, destination.z)) < 1.0f) {
 		setNewDestination();
 	}
 	else {
-		this->moveTowards(this->destination, movementSpeed * deltaTime, sceneObjects);
+		//!--this->moveTowards(this->destination, movementSpeed * deltaTime, sceneObjects);
 	}
 
 
@@ -55,7 +60,7 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 
 	if (timeStandingStill > 1.0f) {
 		if ((GLfloat)((double)rand() / (double)RAND_MAX) > 0.5) {
-			this->jump();
+			//!--this->jump();
 		}
 		else {
 			setNewDestination();
@@ -76,10 +81,9 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 		jumpHeight -= deltaTime * GRAVITY*0.3f;
 	}
 
-
-	// top:
-	if (this->child != nullptr) {
-		this->child->update(deltaTime, sceneObjects);
+	// children:
+	for (GLuint j = 0; j < this->children.size(); j++) {
+		this->children[j]->update(deltaTime, sceneObjects);
 	}
 }
 

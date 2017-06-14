@@ -17,6 +17,8 @@ class SceneObject
 {
 public:
 	GLboolean dead = false;
+	GLboolean visible = true;
+	GLboolean collide = true;
 	const GLfloat objectID = rand() + glfwGetTime();
 
 	SceneObject();
@@ -42,6 +44,8 @@ public:
 	GLfloat jumpHeight;
 	GLboolean canJump = true;
 
+	vector<shared_ptr<SceneObject>> children;
+
 	void jump();
 
 
@@ -53,7 +57,6 @@ protected:
 	shared_ptr<Shader> pickingShader;
 	shared_ptr<Shader> simpleDepthShader;
 
-	shared_ptr<SceneObject> child;
 
 
 	GLfloat calculateAngle(GLfloat x, GLfloat y, GLfloat xDest, GLfloat yDest);
