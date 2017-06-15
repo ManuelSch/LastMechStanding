@@ -1,10 +1,10 @@
-#include "Bullet.h"
+#include "BulletPlayer.h"
 
 
 
-Bullet::Bullet(SceneObject* parent, shared_ptr<Player> player)
+BulletPlayer::BulletPlayer(SceneObject* parent)
 {
-	cout << "Bullet()" << endl;
+	cout << "BulletPlayer()" << endl;
 	this->shader = make_shared<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
 	//this->pickingShader = make_shared<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->simpleDepthShader = make_shared<Shader>("Resources/Shaders/simple_depth_shader.vert", "Resources/Shaders/simple_depth_shader.frag");
@@ -12,34 +12,31 @@ Bullet::Bullet(SceneObject* parent, shared_ptr<Player> player)
 	this->model = Model("Resources/Models/Bullet/bullet.obj");
 
 	this->parent = parent;
-	this->player = player;
 
 	this->position = parent->position;
 }
 
 
-Bullet::~Bullet()
+BulletPlayer::~BulletPlayer()
 {
 }
 
-void Bullet::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
+void BulletPlayer::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
 	if (this->collide) {
 		// move bullet:
 		GLfloat velocity = this->movementSpeed * deltaTime;
 		this->position += direction * velocity;
-		
-		if (distance(this->position, player->position) < 1.0f) {
-			player->decreaseHealthPoints(4.0f);
-			collide = false;
-			visible = false;
-		}
+
 
 		for (GLuint i = 0; i < sceneObjects->size(); i++) {
-			if ((*sceneObjects)[i]->objectID != this->objectID) {
-				if (this->intersectsWith((*sceneObjects)[i])) {
+			if ((*sceneObjects)[i]->objectID != this->objectID && (*sceneObjects)[i]->objectID != this->parent->objectID) {
+				if (this->intersectsWith((*sceneObjects)[i]) || (distance(this->position, (*sceneObjects)[i]->position) < 1.0f)) {
 					collide = false;
 					visible = false;
+
+					(*sceneObjects)[i]->onClick();
+
 					break;
 				}
 			}
@@ -52,19 +49,20 @@ void Bullet::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObj
 	}
 }
 
-void Bullet::onClick()
+void BulletPlayer::onClick()
 {
 }
 
-void Bullet::shoot(glm::vec3 shootTowards)
+void BulletPlayer::shoot(glm::vec3 shootTowards, glm::vec3 offsetPosition)
 {
 	this->position = parent->position;
-
+	/*
 	shootTowards.x += (GLfloat)((double)rand() / (double)RAND_MAX) * 2.0f - 1.0f;
 	shootTowards.y += (GLfloat)((double)rand() / (double)RAND_MAX) * 2.0f - 1.0f;
 	shootTowards.z += (GLfloat)((double)rand() / (double)RAND_MAX) * 2.0f - 1.0f;
-
+	*/
 	this->direction = glm::normalize(shootTowards - this->position);
+	this->position += glm::normalize(offsetPosition) * .5f;
 	this->collide = true;
 	this->visible = true;
 }

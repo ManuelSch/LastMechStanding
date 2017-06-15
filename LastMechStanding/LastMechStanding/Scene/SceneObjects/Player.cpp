@@ -23,6 +23,14 @@ Player::Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio) : came
 	this->model.boundingBox->minVertexPos.y -= 1.75f * (1 / this->scaling.y);
 
 	camera->updateCameraVectors(position, angle);
+
+	for (GLuint i = 0; i < 15; i++) {
+		shared_ptr<BulletPlayer> bullet = make_shared<BulletPlayer>(this);
+		bullet->collide = false;
+		bullet->visible = false;
+		this->children.push_back(bullet);
+		this->bullets.push_back(bullet);
+	}
 }
 
 Player::~Player()
@@ -46,6 +54,17 @@ void Player::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObj
 	}
 
 	camera->updateCameraVectors(position, angle);
+
+
+
+	for (GLuint i = 0; i < bullets.size(); i++) {
+		if (distance(position, bullets[i]->position) > 200.0f) {
+			bullets[i]->collide = false;
+			bullets[i]->visible = false;
+		}
+	}
+	
+	shootTimer = min(10.0f, shootTimer+deltaTime);
 
 	// children:
 	for (GLuint j = 0; j < this->children.size(); j++) {
@@ -107,6 +126,21 @@ void Player::decreaseHealthPoints(GLfloat damage)
 	this->healthPoints = max(0.0f, healthPoints);
 
 	this->gui->healthBar->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
+}
+
+void Player::shoot()
+{
+	if (shootTimer > 0.1f) {
+		shootTimer = 0.0f;
+		shootLeft = !shootLeft;
+
+		for (GLuint i = 0; i < bullets.size(); i++) {
+			if (!bullets[i]->collide && !bullets[i]->visible) {
+				bullets[i]->shoot(camera->position + camera->front, (shootLeft ? camera->right : glm::vec3(-1.0f, -1.0f, -1.0f) * camera->right));
+				break;
+			}
+		}
+	}
 }
 
 

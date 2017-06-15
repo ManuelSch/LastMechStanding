@@ -2,6 +2,7 @@
 
 #include "..\..\commonHeader.h"
 #include "SceneObject.h"
+#include "BulletPlayer.h"
 #include "..\GUI.h"
 
 #ifdef SCENE_OBJECT
@@ -24,12 +25,16 @@ public:
 
 	void decreaseHealthPoints(GLfloat damage);
 
+	vector<shared_ptr<BulletPlayer>> bullets;
+	GLfloat shootTimer = 0.0f;
 
-private:
+	void shoot();
+
 	GLfloat movementSpeed, mouseSensitivity;
 	GLfloat healthPoints;
 	Camera* camera;
 	shared_ptr<GUI> gui;
+	GLboolean shootLeft = false;
 };
 
 #endif

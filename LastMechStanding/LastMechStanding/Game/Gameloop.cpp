@@ -173,7 +173,6 @@ void Gameloop::run()
 
 		/*
 		* Draw picking colors:
-		*/
 		// clear color and depth buffers:
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
@@ -202,6 +201,9 @@ void Gameloop::run()
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		*/
+
+		processMouseButtonInput();
 
 
 		/*
@@ -289,13 +291,11 @@ void Gameloop::processKeyboardInput(vector<shared_ptr<SceneObject>>* sceneObject
 	}
 }
 
-void Gameloop::processMouseButtonInput(shared_ptr<SceneObject> pickedObject)
+void Gameloop::processMouseButtonInput()
 {
 	if (mouseButtons[GLFW_MOUSE_BUTTON_LEFT]) {
-		if (pickedObject != nullptr) {
-			pickedObject->onClick();
-		}
-		mouseButtons[GLFW_MOUSE_BUTTON_LEFT] = false;
+		//mouseButtons[GLFW_MOUSE_BUTTON_LEFT] = false;
+		this->player->shoot();
 		this->gui->crossHair->spread();
 	}
 }
@@ -324,12 +324,6 @@ void Gameloop::mouseButtonCallback(GLFWwindow * window, int button, int action, 
 			mouseButtons[button] = true;
 		else if (action == GLFW_RELEASE)
 			mouseButtons[button] = false;
-	}
-
-	// For testing purposes (decreases the players health points):
-	if (mouseButtons[GLFW_MOUSE_BUTTON_RIGHT]) {
-		player->decreaseHealthPoints(20.0f);
-		mouseButtons[GLFW_MOUSE_BUTTON_RIGHT] = false;
 	}
 }
 

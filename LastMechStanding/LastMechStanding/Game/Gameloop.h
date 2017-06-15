@@ -60,6 +60,6 @@ private:
 
 	// moves the player position based on the user input
 	void processKeyboardInput(vector<shared_ptr<SceneObject>>* sceneObjects);
-	void processMouseButtonInput(shared_ptr<SceneObject> pickedObject);
+	void processMouseButtonInput();
 };
 

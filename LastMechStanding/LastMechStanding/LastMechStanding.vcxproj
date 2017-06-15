@@ -183,6 +183,7 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\SceneObjects\BulletPlayer.h" />
     <ClInclude Include="Scene\SceneObjects\Bullet.h" />
     <ClInclude Include="Scene\SceneObjects\EnemyTop.h" />
     <ClInclude Include="Scene\SceneObjects\Arena\Container1.h" />
@@ -219,6 +220,7 @@
     <ClInclude Include="Util\Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Scene\SceneObjects\BulletPlayer.cpp" />
     <ClCompile Include="Scene\SceneObjects\Bullet.cpp" />
     <ClCompile Include="Scene\SceneObjects\EnemyTop.cpp" />
     <ClCompile Include="Scene\SceneObjects\Arena\Container1.cpp" />
