@@ -156,6 +156,9 @@
     <None Include="Resources\Shaders\basic.vert" />
     <None Include="Resources\Shaders\bloom.frag" />
     <None Include="Resources\Shaders\bloom.vert" />
+    <None Include="Resources\Shaders\bullet.frag" />
+    <None Include="Resources\Shaders\bullet.vert" />
+    <None Include="Resources\Shaders\bullet_enemy.frag" />
     <None Include="Resources\Shaders\color_picking.frag" />
     <None Include="Resources\Shaders\color_picking.vert" />
     <None Include="Resources\Shaders\freetype_glyph.frag" />
@@ -188,6 +191,7 @@
     <ClInclude Include="Scene\SceneObjects\EnemyTop.h" />
     <ClInclude Include="Scene\SceneObjects\Arena\Container1.h" />
     <ClInclude Include="Scene\SceneObjects\Arena\ArenaWall.h" />
+    <ClInclude Include="Scene\GUIElements\ScoreScreen.h" />
     <ClInclude Include="Util\BoundingBox.h" />
     <ClInclude Include="Scene\SceneObjects\Lamp.h" />
     <ClInclude Include="Util\ShadowMap.h" />
@@ -225,6 +229,7 @@
     <ClCompile Include="Scene\SceneObjects\EnemyTop.cpp" />
     <ClCompile Include="Scene\SceneObjects\Arena\Container1.cpp" />
     <ClCompile Include="Scene\SceneObjects\Arena\ArenaWall.cpp" />
+    <ClCompile Include="Scene\GUIElements\ScoreScreen.cpp" />
     <ClCompile Include="Util\BoundingBox.cpp" />
     <ClCompile Include="Scene\SceneObjects\Lamp.cpp" />
     <ClCompile Include="Util\ShadowMap.cpp" />

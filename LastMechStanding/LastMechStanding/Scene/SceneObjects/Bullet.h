@@ -17,7 +17,7 @@ public:
 
 	virtual void onClick();
 
-	void shoot(glm::vec3 shootTowards);
+	void shoot(glm::vec3 shootTowards, glm::vec3 offsetPosition);
 
 	GLfloat movementSpeed = 100.0f;
 

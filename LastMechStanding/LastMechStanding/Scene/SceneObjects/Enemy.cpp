@@ -51,16 +51,15 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 
 	// gravity:
 	this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY, 0.0f), sceneObjects);
-	//!--
 	if ((GLfloat)((double)rand() / (double)RAND_MAX) > 0.95) {
 		this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY / 10.f, 0.0f), sceneObjects);
-		//!--
 	}
 
 
 	if (this->healthPoints <= 0) {
 		this->visible = false;
 		this->collide = false;
+		this->gui->scoreScreen->defeatedEnemies++;
 		for (GLuint i = 0; i < children.size(); i++) {
 			this->children[i]->visible = false;
 			this->children[i]->collide = false;

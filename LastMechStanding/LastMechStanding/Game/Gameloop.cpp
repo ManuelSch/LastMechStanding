@@ -88,8 +88,10 @@ void Gameloop::run()
 		sceneObjects.push_back(enemy);
 		enemies.push_back(enemy);
 		do {
-			enemies[i]->position = SceneObject::getRandomPosition(0.0f);
-		} while (distance(enemies[i]->position, player->position) < 40.0f);
+			enemy->position = SceneObject::getRandomPosition(0.0f);
+		} while (distance(enemy->position, player->position) < 40.0f);
+		enemy->visible = false;
+		enemy->collide = false;
 	}
 
 
@@ -165,7 +167,6 @@ void Gameloop::run()
 					enemies[i]->reset();
 					break;
 				}
-				enemies[i]->printPosition();
 			}
 		}
 		
@@ -296,7 +297,6 @@ void Gameloop::processMouseButtonInput()
 	if (mouseButtons[GLFW_MOUSE_BUTTON_LEFT]) {
 		//mouseButtons[GLFW_MOUSE_BUTTON_LEFT] = false;
 		this->player->shoot();
-		this->gui->crossHair->spread();
 	}
 }
 

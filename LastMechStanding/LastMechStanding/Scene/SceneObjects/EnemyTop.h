@@ -23,6 +23,8 @@ public:
 	vector<shared_ptr<Bullet>> bullets;
 
 	GLfloat shootTimer = 0.0f;
+
+	GLboolean shootLeft = false;
 };
 
 #endif

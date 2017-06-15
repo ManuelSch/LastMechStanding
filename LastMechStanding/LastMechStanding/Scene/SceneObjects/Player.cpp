@@ -137,6 +137,7 @@ void Player::shoot()
 		for (GLuint i = 0; i < bullets.size(); i++) {
 			if (!bullets[i]->collide && !bullets[i]->visible) {
 				bullets[i]->shoot(camera->position + camera->front, (shootLeft ? camera->right : glm::vec3(-1.0f, -1.0f, -1.0f) * camera->right));
+				this->gui->crossHair->spread();
 				break;
 			}
 		}

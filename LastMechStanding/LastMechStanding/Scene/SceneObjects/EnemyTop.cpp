@@ -48,12 +48,14 @@ void EnemyTop::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneO
 		this->parent->destination = player->position;
 
 		shootTimer += deltaTime;
-		if (shootTimer > 0.4f) {
+		if (shootTimer > 0.2f) {
 			shootTimer = 0.0f;
 
 			for (GLuint i = 0; i < bullets.size(); i++) {
 				if (!bullets[i]->collide && !bullets[i]->visible) {
-					bullets[i]->shoot(player->position);
+					shootLeft = !shootLeft;
+					glm::vec3 offsetPosition = glm::rotate(glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(angle.y + (shootLeft ? -90.0f : 90.0f)), glm::vec3(0.0f, 1.0f, 0.0f));
+					bullets[i]->shoot(player->position, offsetPosition);
 					break;
 				}
 			}

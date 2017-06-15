@@ -11,6 +11,7 @@
 #include "./GUIElements/Crosshair.h"
 #include "./GUIElements/EnemyHealthBar.h"
 #include "./GUIElements/FPSScreen.h"
+#include "./GUIElements/ScoreScreen.h"
 
 class GUI
 {
@@ -24,6 +25,7 @@ public:
 	shared_ptr<Crosshair> crossHair;
 	shared_ptr<EnemyHealthBar> enemyHealthBar;
 	shared_ptr<FPSScreen> fpsScreen;
+	shared_ptr<ScoreScreen> scoreScreen;
 
 	void update(GLfloat deltaTime);
 	void draw();
