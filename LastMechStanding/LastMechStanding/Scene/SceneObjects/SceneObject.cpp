@@ -64,7 +64,7 @@ void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camer
 
 void SceneObject::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID)
 {
-	if (!this->visible) {
+	if (!this->collide) {
 		return;
 	}
 
@@ -225,7 +225,7 @@ void SceneObject::printPosition()
 
 glm::vec3 SceneObject::getRandomPosition(GLfloat yDefault)
 {
-	return glm::vec3((GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f, yDefault, (GLfloat)((double)rand() / (double)RAND_MAX) * 90.0f - 45.0f);
+	return glm::vec3((GLfloat)((double)rand() / (double)RAND_MAX) * 80.0f - 4.0f, yDefault, (GLfloat)((double)rand() / (double)RAND_MAX) * 80.0f - 40.0f);
 }
 
 GLfloat SceneObject::calculateAngle(GLfloat x, GLfloat z, GLfloat xDest, GLfloat zDest)
@@ -253,6 +253,10 @@ GLfloat SceneObject::calculateAngle(GLfloat x, GLfloat z, GLfloat xDest, GLfloat
 
 GLboolean SceneObject::intersectsWith(shared_ptr<SceneObject> other)
 {
+	if (!other->collide) {
+		return false;
+	}
+
 	if (distance(this->position, other->position) > 500.0f) {
 		return false;
 	}

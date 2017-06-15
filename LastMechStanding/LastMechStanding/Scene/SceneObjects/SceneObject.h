@@ -47,6 +47,8 @@ public:
 	vector<shared_ptr<SceneObject>> children;
 	SceneObject* parent;
 
+	glm::vec3 destination;
+
 	void jump();
 
 

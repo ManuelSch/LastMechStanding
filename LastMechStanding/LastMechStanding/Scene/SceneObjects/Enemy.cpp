@@ -26,10 +26,35 @@ Enemy::~Enemy()
 
 void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObjects)
 {
+	if (!this->visible) {
+		return;
+	}
+
+	//printf("%3.2f, %3.2f, %3.2f\n", position.x, position.y, position.z);
+
+	if (position.x > 45.0f) {
+		position.x = 45.0f;
+		this->setNewDestination();
+	}
+	if (position.x < -45.0f) {
+		position.x = -45.0f;
+		this->setNewDestination();
+	}
+	if (position.y > 45.0f) {
+		position.y = 45.0f;
+		this->setNewDestination();
+	}
+	if (position.y < -45.0f) {
+		position.y = -45.0f;
+		this->setNewDestination();
+	}
+
 	// gravity:
-	//this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY, 0.0f), sceneObjects);
+	this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY, 0.0f), sceneObjects);
+	//!--
 	if ((GLfloat)((double)rand() / (double)RAND_MAX) > 0.95) {
-		//this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY/10.f, 0.0f), sceneObjects);
+		this->translate(glm::vec3(0.0f, -deltaTime * GRAVITY / 10.f, 0.0f), sceneObjects);
+		//!--
 	}
 
 
@@ -46,7 +71,8 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 		setNewDestination();
 	}
 	else {
-		//!--this->moveTowards(this->destination, movementSpeed * deltaTime, sceneObjects);
+		this->moveTowards(this->destination, movementSpeed * deltaTime, sceneObjects);
+		//!--
 	}
 
 
@@ -60,7 +86,8 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 
 	if (timeStandingStill > 1.0f) {
 		if ((GLfloat)((double)rand() / (double)RAND_MAX) > 0.5) {
-			//!--this->jump();
+			this->jump();
+			//!--
 		}
 		else {
 			setNewDestination();
@@ -92,8 +119,35 @@ void Enemy::onClick()
 	this->healthPoints -= 25;
 
 	this->gui->enemyHealthBar->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
+
+	this->children[0]->angle.y = this->calculateAngle(position.x, position.z, player->position.x, player->position.z);
+	this->destination = player->position;
 }
 
+
+void Enemy::reset()
+{
+	do {
+		this->position = SceneObject::getRandomPosition(0.0f);
+	} while (distance(this->position, player->position) < 30.0f);
+
+	this->setNewDestination();
+	this->lastPosition = this->position;
+	this->timeStandingStill = 0.0f;
+	this->collide = true;
+	this->visible = true;
+	this->dead = false;
+
+	this->healthPoints = HEALTH_POINTS_MAX;
+
+	// children:
+	for (GLuint j = 0; j < this->children.size(); j++) {
+		children[j]->collide = true;
+		children[j]->visible = true;
+		children[j]->position = this->position;
+		children[j]->angle = this->angle;
+	}
+}
 
 void Enemy::setNewDestination()
 {

@@ -23,14 +23,14 @@ public:
 
 	GLfloat healthPoints;
 
-private:
 	GLfloat movementSpeed;
-	glm::vec3 destination;
 	shared_ptr<GUI> gui;
 	shared_ptr<Player> player;
 
 	glm::vec3 lastPosition;
 	GLfloat timeStandingStill;
+
+	void reset();
 
 	void setNewDestination();
 };

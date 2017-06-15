@@ -39,17 +39,18 @@ void EnemyTop::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneO
 			bullets[i]->collide = false;
 			bullets[i]->visible = false;
 		}
-		cout << (bullets[i]->collide ? "1" : "0");
+		//cout << (bullets[i]->collide ? "1" : "0");
 	}
-	cout << endl;
+	//cout << endl;
 
 	GLfloat angleToPlayer = this->calculateAngle(position.x, position.z, player->position.x, player->position.z);
-	if (abs(this->angle.y - angleToPlayer) < 45) {
-		cout << "see!!" << endl;
+	if (abs(this->angle.y - angleToPlayer) < 45 && distance(this->position, player->position) < 50.0f) {
+		//cout << "see!!" << endl;
 		this->angle.y = angleToPlayer;
+		this->parent->destination = player->position;
 
 		shootTimer += deltaTime;
-		if (shootTimer > 0.2f) {
+		if (shootTimer > 0.4f) {
 			shootTimer = 0.0f;
 
 			for (GLuint i = 0; i < bullets.size(); i++) {
@@ -59,6 +60,9 @@ void EnemyTop::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneO
 				}
 			}
 		}
+	}
+	else {
+		this->angle.y = this->parent->angle.y;
 	}
 	
 

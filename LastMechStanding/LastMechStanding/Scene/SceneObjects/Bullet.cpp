@@ -30,7 +30,7 @@ void Bullet::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObj
 		this->position += direction * velocity;
 
 		if (distance(this->position, player->position) < 1.0f) {
-			player->decreaseHealthPoints(10.0f);
+			player->decreaseHealthPoints(4.0f);
 		}
 
 		for (GLuint i = 0; i < sceneObjects->size(); i++) {

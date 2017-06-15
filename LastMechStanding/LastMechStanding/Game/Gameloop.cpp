@@ -54,14 +54,14 @@ void Gameloop::run()
 	sceneObjects.push_back(arena);
 
 	// arena walls:
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, 49.0f)));
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, -49.0f)));
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(49.0f, 0.0f, 0.0f), true));
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-49.0f, 0.0f, 0.0f), true));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, 51.0f)));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, -51.0f)));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(51.0f, 0.0f, 0.0f), true));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-51.0f, 0.0f, 0.0f), true));
 
 	// arena containers:
-	//!--const GLuint numberOfContainers = 20;
-	const GLuint numberOfContainers = 2;
+	const GLuint numberOfContainers = 20;
+	//!--const GLuint numberOfContainers = 2;
 	for (GLuint i = 0; i < numberOfContainers; i++) {
 		glm::vec3 newPosition = glm::vec3(0.0f);
 		newPosition.x = ((GLfloat)i / (GLfloat)numberOfContainers) * 90.f - 45.0f;
@@ -78,13 +78,18 @@ void Gameloop::run()
 	player->angle.y = 225;
 	sceneObjects.push_back(player);
 
+	vector<shared_ptr<Enemy>> enemies;
+	GLfloat enemySpawnTime = 0.0f;
 	shared_ptr<Enemy> enemy;
-	//!--const GLuint numberOfEnemies = 5;
-	const GLuint numberOfEnemies = 1;
+	const GLuint numberOfEnemies = 3;
+	//!--const GLuint numberOfEnemies = 1;
 	for (GLuint i = 0; i < numberOfEnemies; i++) {
 		enemy = make_shared<Enemy>(gui, player);
-		enemy->position = SceneObject::getRandomPosition(0.0f);
 		sceneObjects.push_back(enemy);
+		enemies.push_back(enemy);
+		do {
+			enemies[i]->position = SceneObject::getRandomPosition(0.0f);
+		} while (distance(enemies[i]->position, player->position) < 30.0f);
 	}
 
 
@@ -122,7 +127,8 @@ void Gameloop::run()
 
 	// frame independency:
 	deltaTime = 0.0f;
-	lastFrame = 0.0f;
+	lastFrame = glfwGetTime() - 1/30.0f;
+
 
 	// game loop:
 	while (!glfwWindowShouldClose(display->window))
@@ -148,14 +154,26 @@ void Gameloop::run()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		//glEnable(GL_DEPTH_TEST);
 
-		/*
-		* Delete dead objects:
-		for (GLuint i = 0; i < sceneObjects.size(); i++) {
-			if (sceneObjects[i] != nullptr && sceneObjects[i]->dead == true) {
-				sceneObjects.erase(sceneObjects.begin() + i);
+
+		enemySpawnTime += deltaTime;
+		//cout << enemySpawnTime << endl;
+		if (enemySpawnTime > 10.0f) {
+			enemySpawnTime = 0.0f;
+			cout << enemies.size() << endl;
+			for (GLuint i = 0; i < enemies.size(); i++) {
+				cout << ((enemies[i]->collide) ? "1" : "0");
+				cout << ((enemies[i]->visible) ? "1 " : "0 ");
+				if (!enemies[i]->collide && !enemies[i]->visible) {
+					enemies[i]->reset();
+					break;
+				}
+				enemies[i]->printPosition();
 			}
+			cout << endl;
+			cout << endl;
 		}
-		*/
+		
+
 
 		/*
 		* Draw picking colors:
@@ -246,8 +264,8 @@ void Gameloop::run()
 		glfwSwapBuffers(display->window);
 
 
-		//cout << distance(enemy->position, player->position) << endl;
-		//player->printPosition();
+		cout << distance(enemy->position, player->position) << endl;
+		player->printPosition();
 	}
 }
 
