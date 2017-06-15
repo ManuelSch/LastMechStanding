@@ -127,10 +127,7 @@ void Enemy::onClick()
 
 void Enemy::reset()
 {
-	do {
-		this->position = SceneObject::getRandomPosition(0.0f);
-	} while (distance(this->position, player->position) < 30.0f);
-
+	this->position = SceneObject::getRandomPosition(0.0f);
 	this->setNewDestination();
 	this->lastPosition = this->position;
 	this->timeStandingStill = 0.0f;

@@ -54,10 +54,10 @@ void Gameloop::run()
 	sceneObjects.push_back(arena);
 
 	// arena walls:
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, 51.0f)));
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, -51.0f)));
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(51.0f, 0.0f, 0.0f), true));
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-51.0f, 0.0f, 0.0f), true));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, 52.0f)));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, -52.0f)));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(52.0f, 0.0f, 0.0f), true));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-52.0f, 0.0f, 0.0f), true));
 
 	// arena containers:
 	const GLuint numberOfContainers = 20;
@@ -89,7 +89,7 @@ void Gameloop::run()
 		enemies.push_back(enemy);
 		do {
 			enemies[i]->position = SceneObject::getRandomPosition(0.0f);
-		} while (distance(enemies[i]->position, player->position) < 30.0f);
+		} while (distance(enemies[i]->position, player->position) < 40.0f);
 	}
 
 
@@ -138,6 +138,8 @@ void Gameloop::run()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
+		deltaTime = max(deltaTime, 0.01f);
+
 		// check if any events were triggered:
 		glfwPollEvents();
 		processKeyboardInput(&sceneObjects);
@@ -156,21 +158,15 @@ void Gameloop::run()
 
 
 		enemySpawnTime += deltaTime;
-		//cout << enemySpawnTime << endl;
 		if (enemySpawnTime > 10.0f) {
 			enemySpawnTime = 0.0f;
-			cout << enemies.size() << endl;
 			for (GLuint i = 0; i < enemies.size(); i++) {
-				cout << ((enemies[i]->collide) ? "1" : "0");
-				cout << ((enemies[i]->visible) ? "1 " : "0 ");
 				if (!enemies[i]->collide && !enemies[i]->visible) {
 					enemies[i]->reset();
 					break;
 				}
 				enemies[i]->printPosition();
 			}
-			cout << endl;
-			cout << endl;
 		}
 		
 
@@ -264,8 +260,8 @@ void Gameloop::run()
 		glfwSwapBuffers(display->window);
 
 
-		cout << distance(enemy->position, player->position) << endl;
-		player->printPosition();
+		//cout << distance(enemy->position, player->position) << endl;
+		//player->printPosition();
 	}
 }
 
