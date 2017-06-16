@@ -228,9 +228,36 @@ glm::vec3 SceneObject::getRandomPosition(GLfloat yDefault)
 	return glm::vec3((GLfloat)((double)rand() / (double)RAND_MAX) * 80.0f - 4.0f, yDefault, (GLfloat)((double)rand() / (double)RAND_MAX) * 80.0f - 40.0f);
 }
 
-GLboolean SceneObject::isInFrustum(glm::mat4* projMat)
+GLboolean SceneObject::isInFrustum(glm::mat4* projMat, Camera* camera, SceneObject* player)
 {
+	vector<glm::vec3> bbPoints = this->model.boundingBox->getAllPositions(&(this->position), &(this->scaling));
+
+	GLboolean cull = true;
+	for (GLuint i = 0; i < 8; i++) {
+		GLfloat angleBetween = calculateAngle(bbPoints[i].x, bbPoints[i].z, player->position.x, player->position.z);
+		angleBetween += (360 - player->angle.y);
+		while (angleBetween >= 360.0f) {
+			angleBetween -= 360.0f;
+		}
+		if (angleBetween > 90 && angleBetween < 270) {
+			cull = false;
+		}
+	}
+	if (cull) {
+		return false;
+	}
+
+	// TODO: kommt nie dahin?
+	glm::vec4 Pclip;
+	for (GLuint i = 0; i < bbPoints.size(); i++) {
+		Pclip = (*projMat) * glm::vec4(bbPoints[i], 1.0f);
+		if (abs(Pclip.x) < Pclip.w && abs(Pclip.y) < Pclip.w && 0 < Pclip.z && Pclip.z < Pclip.w) {
+			return true;
+		}
+	}
 	return true;
+
+	return false;
 }
 
 GLfloat SceneObject::calculateAngle(GLfloat x, GLfloat z, GLfloat xDest, GLfloat zDest)

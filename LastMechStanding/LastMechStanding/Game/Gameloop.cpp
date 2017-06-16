@@ -61,7 +61,7 @@ void Gameloop::run()
 
 	// arena containers:
 	//!--const GLuint numberOfContainers = 20;
-	const GLuint numberOfContainers = 0;
+	const GLuint numberOfContainers = 20;
 	for (GLuint i = 0; i < numberOfContainers; i++) {
 		glm::vec3 newPosition = glm::vec3(0.0f);
 		newPosition.x = ((GLfloat)i / (GLfloat)numberOfContainers) * 90.f - 45.0f;
@@ -81,7 +81,7 @@ void Gameloop::run()
 	vector<shared_ptr<Enemy>> enemies;
 	shared_ptr<Enemy> enemy;
 	//!--const GLuint numberOfEnemies = 3;
-	const GLuint numberOfEnemies = 1;
+	const GLuint numberOfEnemies = 0;
 	for (GLuint i = 0; i < numberOfEnemies; i++) {
 		enemy = make_shared<Enemy>(gui, player);
 		sceneObjects.push_back(enemy);
@@ -183,6 +183,9 @@ void Gameloop::run()
 		}
 
 
+		// view matrix:
+		glm::mat4 view = camera.getViewMatrix();
+
 		/*
 		* render to depth map:
 		*/
@@ -193,8 +196,6 @@ void Gameloop::run()
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
 
 
-		// view matrix:
-		glm::mat4 view = camera.getViewMatrix();
 
 		/*
 		* render scene as normal with shadow mapping (using depth map):
@@ -204,18 +205,23 @@ void Gameloop::run()
 		glClearColor(BACKGROUND_COLOR.x, BACKGROUND_COLOR.y, BACKGROUND_COLOR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
+		GLuint numberOfDrawnObjects = 0;
 		// draw objects:
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
-				sceneObjects[i]->isInFrustum(&(projection * view));
-
-				if (this->shortKeys->shadowMappinOn) {
-					sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, &(shadowMap->lightSpaceMatrix), &(shadowMap->depthMap));
-				}
-				else {
-					sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, nullptr, nullptr);
+				if (!shortKeys->viewFrustumCullingOn || sceneObjects[i]->objectID == player->objectID || sceneObjects[i]->isInFrustum(&(projection * view), &camera, player.get())) {
+					if (this->shortKeys->shadowMappinOn) {
+						sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, &(shadowMap->lightSpaceMatrix), &(shadowMap->depthMap));
+					}
+					else {
+						sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, nullptr, nullptr);
+					}
+					numberOfDrawnObjects++;
 				}
 			}
+		}
+		if (shortKeys->viewFrustumCullingOn) {
+			cout << "Number of drawn objects = " << numberOfDrawnObjects << endl;
 		}
 
 		/*

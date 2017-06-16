@@ -16,7 +16,7 @@ EnemyTop::EnemyTop(SceneObject* parent, shared_ptr<Player> player)
 
 	this->position = parent->position;
 	this->angle = parent->angle;
-	/*
+	/*//!--
 	for (GLuint i = 0; i < 15; i++) {
 		shared_ptr<Bullet> bullet = make_shared<Bullet>(this, player);
 		bullet->collide = false;

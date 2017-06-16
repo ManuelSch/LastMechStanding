@@ -15,7 +15,7 @@ FPSScreen::~FPSScreen()
 
 void FPSScreen::draw()
 {
-	this->font->renderText("FPS: " + to_string((GLuint)fps), 10.0f, 10.0f, 0.4f, glm::vec3(0.5, 0.8f, 0.2f));
+	this->font->renderText("FPS: " + to_string((GLuint)fps), 400.0f, 10.0f, 0.4f, glm::vec3(0.5, 0.8f, 0.2f));
 }
 
 void FPSScreen::update(GLfloat deltaTime)

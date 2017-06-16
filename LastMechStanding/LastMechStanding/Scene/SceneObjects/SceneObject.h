@@ -55,7 +55,7 @@ public:
 	void printPosition();
 	static glm::vec3 getRandomPosition(GLfloat yDefault = 0.0f);
 
-	virtual GLboolean isInFrustum(glm::mat4* projMat);
+	GLboolean isInFrustum(glm::mat4* projMat, Camera* camera, SceneObject* player);
 
 
 protected:
