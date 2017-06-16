@@ -79,7 +79,6 @@ void Gameloop::run()
 	sceneObjects.push_back(player);
 
 	vector<shared_ptr<Enemy>> enemies;
-	GLfloat enemySpawnTime = 0.0f;
 	shared_ptr<Enemy> enemy;
 	const GLuint numberOfEnemies = 3;
 	//!--const GLuint numberOfEnemies = 1;
@@ -131,6 +130,9 @@ void Gameloop::run()
 	deltaTime = 0.0f;
 	lastFrame = glfwGetTime() - 1/30.0f;
 
+	GLfloat enemySpawnTime = 5.0f;
+	GLfloat enemySpawnInterval = 10.0f;
+
 
 	// game loop:
 	while (!glfwWindowShouldClose(display->window))
@@ -160,8 +162,9 @@ void Gameloop::run()
 
 
 		enemySpawnTime += deltaTime;
-		if (enemySpawnTime > 10.0f) {
+		if (enemySpawnTime > enemySpawnInterval) {
 			enemySpawnTime = 0.0f;
+			enemySpawnInterval *= 0.98f;
 			for (GLuint i = 0; i < enemies.size(); i++) {
 				if (!enemies[i]->collide && !enemies[i]->visible) {
 					enemies[i]->reset();
@@ -170,40 +173,6 @@ void Gameloop::run()
 			}
 		}
 		
-
-
-		/*
-		* Draw picking colors:
-		// clear color and depth buffers:
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		for (GLuint i = 0; i < sceneObjects.size(); i++) {
-			if (sceneObjects[i] != nullptr) {
-				if (sceneObjects[i]->collide) {
-					sceneObjects[i]->drawPicking(&view, &projection, &camera, i);
-				}
-			}
-		}
-
-		glFlush();
-		glFinish();
-
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		unsigned char data[4];
-		glReadPixels(display->width / 2, display->height / 2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		int pickedID = data[0] + data[1] * 256 + data[2] * 256 * 256;
-		if (pickedID == 16777215) {
-			//cout << "background" << endl;
-			processMouseButtonInput(nullptr);
-		}
-		else {
-			//cout << "mesh " << pickedID << endl;
-			processMouseButtonInput(sceneObjects[pickedID]);
-		}
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		*/
-
 		processMouseButtonInput();
 
 
