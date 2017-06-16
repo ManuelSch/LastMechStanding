@@ -228,6 +228,11 @@ glm::vec3 SceneObject::getRandomPosition(GLfloat yDefault)
 	return glm::vec3((GLfloat)((double)rand() / (double)RAND_MAX) * 80.0f - 4.0f, yDefault, (GLfloat)((double)rand() / (double)RAND_MAX) * 80.0f - 40.0f);
 }
 
+GLboolean SceneObject::isInFrustum(glm::mat4* projMat)
+{
+	return true;
+}
+
 GLfloat SceneObject::calculateAngle(GLfloat x, GLfloat z, GLfloat xDest, GLfloat zDest)
 {
 	GLfloat deltaZ = abs(zDest - z);
@@ -260,21 +265,10 @@ GLboolean SceneObject::intersectsWith(shared_ptr<SceneObject> other)
 	if (distance(this->position, other->position) > 500.0f) {
 		return false;
 	}
-	glm::vec3 bbSelfMin = this->model.boundingBox->minVertexPos;
-	glm::vec3 bbSelfMax = this->model.boundingBox->maxVertexPos;
-	glm::vec3 bbOtherMin = other->model.boundingBox->minVertexPos;
-	glm::vec3 bbOtherMax = other->model.boundingBox->maxVertexPos;
-
-	bbSelfMin *= this->scaling;
-	bbSelfMax *= this->scaling;
-	bbOtherMin *= other->scaling;
-	bbOtherMax *= other->scaling;
-	
-	bbSelfMin += this->position;
-	bbSelfMax += this->position;
-	bbOtherMin += other->position;
-	bbOtherMax += other->position;
-
+	glm::vec3 bbSelfMin = this->model.boundingBox->getMinVertexPos(&(this->position), &(this->scaling));
+	glm::vec3 bbSelfMax = this->model.boundingBox->getMaxVertexPos(&(this->position), &(this->scaling));
+	glm::vec3 bbOtherMin = other->model.boundingBox->getMinVertexPos(&(other->position), &(other->scaling));
+	glm::vec3 bbOtherMax = other->model.boundingBox->getMaxVertexPos(&(other->position), &(other->scaling));
 
 	GLboolean result = ((bbSelfMin.x <= bbOtherMax.x && bbSelfMax.x >= bbOtherMin.x) &&
 						(bbSelfMin.y <= bbOtherMax.y && bbSelfMax.y >= bbOtherMin.y) &&

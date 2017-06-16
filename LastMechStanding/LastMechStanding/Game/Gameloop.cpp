@@ -60,8 +60,8 @@ void Gameloop::run()
 	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-52.0f, 0.0f, 0.0f), true));
 
 	// arena containers:
-	const GLuint numberOfContainers = 20;
-	//!--const GLuint numberOfContainers = 2;
+	//!--const GLuint numberOfContainers = 20;
+	const GLuint numberOfContainers = 0;
 	for (GLuint i = 0; i < numberOfContainers; i++) {
 		glm::vec3 newPosition = glm::vec3(0.0f);
 		newPosition.x = ((GLfloat)i / (GLfloat)numberOfContainers) * 90.f - 45.0f;
@@ -80,8 +80,8 @@ void Gameloop::run()
 
 	vector<shared_ptr<Enemy>> enemies;
 	shared_ptr<Enemy> enemy;
-	const GLuint numberOfEnemies = 3;
-	//!--const GLuint numberOfEnemies = 1;
+	//!--const GLuint numberOfEnemies = 3;
+	const GLuint numberOfEnemies = 1;
 	for (GLuint i = 0; i < numberOfEnemies; i++) {
 		enemy = make_shared<Enemy>(gui, player);
 		sceneObjects.push_back(enemy);
@@ -148,9 +148,6 @@ void Gameloop::run()
 		glfwPollEvents();
 		processKeyboardInput(&sceneObjects);
 
-		// view matrix:
-		glm::mat4 view = camera.getViewMatrix();
-
 
 		/*
 		* Bind to framebuffer and draw to color texture:
@@ -194,7 +191,10 @@ void Gameloop::run()
 			shadowMap->renderToDepthMap(&sceneObjects);
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
-		
+
+
+		// view matrix:
+		glm::mat4 view = camera.getViewMatrix();
 
 		/*
 		* render scene as normal with shadow mapping (using depth map):
@@ -207,6 +207,8 @@ void Gameloop::run()
 		// draw objects:
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
+				sceneObjects[i]->isInFrustum(&(projection * view));
+
 				if (this->shortKeys->shadowMappinOn) {
 					sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, &(shadowMap->lightSpaceMatrix), &(shadowMap->depthMap));
 				}

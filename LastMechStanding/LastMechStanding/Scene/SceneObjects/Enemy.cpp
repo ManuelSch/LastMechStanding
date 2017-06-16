@@ -70,8 +70,8 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 		setNewDestination();
 	}
 	else {
-		this->moveTowards(this->destination, movementSpeed * deltaTime, sceneObjects);
-		//!--
+		//!--this->moveTowards(this->destination, movementSpeed * deltaTime, sceneObjects);
+		
 	}
 
 
@@ -148,4 +148,24 @@ void Enemy::reset()
 void Enemy::setNewDestination()
 {
 	destination = SceneObject::getRandomPosition(position.y);
+}
+
+GLboolean Enemy::isInFrustum(glm::mat4 * projMat)
+{
+	vector<glm::vec3> bbPoints = this->model.boundingBox->getAllPositions(&(this->position), &(this->scaling));
+
+	glm::vec4 Pclip;
+	for (GLuint i = 0; i < bbPoints.size(); i++) {
+		Pclip = (*projMat) * glm::vec4(bbPoints[i], 1.0f);
+		if (abs(Pclip.x) < Pclip.w &&
+			abs(Pclip.y) < Pclip.w &&
+			0 < Pclip.z &&
+			Pclip.z < Pclip.w) {
+			cout << "enemy in frustum" << endl;
+			return true;
+		}
+	}
+
+	cout << "enemy not in frustum" << endl;
+	return false;
 }

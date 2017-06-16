@@ -33,6 +33,8 @@ public:
 	void reset();
 
 	void setNewDestination();
+
+	virtual GLboolean isInFrustum(glm::mat4* projMat);
 };
 
 #endif

@@ -23,7 +23,7 @@ Player::Player(Camera* camera, shared_ptr<GUI> gui, GLfloat displayRatio) : came
 	this->model.boundingBox->minVertexPos.y -= 1.75f * (1 / this->scaling.y);
 
 	camera->updateCameraVectors(position, angle);
-
+	
 	for (GLuint i = 0; i < 15; i++) {
 		shared_ptr<BulletPlayer> bullet = make_shared<BulletPlayer>(this);
 		bullet->collide = false;
