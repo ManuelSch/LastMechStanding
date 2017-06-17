@@ -239,7 +239,7 @@ GLboolean SceneObject::isInFrustum(glm::mat4* projMat, Camera* camera, SceneObje
 		while (angleBetween >= 360.0f) {
 			angleBetween -= 360.0f;
 		}
-		if (angleBetween > 90 && angleBetween < 270) {
+		if (angleBetween > (90+20) && angleBetween < (270-20)) {
 			cull = false;
 		}
 	}
@@ -247,7 +247,6 @@ GLboolean SceneObject::isInFrustum(glm::mat4* projMat, Camera* camera, SceneObje
 		return false;
 	}
 
-	// TODO: kommt nie dahin?
 	glm::vec4 Pclip;
 	for (GLuint i = 0; i < bbPoints.size(); i++) {
 		Pclip = (*projMat) * glm::vec4(bbPoints[i], 1.0f);
@@ -255,7 +254,6 @@ GLboolean SceneObject::isInFrustum(glm::mat4* projMat, Camera* camera, SceneObje
 			return true;
 		}
 	}
-	return true;
 
 	return false;
 }
