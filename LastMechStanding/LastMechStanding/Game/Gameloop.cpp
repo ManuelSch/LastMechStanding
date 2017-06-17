@@ -81,7 +81,7 @@ void Gameloop::run()
 	vector<shared_ptr<Enemy>> enemies;
 	shared_ptr<Enemy> enemy;
 	//!--const GLuint numberOfEnemies = 3;
-	const GLuint numberOfEnemies = 0;
+	const GLuint numberOfEnemies = 3;
 	for (GLuint i = 0; i < numberOfEnemies; i++) {
 		enemy = make_shared<Enemy>(gui, player);
 		sceneObjects.push_back(enemy);
@@ -135,7 +135,7 @@ void Gameloop::run()
 
 
 	// game loop:
-	while (!glfwWindowShouldClose(display->window))
+	while (!glfwWindowShouldClose(display->window)/*//!-- && player->healthPoints > 0.0f*/)
 	{
 		// calculate delta time for frame independency:
 		GLfloat currentFrame = glfwGetTime();
@@ -164,7 +164,7 @@ void Gameloop::run()
 			enemySpawnInterval *= 0.98f;
 			for (GLuint i = 0; i < enemies.size(); i++) {
 				if (!enemies[i]->collide && !enemies[i]->visible) {
-					enemies[i]->reset();
+					enemies[i]->reset((100.0f / enemySpawnInterval) * (100.0f / (enemySpawnInterval)));
 					break;
 				}
 			}
@@ -192,7 +192,7 @@ void Gameloop::run()
 		*/
 		if (this->shortKeys->shadowMappinOn) {
 			sunLight->position = player->position;
-			shadowMap->renderToDepthMap(&sceneObjects);
+			shadowMap->renderToDepthMap(&sceneObjects, shortKeys.get());
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
 
@@ -214,10 +214,10 @@ void Gameloop::run()
 				if (!shortKeys->viewFrustumCullingOn || sceneObjects[i]->objectID == player->objectID || sceneObjects[i]->isInFrustum(&(projection * view), &camera, player.get())) {
 					numberOfDrawnObjects++;
 					if (this->shortKeys->shadowMappinOn) {
-						sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, &(shadowMap->lightSpaceMatrix), &(shadowMap->depthMap));
+						sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, shortKeys.get(), &(shadowMap->lightSpaceMatrix), &(shadowMap->depthMap));
 					}
 					else {
-						sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, nullptr, nullptr);
+						sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, shortKeys.get(), nullptr, nullptr);
 					}
 				}
 			}
@@ -248,6 +248,30 @@ void Gameloop::run()
 
 		//cout << distance(enemy->position, player->position) << endl;
 		//player->printPosition();
+	}
+
+	
+
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	/*
+	* Bind to framebuffer and draw to color texture:
+	*/
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	shared_ptr<GameoverScreen> gameoverScreen = make_shared<GameoverScreen>(font);
+	gameoverScreen->draw(gui->scoreScreen->defeatedEnemies);
+
+	// swap window and frame buffer:
+	glfwSwapBuffers(display->window);
+
+	while (!glfwWindowShouldClose(display->window))
+	{
+		// check if any events were triggered:
+		glfwPollEvents();
 	}
 }
 

@@ -8,7 +8,7 @@
 #ifdef SCENE_OBJECT
 
 #define HEALTH_POINTS_MAX 100.0f
-#define MOVEMENT_SPEED 20.0f//!--8.0f
+#define MOVEMENT_SPEED 8.0f//!--8.0f
 #define MOUSE_SENSITIVITY 0.2f
 
 class Player : public SceneObject

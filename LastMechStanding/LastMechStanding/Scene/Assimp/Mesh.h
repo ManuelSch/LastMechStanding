@@ -3,6 +3,7 @@
 #include "..\..\commonHeader.h"
 #include "..\..\Util\Shader.h"
 #include "..\..\Util\BoundingBox.h"
+#include "..\..\Game\ShortKeys.h"
 
 struct Vertex {
 	glm::vec3 position;
@@ -26,7 +27,7 @@ public:
 	vector<Texture> textures;
 	
 	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures, shared_ptr<BoundingBox> boundingBox);
-	void draw(Shader* shader);
+	void draw(Shader* shader, ShortKeys* shortKeys);
 	~Mesh();
 
 
@@ -34,5 +35,7 @@ private:
 	GLuint VAO, VBO, EBO;	// render data
 
 	void setupMesh();
+
+	ShortKeys::MipMappingQuality lastMMQuality = ShortKeys::MipMappingQuality::LINEAR;
 };
 

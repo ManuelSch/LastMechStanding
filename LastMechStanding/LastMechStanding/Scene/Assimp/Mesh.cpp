@@ -22,7 +22,7 @@ Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> text
 	this->setupMesh();
 }
 
-void Mesh::draw(Shader* shader)
+void Mesh::draw(Shader* shader, ShortKeys* shortKeys)
 {
 	GLuint diffuseNr = 1;
 	GLuint specularNr = 1;
@@ -45,6 +45,45 @@ void Mesh::draw(Shader* shader)
 
 		glUniform1i(shader->getUniformLocation(("material." + name + number).c_str()), i);
 		glBindTexture(GL_TEXTURE_2D, this->textures[i].id);
+
+		if (lastMMQuality != shortKeys->mipMappingQuality)
+		{
+			lastMMQuality = shortKeys->mipMappingQuality;
+
+			switch (shortKeys->mipMappingQuality) {
+			case ShortKeys::MipMappingQuality::OFF:
+				if (shortKeys->textureSamplingQuality == ShortKeys::TextureSamplingQuality::NEAREST_NEIGHBOR) {
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+				}
+				else {
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				}
+				break;
+			case ShortKeys::MipMappingQuality::NEAREST_NEIGHBOR:
+				if (shortKeys->textureSamplingQuality == ShortKeys::TextureSamplingQuality::NEAREST_NEIGHBOR) {
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+				}
+				else {
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+				}
+				break;
+			case ShortKeys::MipMappingQuality::LINEAR:
+				if (shortKeys->textureSamplingQuality == ShortKeys::TextureSamplingQuality::NEAREST_NEIGHBOR) {
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+				}
+				else {
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+				}
+				break;
+			}
+		}
+
+		if (shortKeys->textureSamplingQuality == ShortKeys::TextureSamplingQuality::NEAREST_NEIGHBOR) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		}
+		else {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		}
 	}
 
 	// default shininess:

@@ -24,9 +24,9 @@ public:
 	SceneObject();
 	virtual ~SceneObject();
 
-	void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources, glm::mat4* lightSpaceMatrix, GLuint* depthMap);
-	void drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID);
-	void drawDepthMap(glm::mat4* lightSpaceMatrix);
+	void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources, ShortKeys* shortKeys, glm::mat4* lightSpaceMatrix, GLuint* depthMap);
+	void drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID, ShortKeys* shortKeys);
+	void drawDepthMap(glm::mat4* lightSpaceMatrix, ShortKeys* shortKeys);
 	virtual void update(GLfloat timeDelta, vector<shared_ptr<SceneObject>>* sceneObjects) = 0;
 
 	virtual void onClick();

@@ -10,7 +10,7 @@ Enemy::Enemy(shared_ptr<GUI> gui, shared_ptr<Player> player) : gui(gui), player(
 	this->model = Model("Resources/Models/Mech/mechbottom.obj");
 
 	movementSpeed = MOVEMENT_SPEED;
-	healthPoints = HEALTH_POINTS_MAX;
+	healthPoints = healthPointsMax;
 
 	this->lastPosition = position;
 	this->timeStandingStill = 0.0f;
@@ -70,8 +70,8 @@ void Enemy::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObje
 		setNewDestination();
 	}
 	else {
-		//!--this->moveTowards(this->destination, movementSpeed * deltaTime, sceneObjects);
-		
+		this->moveTowards(this->destination, movementSpeed * deltaTime, sceneObjects);
+		//!--
 	}
 
 
@@ -117,14 +117,14 @@ void Enemy::onClick()
 {
 	this->healthPoints -= 25;
 
-	this->gui->enemyHealthBar->setHealthPointsInPercent(healthPoints / HEALTH_POINTS_MAX);
+	this->gui->enemyHealthBar->setHealthPointsInPercent(max(0.0f, healthPoints / healthPointsMax));
 
 	this->children[0]->angle.y = this->calculateAngle(position.x, position.z, player->position.x, player->position.z);
 	this->destination = player->position;
 }
 
 
-void Enemy::reset()
+void Enemy::reset(GLfloat newHealthPointsMax)
 {
 	this->position = SceneObject::getRandomPosition(0.0f);
 	this->setNewDestination();
@@ -134,7 +134,9 @@ void Enemy::reset()
 	this->visible = true;
 	this->dead = false;
 
-	this->healthPoints = HEALTH_POINTS_MAX;
+
+	this->healthPointsMax = newHealthPointsMax;
+	this->healthPoints = healthPointsMax;
 
 	// children:
 	for (GLuint j = 0; j < this->children.size(); j++) {

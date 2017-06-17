@@ -48,7 +48,7 @@ ShadowMap::~ShadowMap()
 {
 }
 
-void ShadowMap::renderToDepthMap(vector<shared_ptr<SceneObject>>* sceneObjects)
+void ShadowMap::renderToDepthMap(vector<shared_ptr<SceneObject>>* sceneObjects, ShortKeys* shortKeys)
 {
 	// view matrix for the sunlight:
 	glm::mat4 lightView = glm::lookAt(glm::vec3(lightSource->position.x, lightSource->position.y + yOffset, lightSource->position.z), glm::vec3(lightSource->position.x, lightSource->position.y + yOffset, lightSource->position.z) + lightSource->direction, glm::vec3(0.0, 1.0, 0.0));
@@ -66,7 +66,7 @@ void ShadowMap::renderToDepthMap(vector<shared_ptr<SceneObject>>* sceneObjects)
 	glClear(GL_DEPTH_BUFFER_BIT);
 	for (GLuint i = 0; i < sceneObjects->size(); i++) {
 		if ((*sceneObjects)[i] != nullptr) {
-			(*sceneObjects)[i]->drawDepthMap(&lightSpaceMatrix);
+			(*sceneObjects)[i]->drawDepthMap(&lightSpaceMatrix, shortKeys);
 		}
 	}
 	

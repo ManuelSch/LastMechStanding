@@ -10,7 +10,7 @@ SceneObject::~SceneObject()
 {
 }
 
-void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources, glm::mat4* lightSpaceMatrix, GLuint* depthMap)
+void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources, ShortKeys* shortKeys, glm::mat4* lightSpaceMatrix, GLuint* depthMap)
 {
 	if (!this->visible) {
 		return;
@@ -54,15 +54,15 @@ void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camer
 	// draw the loaded model:
 	glUniformMatrix4fv(shader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
 
-	this->model.draw(shader.get());
+	this->model.draw(shader.get(), shortKeys);
 
 	// children:
 	for (GLuint j = 0; j < this->children.size(); j++) {
-		this->children[j]->draw(viewMatrix, projectionMatrix, camera, lightSources, lightSpaceMatrix, depthMap);
+		this->children[j]->draw(viewMatrix, projectionMatrix, camera, lightSources, shortKeys, lightSpaceMatrix, depthMap);
 	}
 }
 
-void SceneObject::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID)
+void SceneObject::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID, ShortKeys* shortKeys)
 {
 	if (!this->collide) {
 		return;
@@ -90,17 +90,17 @@ void SceneObject::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix
 
 	// draw the loaded model:
 	glUniformMatrix4fv(pickingShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
-	this->model.draw(pickingShader.get());
+	this->model.draw(pickingShader.get(), shortKeys);
 
 	// children:
 	for (GLuint j = 0; j < this->children.size(); j++) {
 		if (this->children[j]->collide) {
-			this->children[j]->drawPicking(viewMatrix, projectionMatrix, camera, pickingID);
+			this->children[j]->drawPicking(viewMatrix, projectionMatrix, camera, pickingID, shortKeys);
 		}
 	}
 }
 
-void SceneObject::drawDepthMap(glm::mat4* lightSpaceMatrix)
+void SceneObject::drawDepthMap(glm::mat4* lightSpaceMatrix, ShortKeys* shortKeys)
 {
 	if (!this->visible) {
 		return;
@@ -116,11 +116,11 @@ void SceneObject::drawDepthMap(glm::mat4* lightSpaceMatrix)
 
 	// draw the loaded model:
 	glUniformMatrix4fv(simpleDepthShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
-	this->model.draw(simpleDepthShader.get());
+	this->model.draw(simpleDepthShader.get(), shortKeys);
 
 	// children:
 	for (GLuint j = 0; j < this->children.size(); j++) {
-		this->children[j]->drawDepthMap(lightSpaceMatrix);
+		this->children[j]->drawDepthMap(lightSpaceMatrix, shortKeys);
 	}
 }
 

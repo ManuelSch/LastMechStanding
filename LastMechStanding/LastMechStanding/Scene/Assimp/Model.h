@@ -3,13 +3,14 @@
 #include "..\..\commonHeader.h"
 #include "Mesh.h"
 #include "..\..\Util\BoundingBox.h"
+#include "..\..\Game\ShortKeys.h"
 
 class Model
 {
 public:
 	Model();
 	Model(GLchar* path);
-	void draw(Shader* shader);
+	void draw(Shader* shader, ShortKeys* shortKeys);
 	~Model();
 
 	shared_ptr<BoundingBox> boundingBox;

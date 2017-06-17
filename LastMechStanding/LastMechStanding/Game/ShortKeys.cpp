@@ -11,7 +11,7 @@ ShortKeys::ShortKeys(GLFWwindow* window)
 	this->frameTimeOn = false;
 	this->wireFrameOn = false;
 	this->textureSamplingQuality = TextureSamplingQuality::BILINEAR;
-	this->mipMappingQuality = MipMappingQuality::OFF;
+	this->mipMappingQuality = MipMappingQuality::LINEAR;
 	this->shadowMappinOn = true;
 	this->bloomOn = true;
 	this->viewFrustumCullingOn = false;
@@ -62,15 +62,12 @@ void ShortKeys::pressShortKey(int key)
 			mipMappingQuality = (mipMappingQuality == MipMappingQuality::OFF ? MipMappingQuality::NEAREST_NEIGHBOR : (mipMappingQuality == MipMappingQuality::NEAREST_NEIGHBOR ? MipMappingQuality::LINEAR : MipMappingQuality::OFF));
 			switch (mipMappingQuality) {
 				case MipMappingQuality::OFF:
-					//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 					cout << "Mip mapping quality = OFF" << endl;
 					break;
 				case MipMappingQuality::NEAREST_NEIGHBOR:
-					//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 					cout << "Mip mapping quality = NEAREST_NEIGHBOR" << endl;
 					break;
 				case MipMappingQuality::LINEAR:
-					//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 					cout << "Mip mapping quality = LINEAR" << endl;
 					break;
 			}

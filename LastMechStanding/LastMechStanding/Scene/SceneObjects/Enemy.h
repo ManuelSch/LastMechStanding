@@ -8,7 +8,6 @@
 
 #ifdef SCENE_OBJECT
 
-#define HEALTH_POINTS_MAX 100.0f
 #define MOVEMENT_SPEED 5.0f
 
 class Enemy : public SceneObject
@@ -22,6 +21,7 @@ public:
 	virtual void onClick();
 
 	GLfloat healthPoints;
+	GLfloat healthPointsMax = 100.0f;
 
 	GLfloat movementSpeed;
 	shared_ptr<GUI> gui;
@@ -30,7 +30,7 @@ public:
 	glm::vec3 lastPosition;
 	GLfloat timeStandingStill;
 
-	void reset();
+	void reset(GLfloat newHealthPointsMax);
 
 	void setNewDestination();
 

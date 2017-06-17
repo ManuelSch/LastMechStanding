@@ -3,6 +3,7 @@
 #include "..\commonHeader.h"
 #include "..\Scene\LightSource.h"
 #include "..\Scene\SceneObjects\SceneObject.h"
+#include "..\..\Game\ShortKeys.h"
 
 class ShadowMap
 {
@@ -13,7 +14,7 @@ public:
 	GLuint depthMap;
 	glm::mat4 lightSpaceMatrix;
 
-	void renderToDepthMap(vector<shared_ptr<SceneObject>>* sceneObjects);
+	void renderToDepthMap(vector<shared_ptr<SceneObject>>* sceneObjects, ShortKeys* shortKeys);
 
 private:
 	GLuint depthMapFBO;
