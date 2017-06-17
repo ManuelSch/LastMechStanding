@@ -186,6 +186,7 @@ void Gameloop::run()
 		// view matrix:
 		glm::mat4 view = camera.getViewMatrix();
 
+
 		/*
 		* render to depth map:
 		*/
@@ -196,6 +197,7 @@ void Gameloop::run()
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
 
 
+		glPolygonMode(GL_FRONT_AND_BACK, (shortKeys->wireFrameOn ? GL_LINE : GL_FILL));
 
 		/*
 		* render scene as normal with shadow mapping (using depth map):
@@ -221,9 +223,10 @@ void Gameloop::run()
 			}
 		}
 		if (shortKeys->viewFrustumCullingOn) {
-			//cout << "Number of drawn objects = " << numberOfDrawnObjects << endl;
 			gui->viewFrustumCullingScreen->drawnElements = numberOfDrawnObjects;
 		}
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		/*
 		* Draw and update GUI:
@@ -231,10 +234,12 @@ void Gameloop::run()
 		this->gui->update(deltaTime);
 		this->gui->draw();
 
+
 		/*
 		* Bind to default framebuffer and draw the quad to the screen:
 		*/
-		framebuffer->draw(this->shortKeys->bloomOn);
+		framebuffer->draw(this->shortKeys);
+
 
 
 		// swap window and frame buffer:

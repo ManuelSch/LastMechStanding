@@ -47,7 +47,6 @@ void ShortKeys::pressShortKey(int key)
 		// f3 -> wire frame on/off:
 		case GLFW_KEY_F3:
 			wireFrameOn = !wireFrameOn;
-			glPolygonMode(GL_FRONT_AND_BACK, (wireFrameOn ? GL_LINE : GL_FILL));
 			cout << "Wire frame = " << (wireFrameOn ? "ON" : "OFF") << endl;
 			break;
 

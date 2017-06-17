@@ -12,6 +12,7 @@ EnemyHealthBar::EnemyHealthBar(GLfloat displayRatio)
 	//useTexture("Resources/Textures/container.jpg");
 
 	setHealthPointsInPercent(1.0f);
+	this->opacity = 0.0f;
 	quad->updateVertexData();
 }
 

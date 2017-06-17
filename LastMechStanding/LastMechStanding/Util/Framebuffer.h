@@ -4,6 +4,7 @@
 #include "..\Game\Display.h"
 #include "..\Util\Shader.h"
 #include "..\Util\Quad.h"
+#include "..\Game\ShortKeys.h"
 
 class Framebuffer
 {
@@ -23,7 +24,7 @@ public:
 	GLuint pingPongFBO[2];
 	GLuint pingPongColorbuffers[2];
 
-	void draw(GLboolean enableBloom);
+	void draw(shared_ptr<ShortKeys> shortKeys);
 
 private:
 	const Quad::Origin ORIGIN = Quad::FULLSCREEN;

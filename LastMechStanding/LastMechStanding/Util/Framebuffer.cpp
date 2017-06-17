@@ -49,7 +49,7 @@ Framebuffer::~Framebuffer()
 	glDeleteFramebuffers(1, &fbo);
 }
 
-void Framebuffer::draw(GLboolean enableBloom)
+void Framebuffer::draw(shared_ptr<ShortKeys> shortKeys)
 {
 	this->shaderBlur->useShader();
 
@@ -88,8 +88,9 @@ void Framebuffer::draw(GLboolean enableBloom)
 	glBindTexture(GL_TEXTURE_2D, textureColorBuffers[0]);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, pingPongColorbuffers[!horizontal]);
-	glUniform1i(shaderFinal->getUniformLocation("bloom"), enableBloom);
+	glUniform1i(shaderFinal->getUniformLocation("bloom"), shortKeys->bloomOn);
 	glUniform3f(shaderFinal->getUniformLocation("backgroundColor"), BACKGROUND_COLOR.x, BACKGROUND_COLOR.y, BACKGROUND_COLOR.z);
+
 
 	this->quad->draw();
 }
