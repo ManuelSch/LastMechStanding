@@ -20,6 +20,9 @@ ArenaWall::ArenaWall(glm::vec3 position, GLboolean rotated)
 	}
 
 	this->position.y = GROUND_LEVEL_Y;
+
+	this->model.boundingBox->getAllPositions(&(this->position), &(this->scaling), &(this->position), nullptr, 0.0f);
+	this->model.boundingBox->getAllPositions(&(this->position), &(this->scaling), &glm::vec3(1234.0f, 1234.0f, 1234.0f), nullptr, 0.0f);
 }
 
 

@@ -54,10 +54,10 @@ void Gameloop::run()
 	sceneObjects.push_back(arena);
 
 	// arena walls:
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, 52.0f)));
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, -52.0f)));
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(52.0f, 0.0f, 0.0f), true));
-	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-52.0f, 0.0f, 0.0f), true));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, 49.0f)));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, -49.0f)));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(49.0f, 0.0f, 0.0f), true));
+	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-49.0f, 0.0f, 0.0f), true));
 
 	// arena containers:
 	//!--const GLuint numberOfContainers = 20;
@@ -210,13 +210,13 @@ void Gameloop::run()
 		for (GLuint i = 0; i < sceneObjects.size(); i++) {
 			if (sceneObjects[i] != nullptr) {
 				if (!shortKeys->viewFrustumCullingOn || sceneObjects[i]->objectID == player->objectID || sceneObjects[i]->isInFrustum(&(projection * view), &camera, player.get())) {
+					numberOfDrawnObjects++;
 					if (this->shortKeys->shadowMappinOn) {
 						sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, &(shadowMap->lightSpaceMatrix), &(shadowMap->depthMap));
 					}
 					else {
 						sceneObjects[i]->draw(&view, &projection, &camera, &lightSources, nullptr, nullptr);
 					}
-					numberOfDrawnObjects++;
 				}
 			}
 		}

@@ -230,7 +230,14 @@ glm::vec3 SceneObject::getRandomPosition(GLfloat yDefault)
 
 GLboolean SceneObject::isInFrustum(glm::mat4* projMat, Camera* camera, SceneObject* player)
 {
-	vector<glm::vec3> bbPoints = this->model.boundingBox->getAllPositions(&(this->position), &(this->scaling));
+	vector<glm::vec3> bbPoints = this->model.boundingBox->getAllPositions(&(this->position), &(this->scaling), &(player->position), projMat, player->angle.y);
+
+	if (bbPoints.size() == 0) {
+		return true;
+	}
+	if (bbPoints.size() == 1) {
+		return false;
+	}
 
 	GLboolean cull = true;
 	for (GLuint i = 0; i < 8; i++) {
@@ -239,7 +246,7 @@ GLboolean SceneObject::isInFrustum(glm::mat4* projMat, Camera* camera, SceneObje
 		while (angleBetween >= 360.0f) {
 			angleBetween -= 360.0f;
 		}
-		if (angleBetween > (90+20) && angleBetween < (270-20)) {
+		if (angleBetween > (90+20-20) && angleBetween < (270-20+20)) {
 			cull = false;
 		}
 	}

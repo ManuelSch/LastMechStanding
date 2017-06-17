@@ -22,6 +22,9 @@ Container1::Container1(glm::vec3 position)
 	this->scale(glm::vec3(((GLfloat)((double)rand() / (double)RAND_MAX) * 6.0f + 1.0f), ((GLfloat)((double)rand() / (double)RAND_MAX) * 2.0f + 1.0f), ((GLfloat)((double)rand() / (double)RAND_MAX) * 12.0f + 1.0f)));
 
 	this->position.y = GROUND_LEVEL_Y;
+
+	this->model.boundingBox->getAllPositions(&(this->position), &(this->scaling), &(this->position), nullptr, 0.0f);
+	this->model.boundingBox->getAllPositions(&(this->position), &(this->scaling), &glm::vec3(1234.0f, 1234.0f, 1234.0f), nullptr, 0.0f);
 }
 
 

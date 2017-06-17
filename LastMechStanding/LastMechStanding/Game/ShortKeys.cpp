@@ -14,7 +14,7 @@ ShortKeys::ShortKeys(GLFWwindow* window)
 	this->mipMappingQuality = MipMappingQuality::OFF;
 	this->shadowMappinOn = true;
 	this->bloomOn = true;
-	this->viewFrustumCullingOn = true;
+	this->viewFrustumCullingOn = false;
 	this->blendingOn = true;
 }
 
