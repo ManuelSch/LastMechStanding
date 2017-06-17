@@ -45,11 +45,15 @@ void Player::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sceneObj
 	// jumping:
 	if (this->isJumping) {
 		glm::vec3 jumpDest = glm::vec3(position.x, position.y + jumpHeight, position.z);
-		this->movePosition(UP, deltaTime * distance(this->position, jumpDest) * JUMP_SPEED, sceneObjects);
 
-		if (distance(this->position, jumpDest) < 0.1f || this->position.y > jumpDest.y) {
-			this->isJumping = false;
+		for(GLuint i = 0; i < 10; i++) {
+			this->translate((jumpDest - this->position) * deltaTime/10.0f * JUMP_SPEED, sceneObjects);
+
+			if (distance(this->position, jumpDest) < 0.1f || this->position.y > jumpDest.y) {
+				this->isJumping = false;
+			}
 		}
+
 		jumpHeight -= deltaTime * GRAVITY*0.3f;
 	}
 

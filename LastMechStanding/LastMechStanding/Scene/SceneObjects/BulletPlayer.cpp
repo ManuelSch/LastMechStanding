@@ -32,7 +32,7 @@ void BulletPlayer::update(GLfloat deltaTime, vector<shared_ptr<SceneObject>>* sc
 		for (GLuint i = 0; i < sceneObjects->size(); i++) {
 			if ((*sceneObjects)[i]->objectID != this->objectID && (*sceneObjects)[i]->objectID != this->parent->objectID) {
 				if ((*sceneObjects)[i]->collide) {
-					if (this->intersectsWith((*sceneObjects)[i]) || (distance(this->position, (*sceneObjects)[i]->position) < 1.0f)) {
+					if (this->intersectsWith((*sceneObjects)[i]) || (distance(this->position, (*sceneObjects)[i]->position) < 1.5f)) {
 						collide = false;
 						visible = false;
 

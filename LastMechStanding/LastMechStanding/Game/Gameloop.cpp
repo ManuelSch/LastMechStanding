@@ -60,7 +60,6 @@ void Gameloop::run()
 	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-49.0f, 0.0f, 0.0f), true));
 
 	// arena containers:
-	//!--const GLuint numberOfContainers = 20;
 	const GLuint numberOfContainers = 20;
 	for (GLuint i = 0; i < numberOfContainers; i++) {
 		glm::vec3 newPosition = glm::vec3(0.0f);
@@ -80,7 +79,6 @@ void Gameloop::run()
 
 	vector<shared_ptr<Enemy>> enemies;
 	shared_ptr<Enemy> enemy;
-	//!--const GLuint numberOfEnemies = 3;
 	const GLuint numberOfEnemies = 3;
 	for (GLuint i = 0; i < numberOfEnemies; i++) {
 		enemy = make_shared<Enemy>(gui, player);
@@ -164,7 +162,7 @@ void Gameloop::run()
 			enemySpawnInterval *= 0.98f;
 			for (GLuint i = 0; i < enemies.size(); i++) {
 				if (!enemies[i]->collide && !enemies[i]->visible) {
-					enemies[i]->reset((100.0f / enemySpawnInterval) * (100.0f / (enemySpawnInterval)));
+					enemies[i]->reset((100.0f / enemySpawnInterval) * (100.0f / (enemySpawnInterval*0.95f)));
 					break;
 				}
 			}
