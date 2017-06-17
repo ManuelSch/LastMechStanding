@@ -118,7 +118,7 @@ vector<glm::vec3> BoundingBox::getAllPositions(glm::vec3* position, glm::vec3* s
 		this->lastAllPositions2 = result;
 	}
 
-	cout << "no cache!!!!" << endl;
+	//cout << "no cache!!!!" << endl;
 	this->lastPosition = *position;
 	this->lastScaling = *scaling;
 

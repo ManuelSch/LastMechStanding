@@ -222,6 +222,7 @@
     <ClInclude Include="Scene\Assimp\Model.h" />
     <ClInclude Include="Game\ShortKeys.h" />
     <ClInclude Include="Util\Shader.h" />
+    <ClInclude Include="Scene\GUIElements\ViewFrustumCullingScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene\SceneObjects\BulletPlayer.cpp" />
@@ -259,6 +260,7 @@
     <ClCompile Include="Scene\Assimp\Model.cpp" />
     <ClCompile Include="Game\ShortKeys.cpp" />
     <ClCompile Include="Util\Shader.cpp" />
+    <ClCompile Include="Scene\GUIElements\ViewFrustumCullingScreen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

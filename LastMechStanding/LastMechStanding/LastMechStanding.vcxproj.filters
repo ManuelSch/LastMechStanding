@@ -161,6 +161,9 @@
     <ClInclude Include="Scene\GUIElements\ScoreScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\GUIElements\ViewFrustumCullingScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -266,6 +269,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene\GUIElements\ScoreScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GUIElements\ViewFrustumCullingScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

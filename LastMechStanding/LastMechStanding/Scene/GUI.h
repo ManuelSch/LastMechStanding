@@ -12,6 +12,7 @@
 #include "./GUIElements/EnemyHealthBar.h"
 #include "./GUIElements/FPSScreen.h"
 #include "./GUIElements/ScoreScreen.h"
+#include "./GUIElements/ViewFrustumCullingScreen.h"
 
 class GUI
 {
@@ -26,6 +27,7 @@ public:
 	shared_ptr<EnemyHealthBar> enemyHealthBar;
 	shared_ptr<FPSScreen> fpsScreen;
 	shared_ptr<ScoreScreen> scoreScreen;
+	shared_ptr<ViewFrustumCullingScreen> viewFrustumCullingScreen;
 
 	void update(GLfloat deltaTime);
 	void draw();

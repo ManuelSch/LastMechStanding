@@ -221,7 +221,8 @@ void Gameloop::run()
 			}
 		}
 		if (shortKeys->viewFrustumCullingOn) {
-			cout << "Number of drawn objects = " << numberOfDrawnObjects << endl;
+			//cout << "Number of drawn objects = " << numberOfDrawnObjects << endl;
+			gui->viewFrustumCullingScreen->drawnElements = numberOfDrawnObjects;
 		}
 
 		/*
