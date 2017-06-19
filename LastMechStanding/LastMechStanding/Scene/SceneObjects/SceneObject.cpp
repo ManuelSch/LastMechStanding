@@ -62,44 +62,6 @@ void SceneObject::draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camer
 	}
 }
 
-void SceneObject::drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID, ShortKeys* shortKeys)
-{
-	if (!this->collide) {
-		return;
-	}
-
-	if (pickingShader == nullptr) {
-		return;
-	}
-
-	pickingShader->useShader();
-
-	// calculate picking ID of the object:
-	GLint r = (pickingID & 0x000000FF) >> 0;
-	GLint g = (pickingID & 0x0000FF00) >> 8;
-	GLint b = (pickingID & 0x00FF0000) >> 16;
-	glUniform4f(pickingShader->getUniformLocation("pickingColor"), r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-
-	// send viewer position to the shader:
-	glUniform3f(pickingShader->getUniformLocation("viewPos"), camera->position.x, camera->position.y, camera->position.z);
-
-	// apply view and projection matrices:
-	glUniformMatrix4fv(pickingShader->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(*viewMatrix));
-	glUniformMatrix4fv(pickingShader->getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(*projectionMatrix));
-
-
-	// draw the loaded model:
-	glUniformMatrix4fv(pickingShader->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(getModelMatrix()));
-	this->model.draw(pickingShader.get(), shortKeys);
-
-	// children:
-	for (GLuint j = 0; j < this->children.size(); j++) {
-		if (this->children[j]->collide) {
-			this->children[j]->drawPicking(viewMatrix, projectionMatrix, camera, pickingID, shortKeys);
-		}
-	}
-}
-
 void SceneObject::drawDepthMap(glm::mat4* lightSpaceMatrix, ShortKeys* shortKeys)
 {
 	if (!this->visible) {

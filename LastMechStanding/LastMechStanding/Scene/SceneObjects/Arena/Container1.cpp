@@ -9,7 +9,6 @@ Container1::Container1(glm::vec3 position)
 	this->position = position;
 
 	this->shader = make_shared<Shader>("Resources/Shaders/model_loading.vert", "Resources/Shaders/model_loading.frag");
-	this->pickingShader = make_shared<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->simpleDepthShader = make_shared<Shader>("Resources/Shaders/simple_depth_shader.vert", "Resources/Shaders/simple_depth_shader.frag");
 
 	if ((GLfloat)((double)rand() / (double)RAND_MAX) >= 0.5) {

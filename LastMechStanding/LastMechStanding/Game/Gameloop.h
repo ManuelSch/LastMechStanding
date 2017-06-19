@@ -15,7 +15,7 @@
 #include "..\Scene\SceneObjects\Arena\Container1.h"
 #include "..\Scene\SceneObjects\Lamp.h"
 #include "..\Scene\GUIElements\GameoverScreen.h"
-#include "..\Scene\GUI.h"
+#include "..\Scene\GUIElements\LoadingScreen.h"
 #include "..\Scene\LightSource.h"
 #include "..\Util\Framebuffer.h"
 #include "..\Util\ShadowMap.h"

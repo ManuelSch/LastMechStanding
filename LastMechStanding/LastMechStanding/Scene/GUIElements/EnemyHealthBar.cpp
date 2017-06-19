@@ -9,7 +9,7 @@ EnemyHealthBar::EnemyHealthBar(GLfloat displayRatio)
 	this->opacity = 0.0f;
 
 	// use this method if you want to display a texture on the gui element:
-	//useTexture("Resources/Textures/container.jpg");
+	//useTexture("Resources/Textures/crosshair.jpg");
 
 	setHealthPointsInPercent(1.0f);
 	this->opacity = 0.0f;

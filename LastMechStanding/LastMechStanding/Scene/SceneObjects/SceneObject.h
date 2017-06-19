@@ -25,7 +25,6 @@ public:
 	virtual ~SceneObject();
 
 	void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, vector<shared_ptr<LightSource>>* lightSources, ShortKeys* shortKeys, glm::mat4* lightSpaceMatrix, GLuint* depthMap);
-	void drawPicking(glm::mat4* viewMatrix, glm::mat4* projectionMatrix, Camera* camera, GLuint pickingID, ShortKeys* shortKeys);
 	void drawDepthMap(glm::mat4* lightSpaceMatrix, ShortKeys* shortKeys);
 	virtual void update(GLfloat timeDelta, vector<shared_ptr<SceneObject>>* sceneObjects) = 0;
 
@@ -60,7 +59,6 @@ public:
 
 protected:
 	shared_ptr<Shader> shader;
-	shared_ptr<Shader> pickingShader;
 	shared_ptr<Shader> simpleDepthShader;
 
 

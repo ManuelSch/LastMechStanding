@@ -8,7 +8,7 @@ HealthBar::HealthBar(GLfloat displayRatio)
 	this->shader = make_shared<Shader>("Resources/Shaders/quad.vert", "Resources/Shaders/quad.frag");
 
 	// use this method if you want to display a texture on the gui element:
-	//useTexture("Resources/Textures/container.jpg");
+	//useTexture("Resources/Textures/crosshair.jpg");
 
 	setHealthPointsInPercent(1.0f);
 	quad->updateVertexData();

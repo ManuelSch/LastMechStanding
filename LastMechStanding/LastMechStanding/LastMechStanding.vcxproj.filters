@@ -18,16 +18,8 @@
     <None Include="Obj\Mech\mech1.blend" />
     <None Include="Obj\Mech\mech1.mtl" />
     <None Include="Obj\Mech\mech1.obj" />
-    <None Include="Resources\Shaders\basic.frag" />
-    <None Include="Resources\Shaders\basic.vert" />
-    <None Include="Resources\Shaders\lamp.frag" />
-    <None Include="Resources\Shaders\lamp.vert" />
-    <None Include="Resources\Shaders\lighting.frag" />
-    <None Include="Resources\Shaders\lighting.vert" />
     <None Include="Resources\Shaders\model_loading.vert" />
     <None Include="Resources\Shaders\model_loading.frag" />
-    <None Include="Resources\Shaders\color_picking.vert" />
-    <None Include="Resources\Shaders\color_picking.frag" />
     <None Include="Resources\Shaders\freetype_glyph.vert" />
     <None Include="Resources\Shaders\freetype_glyph.frag" />
     <None Include="Resources\Shaders\quad.frag" />
@@ -167,6 +159,9 @@
     <ClInclude Include="Scene\GUIElements\GameoverScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\GUIElements\LoadingScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -278,6 +273,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene\GUIElements\GameoverScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GUIElements\LoadingScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

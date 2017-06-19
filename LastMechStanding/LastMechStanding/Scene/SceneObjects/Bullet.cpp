@@ -6,7 +6,6 @@ Bullet::Bullet(SceneObject* parent, shared_ptr<Player> player)
 {
 	cout << "Bullet()" << endl;
 	this->shader = make_shared<Shader>("Resources/Shaders/bullet.vert", "Resources/Shaders/bullet_enemy.frag");
-	//this->pickingShader = make_shared<Shader>("Resources/Shaders/color_picking.vert", "Resources/Shaders/color_picking.frag");
 	this->simpleDepthShader = make_shared<Shader>("Resources/Shaders/simple_depth_shader.vert", "Resources/Shaders/simple_depth_shader.frag");
 
 	this->model = Model("Resources/Models/Bullet/bullet.obj");

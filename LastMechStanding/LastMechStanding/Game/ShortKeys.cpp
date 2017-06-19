@@ -34,8 +34,8 @@ void ShortKeys::pressShortKey(int key)
 		// f1 -> show help:
 		case GLFW_KEY_F1:
 			showHelp = !showHelp;
-			// TODO
-			cout << "Show help = " << (showHelp ? "ON" : "OFF") << endl;
+			//cout << "Show help = " << (showHelp ? "ON" : "OFF") << endl;
+			cout << "\n\n ########\n # HELP #\n ########\n\n WASD keys - move the character\n mouse - move the view\n left mouse button - shoot\n\n";
 			break;
 
 		// f2 -> frame time on/off:

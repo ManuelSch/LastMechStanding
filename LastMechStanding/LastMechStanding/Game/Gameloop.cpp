@@ -45,19 +45,33 @@ Gameloop::~Gameloop()
 
 void Gameloop::run()
 {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+
+	shared_ptr<LoadingScreen> loadingScreen = make_shared<LoadingScreen>(font);
+	loadingScreen->draw(0, display);
+
+
+
 	// create GUI:
 	this->gui = make_shared<GUI>(display->getDisplayRatio(), this->shortKeys, this->font);
+
+	loadingScreen->draw(5, display);
 
 	// arena:
 	shared_ptr<SceneObject> arena;
 	arena = make_shared<Arena>();
 	sceneObjects.push_back(arena);
 
+	loadingScreen->draw(10, display);
+
 	// arena walls:
 	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, 49.0f)));
 	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(0.0f, 0.0f, -49.0f)));
 	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(49.0f, 0.0f, 0.0f), true));
 	sceneObjects.push_back(make_shared<ArenaWall>(glm::vec3(-49.0f, 0.0f, 0.0f), true));
+
+	loadingScreen->draw(20, display);
 
 	// arena containers:
 	const GLuint numberOfContainers = 20;
@@ -68,6 +82,9 @@ void Gameloop::run()
 		sceneObjects.push_back(make_shared<Container1>(newPosition));
 	}
 
+	loadingScreen->draw(30, display);
+
+
 
 
 	// create player and enemy objects:
@@ -76,6 +93,8 @@ void Gameloop::run()
 	player->position.z = -46.5f;
 	player->angle.y = 225;
 	sceneObjects.push_back(player);
+
+	loadingScreen->draw(45, display);
 
 	vector<shared_ptr<Enemy>> enemies;
 	shared_ptr<Enemy> enemy;
@@ -89,7 +108,10 @@ void Gameloop::run()
 		} while (distance(enemy->position, player->position) < 40.0f);
 		enemy->visible = false;
 		enemy->collide = false;
+
+		loadingScreen->draw(60 + i * 15, display);
 	}
+
 
 
 	// create sunlight:
@@ -101,6 +123,8 @@ void Gameloop::run()
 	//sunLight->position = glm::vec3(-2.0f, 4.0f, -1.0f);		// for the shadow map
 	sunLight->position = player->position;
 	lightSources.push_back(sunLight);
+
+	loadingScreen->draw(90, display);
 
 	// create lamps (for testing purposes):
 	/*
@@ -118,6 +142,7 @@ void Gameloop::run()
 	// initialize shadow map:
 	this->shadowMap = make_shared<ShadowMap>(sunLight);
 
+	loadingScreen->draw(95, display);
 	
 	// projection matrix:
 	glm::mat4 projection = glm::perspective(45.0f, display->getDisplayRatio(), 0.1f, 145.0f);
@@ -133,14 +158,14 @@ void Gameloop::run()
 
 
 	// game loop:
-	while (!glfwWindowShouldClose(display->window)/*//!-- && player->healthPoints > 0.0f*/)
+	while (!glfwWindowShouldClose(display->window) && player->healthPoints > 0.0f)
 	{
 		// calculate delta time for frame independency:
 		GLfloat currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-		deltaTime = max(deltaTime, 0.01f);
+		//deltaTime = max(deltaTime, 0.01f);
 
 		// check if any events were triggered:
 		glfwPollEvents();

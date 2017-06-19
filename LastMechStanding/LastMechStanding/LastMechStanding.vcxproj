@@ -152,25 +152,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\basic.frag" />
-    <None Include="Resources\Shaders\basic.vert" />
     <None Include="Resources\Shaders\bloom.frag" />
     <None Include="Resources\Shaders\bloom.vert" />
     <None Include="Resources\Shaders\bullet.frag" />
     <None Include="Resources\Shaders\bullet.vert" />
     <None Include="Resources\Shaders\bullet_enemy.frag" />
-    <None Include="Resources\Shaders\color_picking.frag" />
-    <None Include="Resources\Shaders\color_picking.vert" />
     <None Include="Resources\Shaders\freetype_glyph.frag" />
     <None Include="Resources\Shaders\freetype_glyph.vert" />
     <None Include="Resources\Shaders\gauss_blur.frag" />
     <None Include="Resources\Shaders\gauss_blur.vert" />
     <None Include="Resources\Shaders\quad.frag" />
     <None Include="Resources\Shaders\quad.vert" />
-    <None Include="Resources\Shaders\lighting.frag" />
-    <None Include="Resources\Shaders\lighting.vert" />
-    <None Include="Resources\Shaders\lamp.frag" />
-    <None Include="Resources\Shaders\lamp.vert" />
     <None Include="Obj\Mech\mech1.obj" />
     <None Include="Obj\Mech\mech1.blend" />
     <None Include="Obj\Mech\mech1.mtl" />
@@ -186,6 +178,7 @@
     <Image Include="Obj\Mech\single_camouflage_texture_stock_by_ai_forte-d5ipdti.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\GUIElements\LoadingScreen.h" />
     <ClInclude Include="Scene\GUIElements\GameoverScreen.h" />
     <ClInclude Include="Scene\SceneObjects\BulletPlayer.h" />
     <ClInclude Include="Scene\SceneObjects\Bullet.h" />
@@ -226,6 +219,7 @@
     <ClInclude Include="Scene\GUIElements\ViewFrustumCullingScreen.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Scene\GUIElements\LoadingScreen.cpp" />
     <ClCompile Include="Scene\GUIElements\GameoverScreen.cpp" />
     <ClCompile Include="Scene\SceneObjects\BulletPlayer.cpp" />
     <ClCompile Include="Scene\SceneObjects\Bullet.cpp" />
