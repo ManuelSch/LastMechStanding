@@ -4,7 +4,6 @@
 
 <h3 align="center" style="font-style: italic">Will you become the “Last Mech Standing”?</h3>
 
-<h3>Screenshot:</h3>
 <p align="center">
-  <img src="./readme/screenshot-LastMechStanding.png"/>
+  <img src="./readme/screenshot-LastMechStanding.jpg"/>
 </p>
